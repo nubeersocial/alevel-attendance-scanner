@@ -31,6 +31,7 @@
       border-radius: 12px;
       font-size: 20px;
       font-weight: bold;
+      min-height: 30px;
     }
   </style>
 </head>
@@ -65,28 +66,42 @@
       const callbackName =
         "callback_" + Date.now();
 
+      const script = document.createElement("script");
+
       window[callbackName] = function(response) {
 
-        document.getElementById("result").innerText =
-          response.result;
+        console.log("Backend response:", response);
+
+        if (response && response.result) {
+          document.getElementById("result").innerText =
+            response.result;
+        } else {
+          document.getElementById("result").innerText =
+            "NO RESPONSE";
+        }
 
         delete window[callbackName];
-        script.remove();
+
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
 
         setTimeout(function() {
           isProcessing = false;
-          document.getElementById("result").innerText =
-            "Ready to scan";
-        }, 2500);
+        }, 3000);
       };
 
-      const script =
-        document.createElement("script");
+      script.onerror = function() {
+        document.getElementById("result").innerText =
+          "CONNECTION ERROR";
+
+        isProcessing = false;
+      };
 
       script.src =
         WEB_APP_URL +
         "?key=" +
-        encodeURIComponent(decodedText) +
+        encodeURIComponent(decodedText.trim()) +
         "&callback=" +
         callbackName;
 
