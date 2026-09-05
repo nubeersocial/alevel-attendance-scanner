@@ -2,17 +2,33 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    http-equiv="Cache-Control"
+    content="no-cache, no-store, must-revalidate"
+  >
+
+  <meta
+    http-equiv="Pragma"
+    content="no-cache"
+  >
+
+  <meta
+    http-equiv="Expires"
+    content="0"
+  >
 
   <title>A-Level Attendance Scanner</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -189,6 +205,7 @@
     }
 
     @media (max-width: 480px) {
+
       .page {
         padding: 12px;
       }
@@ -209,6 +226,7 @@
         font-size: 21px;
       }
     }
+
   </style>
 </head>
 
@@ -217,9 +235,17 @@
   <div class="page">
 
     <div class="header">
-      <h1>A-Level Attendance</h1>
-      <p>Scan student QR code</p>
+
+      <h1>
+        A-Level Attendance
+      </h1>
+
+      <p>
+        Scan student QR code
+      </p>
+
     </div>
+
 
     <div class="scannerCard">
 
@@ -235,10 +261,13 @@
 
     </div>
 
+
     <div id="resultCard">
 
       <div id="studentName"></div>
+
       <div id="studentGroup"></div>
+
 
       <div class="sectionTitle">
         Today's Classes
@@ -246,13 +275,16 @@
 
       <div id="classes"></div>
 
+
       <div class="sectionTitle">
         Arrival
       </div>
 
+
       <div class="timeGrid">
 
         <div class="timeBox">
+
           <div class="timeLabel">
             Expected
           </div>
@@ -261,9 +293,12 @@
             class="timeValue"
             id="expectedArrival">
           </div>
+
         </div>
 
+
         <div class="timeBox">
+
           <div class="timeLabel">
             Actual
           </div>
@@ -272,13 +307,16 @@
             class="timeValue"
             id="actualArrival">
           </div>
+
         </div>
 
       </div>
 
+
       <div id="statusBox"></div>
 
     </div>
+
 
     <div class="footerNote">
       A-Level Student Arrival System
@@ -292,15 +330,20 @@
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
 
+
     let isProcessing = false;
 
     let lastScannedQR = "";
+
     let lastScanTime = 0;
 
-    // Prevent the camera continuously reading
-    // the SAME student's QR while they are standing there.
-    // A DIFFERENT QR can be scanned immediately.
+
     const SAME_QR_DELAY = 5000;
+
+    const REQUEST_TIMEOUT = 8000;
+
+    const MAX_ATTEMPTS = 2;
+
 
 
     function formatClasses(classText) {
@@ -311,9 +354,15 @@
 
       return classText
         .split(" | ")
-        .map(item => "<div>" + item + "</div>")
+        .map(
+          item =>
+            "<div>" +
+            item +
+            "</div>"
+        )
         .join("");
     }
+
 
 
     function formatLateTime(totalMinutes) {
@@ -325,21 +374,31 @@
         return "";
       }
 
+
       const hours =
-        Math.floor(totalMinutes / 60);
+        Math.floor(
+          totalMinutes / 60
+        );
+
 
       const minutes =
         totalMinutes % 60;
 
+
       let result = "";
+
 
       if (hours > 0) {
 
         result +=
           hours +
-          (hours === 1 ? " HR" : " HRS");
-
+          (
+            hours === 1
+              ? " HR"
+              : " HRS"
+          );
       }
+
 
       if (minutes > 0) {
 
@@ -348,52 +407,72 @@
         }
 
         result +=
-          minutes + " MIN";
-
+          minutes +
+          " MIN";
       }
+
 
       return result;
     }
 
 
+
     function showResult(data) {
 
-      document.getElementById("processing").style.display =
+      document.getElementById(
+        "processing"
+      ).style.display =
         "none";
 
-      document.getElementById("resultCard").style.display =
+
+      document.getElementById(
+        "resultCard"
+      ).style.display =
         "block";
 
 
-      document.getElementById("studentName").innerText =
+      document.getElementById(
+        "studentName"
+      ).innerText =
         data.studentName || "";
 
 
-      document.getElementById("studentGroup").innerText =
+      document.getElementById(
+        "studentGroup"
+      ).innerText =
         data.group
           ? "Class " + data.group
           : "";
 
 
-      document.getElementById("classes").innerHTML =
+      document.getElementById(
+        "classes"
+      ).innerHTML =
         formatClasses(
           data.todaysClasses
         );
 
 
-      document.getElementById("expectedArrival").innerText =
+      document.getElementById(
+        "expectedArrival"
+      ).innerText =
         data.expectedArrival || "—";
 
 
-      document.getElementById("actualArrival").innerText =
+      document.getElementById(
+        "actualArrival"
+      ).innerText =
         data.actualArrival || "—";
 
 
       const statusBox =
-        document.getElementById("statusBox");
+        document.getElementById(
+          "statusBox"
+        );
 
 
-      statusBox.className = "";
+      statusBox.className =
+        "";
 
 
       if (
@@ -421,8 +500,10 @@
             data.minutesLate
           );
 
+
         let message =
           "LATE";
+
 
         if (lateTime) {
 
@@ -432,8 +513,10 @@
 
         }
 
+
         statusBox.innerText =
           message;
+
 
         statusBox.classList.add(
           "late"
@@ -450,6 +533,7 @@
         statusBox.innerText =
           "✓ ON TIME";
 
+
         statusBox.classList.add(
           "success"
         );
@@ -463,6 +547,7 @@
           data.result ||
           "UNKNOWN RESULT";
 
+
         statusBox.classList.add(
           "error"
         );
@@ -471,31 +556,308 @@
     }
 
 
-    function readyForNextStudent() {
 
-      // Scanner becomes available immediately.
-      isProcessing = false;
+    function showConnectionError() {
 
       document.getElementById(
         "processing"
       ).style.display =
         "none";
 
+
+      document.getElementById(
+        "resultCard"
+      ).style.display =
+        "block";
+
+
+      document.getElementById(
+        "studentName"
+      ).innerText =
+        "Connection Error";
+
+
+      document.getElementById(
+        "studentGroup"
+      ).innerText =
+        "";
+
+
+      document.getElementById(
+        "classes"
+      ).innerText =
+        "";
+
+
+      document.getElementById(
+        "expectedArrival"
+      ).innerText =
+        "—";
+
+
+      document.getElementById(
+        "actualArrival"
+      ).innerText =
+        "—";
+
+
+      const statusBox =
+        document.getElementById(
+          "statusBox"
+        );
+
+
+      statusBox.innerText =
+        "PLEASE SCAN AGAIN";
+
+
+      statusBox.className =
+        "error";
+    }
+
+
+
+    function readyForNextStudent() {
+
+      isProcessing =
+        false;
+
+
+      document.getElementById(
+        "processing"
+      ).style.display =
+        "none";
+
+
       document.getElementById(
         "readyMessage"
       ).innerText =
         "Ready for next student";
+
 
       document.getElementById(
         "readyMessage"
       ).style.display =
         "block";
 
-      // IMPORTANT:
-      // We do NOT clear resultCard.
-      // Previous student's information stays displayed
-      // until the next result arrives.
     }
+
+
+
+    function sendScanRequest(
+      qr,
+      attempt
+    ) {
+
+      let finished =
+        false;
+
+
+      const callbackName =
+        "attendanceCallback_" +
+        Date.now() +
+        "_" +
+        Math.random()
+          .toString(36)
+          .substring(2, 10);
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+
+      function cleanup() {
+
+        if (
+          script.parentNode
+        ) {
+
+          script.parentNode
+            .removeChild(
+              script
+            );
+
+        }
+
+
+        try {
+
+          delete window[
+            callbackName
+          ];
+
+        }
+        catch (error) {
+
+          window[
+            callbackName
+          ] =
+            undefined;
+
+        }
+      }
+
+
+
+      function retryOrFail() {
+
+        if (finished) {
+          return;
+        }
+
+
+        finished =
+          true;
+
+
+        clearTimeout(
+          timeoutTimer
+        );
+
+
+        cleanup();
+
+
+        if (
+          attempt <
+          MAX_ATTEMPTS
+        ) {
+
+          document.getElementById(
+            "processing"
+          ).innerText =
+            "Confirming attendance...";
+
+
+          setTimeout(
+            function() {
+
+              sendScanRequest(
+                qr,
+                attempt + 1
+              );
+
+            },
+            300
+          );
+
+        }
+
+
+        else {
+
+          document.getElementById(
+            "processing"
+          ).innerText =
+            "Processing...";
+
+
+          showConnectionError();
+
+          readyForNextStudent();
+
+        }
+      }
+
+
+
+      window[
+        callbackName
+      ] =
+        function(response) {
+
+          if (finished) {
+            return;
+          }
+
+
+          finished =
+            true;
+
+
+          clearTimeout(
+            timeoutTimer
+          );
+
+
+          if (
+            response &&
+            response.result
+          ) {
+
+            showResult(
+              response.result
+            );
+
+          }
+
+          else {
+
+            showConnectionError();
+
+          }
+
+
+          cleanup();
+
+
+          document.getElementById(
+            "processing"
+          ).innerText =
+            "Processing...";
+
+
+          readyForNextStudent();
+
+        };
+
+
+
+      script.onerror =
+        function() {
+
+          retryOrFail();
+
+        };
+
+
+
+      const timeoutTimer =
+        setTimeout(
+          function() {
+
+            retryOrFail();
+
+          },
+          REQUEST_TIMEOUT
+        );
+
+
+
+      script.src =
+        WEB_APP_URL +
+        "?key=" +
+        encodeURIComponent(qr) +
+        "&callback=" +
+        encodeURIComponent(
+          callbackName
+        ) +
+        "&t=" +
+        Date.now() +
+        "&attempt=" +
+        attempt;
+
+
+
+      document.body
+        .appendChild(
+          script
+        );
+
+    }
+
 
 
     function onScanSuccess(
@@ -505,17 +867,20 @@
       const qr =
         decodedText.trim();
 
+
       const now =
         Date.now();
 
 
-      if (isProcessing) {
+      if (
+        isProcessing
+      ) {
+
         return;
+
       }
 
 
-      // Ignore only the SAME QR for a few seconds.
-      // A different student's QR is accepted immediately.
       if (
         qr === lastScannedQR &&
         now - lastScanTime <
@@ -530,8 +895,10 @@
       lastScannedQR =
         qr;
 
+
       lastScanTime =
         now;
+
 
       isProcessing =
         true;
@@ -545,141 +912,23 @@
 
       document.getElementById(
         "processing"
+      ).innerText =
+        "Processing...";
+
+
+      document.getElementById(
+        "processing"
       ).style.display =
         "block";
 
 
-      const callbackName =
-        "callback_" +
-        Date.now();
-
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      window[callbackName] =
-        function(response) {
-
-          if (
-            response &&
-            response.result
-          ) {
-
-            showResult(
-              response.result
-            );
-
-          }
-
-
-          delete window[
-            callbackName
-          ];
-
-
-          if (
-            script.parentNode
-          ) {
-
-            script.parentNode
-              .removeChild(
-                script
-              );
-
-          }
-
-
-          // NO 3-SECOND WAIT.
-          // Immediately accept the next student.
-          readyForNextStudent();
-
-        };
-
-
-      script.onerror =
-        function() {
-
-          document.getElementById(
-            "processing"
-          ).style.display =
-            "none";
-
-
-          document.getElementById(
-            "resultCard"
-          ).style.display =
-            "block";
-
-
-          document.getElementById(
-            "studentName"
-          ).innerText =
-            "Connection Error";
-
-
-          document.getElementById(
-            "studentGroup"
-          ).innerText =
-            "";
-
-
-          document.getElementById(
-            "classes"
-          ).innerText =
-            "";
-
-
-          document.getElementById(
-            "expectedArrival"
-          ).innerText =
-            "—";
-
-
-          document.getElementById(
-            "actualArrival"
-          ).innerText =
-            "—";
-
-
-          const statusBox =
-            document.getElementById(
-              "statusBox"
-            );
-
-
-          statusBox.innerText =
-            "PLEASE TRY AGAIN";
-
-
-          statusBox.className =
-            "error";
-
-
-          // Immediately ready again.
-          readyForNextStudent();
-
-        };
-
-
-      script.src =
-        WEB_APP_URL +
-        "?key=" +
-        encodeURIComponent(qr) +
-        "&callback=" +
-        callbackName +
-        "&t=" +
-        Date.now();
-
-
-      document.body
-        .appendChild(
-          script
-        );
+      sendScanRequest(
+        qr,
+        1
+      );
 
     }
+
 
 
     const scanner =
