@@ -222,6 +222,7 @@
     </div>
 
     <div class="scannerCard">
+
       <div id="reader"></div>
 
       <div id="readyMessage">
@@ -231,6 +232,7 @@
       <div id="processing">
         Processing...
       </div>
+
     </div>
 
     <div id="resultCard">
@@ -254,14 +256,22 @@
           <div class="timeLabel">
             Expected
           </div>
-          <div class="timeValue" id="expectedArrival"></div>
+
+          <div
+            class="timeValue"
+            id="expectedArrival">
+          </div>
         </div>
 
         <div class="timeBox">
           <div class="timeLabel">
             Actual
           </div>
-          <div class="timeValue" id="actualArrival"></div>
+
+          <div
+            class="timeValue"
+            id="actualArrival">
+          </div>
         </div>
 
       </div>
@@ -275,6 +285,7 @@
     </div>
 
   </div>
+
 
   <script>
 
@@ -302,6 +313,46 @@
     }
 
 
+    function formatLateTime(totalMinutes) {
+
+      totalMinutes =
+        Number(totalMinutes) || 0;
+
+      if (totalMinutes <= 0) {
+        return "";
+      }
+
+      const hours =
+        Math.floor(totalMinutes / 60);
+
+      const minutes =
+        totalMinutes % 60;
+
+      let result = "";
+
+      if (hours > 0) {
+
+        result +=
+          hours +
+          (hours === 1 ? " HR" : " HRS");
+
+      }
+
+      if (minutes > 0) {
+
+        if (result) {
+          result += " ";
+        }
+
+        result +=
+          minutes + " MIN";
+
+      }
+
+      return result;
+    }
+
+
     function showResult(data) {
 
       document.getElementById("processing").style.display =
@@ -310,66 +361,108 @@
       document.getElementById("resultCard").style.display =
         "block";
 
+
       document.getElementById("studentName").innerText =
         data.studentName || "";
 
+
       document.getElementById("studentGroup").innerText =
-        data.group ? "Class " + data.group : "";
+        data.group
+          ? "Class " + data.group
+          : "";
+
 
       document.getElementById("classes").innerHTML =
-        formatClasses(data.todaysClasses);
+        formatClasses(
+          data.todaysClasses
+        );
+
 
       document.getElementById("expectedArrival").innerText =
         data.expectedArrival || "—";
 
+
       document.getElementById("actualArrival").innerText =
         data.actualArrival || "—";
+
 
       const statusBox =
         document.getElementById("statusBox");
 
+
       statusBox.className = "";
 
-      if (data.result === "ALREADY RECORDED") {
+
+      if (
+        data.result ===
+        "ALREADY RECORDED"
+      ) {
 
         statusBox.innerText =
           "ALREADY RECORDED";
 
-        statusBox.classList.add("duplicate");
+        statusBox.classList.add(
+          "duplicate"
+        );
 
       }
 
-      else if (data.attendanceStatus === "Late") {
 
-        let message = "LATE";
+      else if (
+        data.attendanceStatus ===
+        "Late"
+      ) {
 
-        if (Number(data.minutesLate) > 0) {
+        const lateTime =
+          formatLateTime(
+            data.minutesLate
+          );
+
+        let message =
+          "LATE";
+
+        if (lateTime) {
+
           message +=
             " — " +
-            data.minutesLate +
-            " MINUTES";
+            lateTime;
+
         }
 
-        statusBox.innerText = message;
-        statusBox.classList.add("late");
+        statusBox.innerText =
+          message;
+
+        statusBox.classList.add(
+          "late"
+        );
 
       }
 
-      else if (data.attendanceStatus === "On Time") {
+
+      else if (
+        data.attendanceStatus ===
+        "On Time"
+      ) {
 
         statusBox.innerText =
           "✓ ON TIME";
 
-        statusBox.classList.add("success");
+        statusBox.classList.add(
+          "success"
+        );
 
       }
+
 
       else {
 
         statusBox.innerText =
-          data.result || "UNKNOWN RESULT";
+          data.result ||
+          "UNKNOWN RESULT";
 
-        statusBox.classList.add("error");
+        statusBox.classList.add(
+          "error"
+        );
 
       }
     }
@@ -377,106 +470,186 @@
 
     function readyForNextStudent() {
 
-      isProcessing = false;
+      isProcessing =
+        false;
 
-      document.getElementById("readyMessage").innerText =
+      document.getElementById(
+        "readyMessage"
+      ).innerText =
         "Ready for next student";
 
-      document.getElementById("readyMessage").style.display =
+      document.getElementById(
+        "readyMessage"
+      ).style.display =
         "block";
     }
 
 
-    function onScanSuccess(decodedText) {
+    function onScanSuccess(
+      decodedText
+    ) {
 
-      const qr = decodedText.trim();
-      const now = Date.now();
+      const qr =
+        decodedText.trim();
+
+      const now =
+        Date.now();
+
 
       if (isProcessing) {
         return;
       }
 
+
       if (
         qr === lastScannedQR &&
-        now - lastScanTime < SAME_QR_DELAY
+        now - lastScanTime <
+        SAME_QR_DELAY
       ) {
+
         return;
+
       }
 
-      lastScannedQR = qr;
-      lastScanTime = now;
 
-      isProcessing = true;
+      lastScannedQR =
+        qr;
 
-      document.getElementById("readyMessage").style.display =
+      lastScanTime =
+        now;
+
+      isProcessing =
+        true;
+
+
+      document.getElementById(
+        "readyMessage"
+      ).style.display =
         "none";
 
-      document.getElementById("processing").style.display =
+
+      document.getElementById(
+        "processing"
+      ).style.display =
         "block";
 
+
       const callbackName =
-        "callback_" + Date.now();
+        "callback_" +
+        Date.now();
+
 
       const script =
-        document.createElement("script");
-
-
-      window[callbackName] = function(response) {
-
-        if (response && response.result) {
-          showResult(response.result);
-        }
-
-        delete window[callbackName];
-
-        if (script.parentNode) {
-          script.parentNode.removeChild(script);
-        }
-
-        setTimeout(
-          readyForNextStudent,
-          3000
+        document.createElement(
+          "script"
         );
-      };
 
 
-      script.onerror = function() {
+      window[callbackName] =
+        function(response) {
 
-        document.getElementById("processing").style.display =
-          "none";
+          if (
+            response &&
+            response.result
+          ) {
 
-        document.getElementById("resultCard").style.display =
-          "block";
+            showResult(
+              response.result
+            );
 
-        document.getElementById("studentName").innerText =
-          "Connection Error";
+          }
 
-        document.getElementById("studentGroup").innerText =
-          "";
 
-        document.getElementById("classes").innerText =
-          "";
+          delete window[
+            callbackName
+          ];
 
-        document.getElementById("expectedArrival").innerText =
-          "—";
 
-        document.getElementById("actualArrival").innerText =
-          "—";
+          if (
+            script.parentNode
+          ) {
 
-        const statusBox =
-          document.getElementById("statusBox");
+            script.parentNode
+              .removeChild(
+                script
+              );
 
-        statusBox.innerText =
-          "PLEASE TRY AGAIN";
+          }
 
-        statusBox.className =
-          "error";
 
-        setTimeout(
-          readyForNextStudent,
-          3000
-        );
-      };
+          setTimeout(
+            readyForNextStudent,
+            3000
+          );
+
+        };
+
+
+      script.onerror =
+        function() {
+
+          document.getElementById(
+            "processing"
+          ).style.display =
+            "none";
+
+
+          document.getElementById(
+            "resultCard"
+          ).style.display =
+            "block";
+
+
+          document.getElementById(
+            "studentName"
+          ).innerText =
+            "Connection Error";
+
+
+          document.getElementById(
+            "studentGroup"
+          ).innerText =
+            "";
+
+
+          document.getElementById(
+            "classes"
+          ).innerText =
+            "";
+
+
+          document.getElementById(
+            "expectedArrival"
+          ).innerText =
+            "—";
+
+
+          document.getElementById(
+            "actualArrival"
+          ).innerText =
+            "—";
+
+
+          const statusBox =
+            document.getElementById(
+              "statusBox"
+            );
+
+
+          statusBox.innerText =
+            "PLEASE TRY AGAIN";
+
+
+          statusBox.className =
+            "error";
+
+
+          setTimeout(
+            readyForNextStudent,
+            3000
+          );
+
+        };
 
 
       script.src =
@@ -486,7 +659,12 @@
         "&callback=" +
         callbackName;
 
-      document.body.appendChild(script);
+
+      document.body
+        .appendChild(
+          script
+        );
+
     }
 
 
@@ -500,7 +678,10 @@
         false
       );
 
-    scanner.render(onScanSuccess);
+
+    scanner.render(
+      onScanSuccess
+    );
 
   </script>
 
