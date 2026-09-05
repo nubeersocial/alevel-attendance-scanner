@@ -35,6 +35,24 @@
       overflow: hidden;
     }
 
+    #readyMessage {
+      max-width: 500px;
+      margin: 15px auto;
+      padding: 12px;
+      border-radius: 10px;
+      background: #e8f5e9;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    #processing {
+      display: none;
+      max-width: 500px;
+      margin: 15px auto;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
     #resultCard {
       display: none;
       max-width: 500px;
@@ -71,7 +89,7 @@
 
     #classes {
       font-size: 17px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .timeRow {
@@ -119,14 +137,6 @@
       background: #ffebee;
       color: #b71c1c;
     }
-
-    #processing {
-      max-width: 500px;
-      margin: 20px auto;
-      font-size: 18px;
-      font-weight: bold;
-      display: none;
-    }
   </style>
 </head>
 
@@ -136,6 +146,10 @@
   <div class="subtitle">Scan student QR code</div>
 
   <div id="reader"></div>
+
+  <div id="readyMessage">
+    Ready to scan
+  </div>
 
   <div id="processing">
     Processing...
@@ -166,12 +180,20 @@
   </div>
 
   <script>
+
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
 
     let isProcessing = false;
 
+    // Prevent the same QR from firing repeatedly
+    let lastScannedQR = "";
+    let lastScanTime = 0;
+
+    const SAME_QR_DELAY = 8000;
+
     function formatClasses(classText) {
+
       if (!classText) {
         return "No classes";
       }
@@ -181,6 +203,7 @@
         .map(item => "<div>" + item + "</div>")
         .join("");
     }
+
 
     function showResult(data) {
 
@@ -202,48 +225,96 @@
       document.getElementById("actualArrival").innerText =
         data.actualArrival || "—";
 
-      const statusBox = document.getElementById("statusBox");
+      const statusBox =
+        document.getElementById("statusBox");
 
       statusBox.className = "";
 
       if (data.result === "ALREADY RECORDED") {
 
-        statusBox.innerText = "ALREADY RECORDED";
+        statusBox.innerText =
+          "ALREADY RECORDED";
+
         statusBox.classList.add("duplicate");
 
-      } else if (data.attendanceStatus === "Late") {
+      }
+
+      else if (data.attendanceStatus === "Late") {
 
         let message = "LATE";
 
-        if (data.minutesLate) {
-          message += " — " + data.minutesLate + " MINUTES";
+        if (Number(data.minutesLate) > 0) {
+          message +=
+            " — " +
+            data.minutesLate +
+            " MINUTES";
         }
 
         statusBox.innerText = message;
         statusBox.classList.add("late");
 
-      } else if (data.attendanceStatus === "On Time") {
+      }
 
-        statusBox.innerText = "✓ ON TIME";
+      else if (data.attendanceStatus === "On Time") {
+
+        statusBox.innerText =
+          "✓ ON TIME";
+
         statusBox.classList.add("success");
 
-      } else {
+      }
+
+      else {
 
         statusBox.innerText =
           data.result || "UNKNOWN RESULT";
 
         statusBox.classList.add("error");
+
       }
+
     }
+
+
+    function readyForNextStudent() {
+
+      isProcessing = false;
+
+      document.getElementById("readyMessage").innerText =
+        "Ready for next student";
+
+      document.getElementById("readyMessage").style.display =
+        "block";
+    }
+
 
     function onScanSuccess(decodedText) {
 
-      if (isProcessing) return;
+      const qr = decodedText.trim();
+      const now = Date.now();
+
+      if (isProcessing) {
+        return;
+      }
+
+      // Ignore the SAME QR for 8 seconds
+      if (
+        qr === lastScannedQR &&
+        now - lastScanTime < SAME_QR_DELAY
+      ) {
+        return;
+      }
+
+      lastScannedQR = qr;
+      lastScanTime = now;
 
       isProcessing = true;
 
-      document.getElementById("resultCard").style.display = "none";
-      document.getElementById("processing").style.display = "block";
+      document.getElementById("readyMessage").style.display =
+        "none";
+
+      document.getElementById("processing").style.display =
+        "block";
 
       const callbackName =
         "callback_" + Date.now();
@@ -251,9 +322,8 @@
       const script =
         document.createElement("script");
 
-      window[callbackName] = function(response) {
 
-        console.log(response);
+      window[callbackName] = function(response) {
 
         if (response && response.result) {
           showResult(response.result);
@@ -265,53 +335,76 @@
           script.parentNode.removeChild(script);
         }
 
-        setTimeout(function() {
-          isProcessing = false;
-        }, 3000);
+        // Automatically allow next student
+        setTimeout(
+          readyForNextStudent,
+          3000
+        );
       };
+
 
       script.onerror = function() {
 
-        document.getElementById("processing").style.display = "none";
-        document.getElementById("resultCard").style.display = "block";
+        document.getElementById("processing").style.display =
+          "none";
+
+        document.getElementById("resultCard").style.display =
+          "block";
 
         document.getElementById("studentName").innerText =
           "Connection Error";
 
-        document.getElementById("studentGroup").innerText = "";
-        document.getElementById("classes").innerText = "";
-        document.getElementById("expectedArrival").innerText = "—";
-        document.getElementById("actualArrival").innerText = "—";
+        document.getElementById("studentGroup").innerText =
+          "";
+
+        document.getElementById("classes").innerText =
+          "";
+
+        document.getElementById("expectedArrival").innerText =
+          "—";
+
+        document.getElementById("actualArrival").innerText =
+          "—";
 
         const statusBox =
           document.getElementById("statusBox");
 
-        statusBox.innerText = "PLEASE TRY AGAIN";
-        statusBox.className = "error";
+        statusBox.innerText =
+          "PLEASE TRY AGAIN";
 
-        isProcessing = false;
+        statusBox.className =
+          "error";
+
+        setTimeout(
+          readyForNextStudent,
+          3000
+        );
       };
+
 
       script.src =
         WEB_APP_URL +
         "?key=" +
-        encodeURIComponent(decodedText.trim()) +
+        encodeURIComponent(qr) +
         "&callback=" +
         callbackName;
 
       document.body.appendChild(script);
     }
 
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      {
-        fps: 10,
-        qrbox: 250
-      },
-      false
-    );
+
+    const scanner =
+      new Html5QrcodeScanner(
+        "reader",
+        {
+          fps: 10,
+          qrbox: 250
+        },
+        false
+      );
 
     scanner.render(onScanSuccess);
+
   </script>
 
 </body>
