@@ -297,7 +297,10 @@
     let lastScannedQR = "";
     let lastScanTime = 0;
 
-    const SAME_QR_DELAY = 8000;
+    // Prevent the camera continuously reading
+    // the SAME student's QR while they are standing there.
+    // A DIFFERENT QR can be scanned immediately.
+    const SAME_QR_DELAY = 5000;
 
 
     function formatClasses(classText) {
@@ -470,8 +473,13 @@
 
     function readyForNextStudent() {
 
-      isProcessing =
-        false;
+      // Scanner becomes available immediately.
+      isProcessing = false;
+
+      document.getElementById(
+        "processing"
+      ).style.display =
+        "none";
 
       document.getElementById(
         "readyMessage"
@@ -482,6 +490,11 @@
         "readyMessage"
       ).style.display =
         "block";
+
+      // IMPORTANT:
+      // We do NOT clear resultCard.
+      // Previous student's information stays displayed
+      // until the next result arrives.
     }
 
 
@@ -501,6 +514,8 @@
       }
 
 
+      // Ignore only the SAME QR for a few seconds.
+      // A different student's QR is accepted immediately.
       if (
         qr === lastScannedQR &&
         now - lastScanTime <
@@ -577,10 +592,9 @@
           }
 
 
-          setTimeout(
-            readyForNextStudent,
-            3000
-          );
+          // NO 3-SECOND WAIT.
+          // Immediately accept the next student.
+          readyForNextStudent();
 
         };
 
@@ -644,10 +658,8 @@
             "error";
 
 
-          setTimeout(
-            readyForNextStudent,
-            3000
-          );
+          // Immediately ready again.
+          readyForNextStudent();
 
         };
 
@@ -657,7 +669,9 @@
         "?key=" +
         encodeURIComponent(qr) +
         "&callback=" +
-        callbackName;
+        callbackName +
+        "&t=" +
+        Date.now();
 
 
       document.body
@@ -672,7 +686,7 @@
       new Html5QrcodeScanner(
         "reader",
         {
-          fps: 10,
+          fps: 15,
           qrbox: 250
         },
         false
