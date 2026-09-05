@@ -11,27 +11,121 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
+      background: #f4f6f8;
+      margin: 0;
       padding: 20px;
-      background: #f5f5f5;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 20px;
     }
 
     #reader {
       width: 100%;
       max-width: 500px;
-      margin: 20px auto;
+      margin: 0 auto 20px auto;
       background: white;
+      border-radius: 14px;
+      overflow: hidden;
     }
 
-    #result {
+    #resultCard {
+      display: none;
       max-width: 500px;
       margin: 20px auto;
-      padding: 18px;
       background: white;
-      border-radius: 12px;
-      font-size: 20px;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+      text-align: left;
+    }
+
+    #studentName {
+      font-size: 28px;
       font-weight: bold;
-      min-height: 30px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    #studentGroup {
+      text-align: center;
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .sectionTitle {
+      font-size: 13px;
+      font-weight: bold;
+      color: #777;
+      margin-top: 15px;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+
+    #classes {
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .timeRow {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 17px;
+    }
+
+    .label {
+      color: #666;
+    }
+
+    .value {
+      font-weight: bold;
+    }
+
+    #statusBox {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .success {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .late {
+      background: #ffebee;
+      color: #b71c1c;
+    }
+
+    .duplicate {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .error {
+      background: #ffebee;
+      color: #b71c1c;
+    }
+
+    #processing {
+      max-width: 500px;
+      margin: 20px auto;
+      font-size: 18px;
+      font-weight: bold;
+      display: none;
     }
   </style>
 </head>
@@ -39,13 +133,36 @@
 <body>
 
   <h1>A-Level Attendance Scanner</h1>
-
-  <p>Point the camera at a student QR code.</p>
+  <div class="subtitle">Scan student QR code</div>
 
   <div id="reader"></div>
 
-  <div id="result">
-    Ready to scan
+  <div id="processing">
+    Processing...
+  </div>
+
+  <div id="resultCard">
+
+    <div id="studentName"></div>
+    <div id="studentGroup"></div>
+
+    <div class="sectionTitle">Today's Classes</div>
+    <div id="classes"></div>
+
+    <div class="sectionTitle">Arrival</div>
+
+    <div class="timeRow">
+      <span class="label">Expected Arrival</span>
+      <span class="value" id="expectedArrival"></span>
+    </div>
+
+    <div class="timeRow">
+      <span class="label">Actual Arrival</span>
+      <span class="value" id="actualArrival"></span>
+    </div>
+
+    <div id="statusBox"></div>
+
   </div>
 
   <script>
@@ -54,30 +171,92 @@
 
     let isProcessing = false;
 
+    function formatClasses(classText) {
+      if (!classText) {
+        return "No classes";
+      }
+
+      return classText
+        .split(" | ")
+        .map(item => "<div>" + item + "</div>")
+        .join("");
+    }
+
+    function showResult(data) {
+
+      document.getElementById("processing").style.display = "none";
+      document.getElementById("resultCard").style.display = "block";
+
+      document.getElementById("studentName").innerText =
+        data.studentName || "";
+
+      document.getElementById("studentGroup").innerText =
+        data.group ? "Class " + data.group : "";
+
+      document.getElementById("classes").innerHTML =
+        formatClasses(data.todaysClasses);
+
+      document.getElementById("expectedArrival").innerText =
+        data.expectedArrival || "—";
+
+      document.getElementById("actualArrival").innerText =
+        data.actualArrival || "—";
+
+      const statusBox = document.getElementById("statusBox");
+
+      statusBox.className = "";
+
+      if (data.result === "ALREADY RECORDED") {
+
+        statusBox.innerText = "ALREADY RECORDED";
+        statusBox.classList.add("duplicate");
+
+      } else if (data.attendanceStatus === "Late") {
+
+        let message = "LATE";
+
+        if (data.minutesLate) {
+          message += " — " + data.minutesLate + " MINUTES";
+        }
+
+        statusBox.innerText = message;
+        statusBox.classList.add("late");
+
+      } else if (data.attendanceStatus === "On Time") {
+
+        statusBox.innerText = "✓ ON TIME";
+        statusBox.classList.add("success");
+
+      } else {
+
+        statusBox.innerText =
+          data.result || "UNKNOWN RESULT";
+
+        statusBox.classList.add("error");
+      }
+    }
+
     function onScanSuccess(decodedText) {
 
       if (isProcessing) return;
 
       isProcessing = true;
 
-      document.getElementById("result").innerText =
-        "Processing...";
+      document.getElementById("resultCard").style.display = "none";
+      document.getElementById("processing").style.display = "block";
 
       const callbackName =
         "callback_" + Date.now();
 
-      const script = document.createElement("script");
+      const script =
+        document.createElement("script");
 
       window[callbackName] = function(response) {
 
-        console.log("Backend response:", response);
+        console.log(response);
 
         if (response && response.result) {
-          document.getElementById("result").innerText =
-            response.result;
-        } else {
-          document.getElementById("result").innerText =
-            "NO RESPONSE";
+          showResult(response.result);
         }
 
         delete window[callbackName];
@@ -92,8 +271,23 @@
       };
 
       script.onerror = function() {
-        document.getElementById("result").innerText =
-          "CONNECTION ERROR";
+
+        document.getElementById("processing").style.display = "none";
+        document.getElementById("resultCard").style.display = "block";
+
+        document.getElementById("studentName").innerText =
+          "Connection Error";
+
+        document.getElementById("studentGroup").innerText = "";
+        document.getElementById("classes").innerText = "";
+        document.getElementById("expectedArrival").innerText = "—";
+        document.getElementById("actualArrival").innerText = "—";
+
+        const statusBox =
+          document.getElementById("statusBox");
+
+        statusBox.innerText = "PLEASE TRY AGAIN";
+        statusBox.className = "error";
 
         isProcessing = false;
       };
