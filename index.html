@@ -3,122 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
   <title>A-Level Attendance Scanner</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
       margin: 0;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #eef2f5;
+      color: #1f2937;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .header {
       text-align: center;
+      margin-bottom: 18px;
     }
 
-    h1 {
-      margin-bottom: 5px;
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
     }
 
-    .subtitle {
-      color: #666;
-      margin-bottom: 20px;
+    .header p {
+      margin: 7px 0 0;
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .scannerCard {
+      background: white;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
 
     #reader {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto 20px auto;
-      background: white;
-      border-radius: 14px;
       overflow: hidden;
+      border-radius: 14px;
     }
 
     #readyMessage {
-      max-width: 500px;
-      margin: 15px auto;
-      padding: 12px;
-      border-radius: 10px;
+      margin-top: 14px;
+      padding: 13px;
+      border-radius: 12px;
       background: #e8f5e9;
-      font-weight: bold;
       color: #1b5e20;
+      font-size: 17px;
+      font-weight: bold;
+      text-align: center;
     }
 
     #processing {
       display: none;
-      max-width: 500px;
-      margin: 15px auto;
-      font-size: 18px;
+      margin-top: 14px;
+      padding: 13px;
+      border-radius: 12px;
+      background: #e8eef9;
+      color: #1f3b73;
+      font-size: 17px;
       font-weight: bold;
+      text-align: center;
     }
 
     #resultCard {
       display: none;
-      max-width: 500px;
-      margin: 20px auto;
+      margin-top: 18px;
       background: white;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 22px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.10);
-      text-align: left;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
 
     #studentName {
-      font-size: 28px;
-      font-weight: bold;
       text-align: center;
-      margin-bottom: 5px;
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 4px;
     }
 
     #studentGroup {
       text-align: center;
       font-size: 18px;
-      color: #666;
+      font-weight: bold;
+      color: #6b7280;
       margin-bottom: 22px;
     }
 
     .sectionTitle {
-      font-size: 13px;
-      font-weight: bold;
-      color: #777;
-      margin-top: 15px;
-      margin-bottom: 7px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #6b7280;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
     }
 
     #classes {
-      font-size: 17px;
-      line-height: 1.7;
+      font-size: 18px;
+      line-height: 1.8;
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 12px;
     }
 
-    .timeRow {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 17px;
+    .timeGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
     }
 
-    .label {
-      color: #666;
+    .timeBox {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
     }
 
-    .value {
+    .timeLabel {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      text-transform: uppercase;
       font-weight: bold;
+    }
+
+    .timeValue {
+      font-size: 21px;
+      font-weight: 800;
     }
 
     #statusBox {
       margin-top: 20px;
-      padding: 16px;
-      border-radius: 12px;
-      font-size: 22px;
-      font-weight: bold;
+      padding: 18px;
+      border-radius: 14px;
       text-align: center;
+      font-size: 24px;
+      font-weight: 800;
     }
 
     .success {
@@ -140,45 +180,99 @@
       background: #ffebee;
       color: #b71c1c;
     }
+
+    .footerNote {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding: 12px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      #studentName {
+        font-size: 26px;
+      }
+
+      .timeValue {
+        font-size: 18px;
+      }
+
+      #statusBox {
+        font-size: 21px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <h1>A-Level Attendance Scanner</h1>
-  <div class="subtitle">Scan student QR code</div>
+  <div class="page">
 
-  <div id="reader"></div>
-
-  <div id="readyMessage">
-    Ready to scan
-  </div>
-
-  <div id="processing">
-    Processing...
-  </div>
-
-  <div id="resultCard">
-
-    <div id="studentName"></div>
-    <div id="studentGroup"></div>
-
-    <div class="sectionTitle">Today's Classes</div>
-    <div id="classes"></div>
-
-    <div class="sectionTitle">Arrival</div>
-
-    <div class="timeRow">
-      <span class="label">Expected Arrival</span>
-      <span class="value" id="expectedArrival"></span>
+    <div class="header">
+      <h1>A-Level Attendance</h1>
+      <p>Scan student QR code</p>
     </div>
 
-    <div class="timeRow">
-      <span class="label">Actual Arrival</span>
-      <span class="value" id="actualArrival"></span>
+    <div class="scannerCard">
+      <div id="reader"></div>
+
+      <div id="readyMessage">
+        Ready to scan
+      </div>
+
+      <div id="processing">
+        Processing...
+      </div>
     </div>
 
-    <div id="statusBox"></div>
+    <div id="resultCard">
+
+      <div id="studentName"></div>
+      <div id="studentGroup"></div>
+
+      <div class="sectionTitle">
+        Today's Classes
+      </div>
+
+      <div id="classes"></div>
+
+      <div class="sectionTitle">
+        Arrival
+      </div>
+
+      <div class="timeGrid">
+
+        <div class="timeBox">
+          <div class="timeLabel">
+            Expected
+          </div>
+          <div class="timeValue" id="expectedArrival"></div>
+        </div>
+
+        <div class="timeBox">
+          <div class="timeLabel">
+            Actual
+          </div>
+          <div class="timeValue" id="actualArrival"></div>
+        </div>
+
+      </div>
+
+      <div id="statusBox"></div>
+
+    </div>
+
+    <div class="footerNote">
+      A-Level Student Arrival System
+    </div>
 
   </div>
 
@@ -189,11 +283,11 @@
 
     let isProcessing = false;
 
-    // Prevent the same QR from firing repeatedly
     let lastScannedQR = "";
     let lastScanTime = 0;
 
     const SAME_QR_DELAY = 8000;
+
 
     function formatClasses(classText) {
 
@@ -210,8 +304,11 @@
 
     function showResult(data) {
 
-      document.getElementById("processing").style.display = "none";
-      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("processing").style.display =
+        "none";
+
+      document.getElementById("resultCard").style.display =
+        "block";
 
       document.getElementById("studentName").innerText =
         data.studentName || "";
@@ -275,7 +372,6 @@
         statusBox.classList.add("error");
 
       }
-
     }
 
 
@@ -300,7 +396,6 @@
         return;
       }
 
-      // Ignore the SAME QR for 8 seconds
       if (
         qr === lastScannedQR &&
         now - lastScanTime < SAME_QR_DELAY
@@ -338,7 +433,6 @@
           script.parentNode.removeChild(script);
         }
 
-        // Automatically allow next student
         setTimeout(
           readyForNextStudent,
           3000
