@@ -7,19 +7,90 @@
   <title>A-Level Attendance Scanner</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      background: white;
+    }
+
+    #result {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 18px;
+      background: white;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
 
   <h1>A-Level Attendance Scanner</h1>
 
-  <p>Camera test</p>
+  <p>Point the camera at a student QR code.</p>
 
-  <div id="reader" style="width:100%; max-width:500px;"></div>
+  <div id="reader"></div>
+
+  <div id="result">
+    Ready to scan
+  </div>
 
   <script>
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
+
+    let isProcessing = false;
+
     function onScanSuccess(decodedText) {
-      alert("QR Scanned: " + decodedText);
+
+      if (isProcessing) return;
+
+      isProcessing = true;
+
+      document.getElementById("result").innerText =
+        "Processing...";
+
+      const callbackName =
+        "callback_" + Date.now();
+
+      window[callbackName] = function(response) {
+
+        document.getElementById("result").innerText =
+          response.result;
+
+        delete window[callbackName];
+        script.remove();
+
+        setTimeout(function() {
+          isProcessing = false;
+          document.getElementById("result").innerText =
+            "Ready to scan";
+        }, 2500);
+      };
+
+      const script =
+        document.createElement("script");
+
+      script.src =
+        WEB_APP_URL +
+        "?key=" +
+        encodeURIComponent(decodedText) +
+        "&callback=" +
+        callbackName;
+
+      document.body.appendChild(script);
     }
 
     const scanner = new Html5QrcodeScanner(
