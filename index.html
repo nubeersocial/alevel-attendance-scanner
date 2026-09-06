@@ -475,19 +475,27 @@
         "";
 
 
-      if (
-        data.result ===
-        "ALREADY RECORDED"
-      ) {
+  if (
+  data.result ===
+  "ALREADY RECORDED"
+) {
 
-        statusBox.innerText =
-          "ALREADY RECORDED";
+  const recordedTime =
+    data.actualArrival || "Unknown time";
 
-        statusBox.classList.add(
-          "duplicate"
-        );
+  statusBox.innerHTML =
+    "ALREADY ENTERED" +
+    "<br>" +
+    "<span style='font-size:16px;font-weight:600;'>" +
+    "Arrival recorded at " +
+    recordedTime +
+    "</span>";
 
-      }
+  statusBox.classList.add(
+    "duplicate"
+  );
+
+}
 
 
       else if (
