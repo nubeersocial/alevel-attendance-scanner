@@ -36,7 +36,7 @@
   box-sizing: border-box;
 }
 
-
+ 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -1151,8 +1151,234 @@ scanner.render(
 );
 
 
+async function runConnectionTest() {
+
+  const resultsBox =
+    document.getElementById(
+      "testResults"
+    );
+
+  resultsBox.innerHTML =
+    "Starting 20 tests...<br><br>";
+
+  let successCount = 0;
+  let failCount = 0;
+
+
+  for (
+    let i = 1;
+    i <= 20;
+    i++
+  ) {
+
+    await new Promise(
+      resolve => {
+
+        let finished = false;
+
+        const startTime =
+          performance.now();
+
+        const callbackName =
+          "pingCallback_" +
+          Date.now() +
+          "_" +
+          i;
+
+        const script =
+          document.createElement(
+            "script"
+          );
+
+
+        function cleanup() {
+
+          clearTimeout(timer);
+
+          if (script.parentNode) {
+            script.parentNode
+              .removeChild(script);
+          }
+
+          try {
+            delete window[
+              callbackName
+            ];
+          }
+          catch (error) {
+            window[
+              callbackName
+            ] = undefined;
+          }
+
+        }
+
+
+        function finishFailure(
+          reason
+        ) {
+
+          if (finished) return;
+
+          finished = true;
+
+          cleanup();
+
+          failCount++;
+
+          resultsBox.innerHTML +=
+            "Test " +
+            i +
+            ": FAIL - " +
+            reason +
+            "<br>";
+
+          resolve();
+
+        }
+
+
+        window[
+          callbackName
+        ] =
+          function(response) {
+
+            if (finished) return;
+
+            finished = true;
+
+            const duration =
+              Math.round(
+                performance.now() -
+                startTime
+              );
+
+            cleanup();
+
+            if (
+              response &&
+              response.success === true &&
+              response.test === "OK"
+            ) {
+
+              successCount++;
+
+              resultsBox.innerHTML +=
+                "Test " +
+                i +
+                ": OK - " +
+                duration +
+                " ms<br>";
+
+            }
+            else {
+
+              failCount++;
+
+              resultsBox.innerHTML +=
+                "Test " +
+                i +
+                ": BAD RESPONSE<br>";
+
+            }
+
+            resolve();
+
+          };
+
+
+        script.onerror =
+          function() {
+
+            finishFailure(
+              "script error"
+            );
+
+          };
+
+
+        const timer =
+          setTimeout(
+            function() {
+
+              finishFailure(
+                "timeout"
+              );
+
+            },
+            8000
+          );
+
+
+        script.src =
+          WEB_APP_URL +
+          "?test=ping" +
+          "&callback=" +
+          encodeURIComponent(
+            callbackName
+          ) +
+          "&t=" +
+          Date.now();
+
+
+        document.body
+          .appendChild(
+            script
+          );
+
+      }
+    );
+
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          300
+        )
+    );
+
+  }
+
+
+  resultsBox.innerHTML +=
+    "<br><b>Finished</b><br>" +
+    "Success: " +
+    successCount +
+    "/20<br>" +
+    "Failed: " +
+    failCount +
+    "/20";
+
+}
+  
 </script>
 
+ <button
+  id="testConnectionButton"
+  onclick="runConnectionTest()"
+  style="
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    font-size:16px;
+    font-weight:bold;
+  "
+>
+  RUN 20 CONNECTION TESTS
+</button>
+
+<div
+  id="testResults"
+  style="
+    margin-top:10px;
+    padding:10px;
+    background:white;
+    border-radius:10px;
+    font-family:monospace;
+    font-size:14px;
+  "
+></div>
 
 </body>
 
