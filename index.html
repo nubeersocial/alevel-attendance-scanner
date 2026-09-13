@@ -49,51 +49,61 @@ body {
   width: 100%;
   max-width: 620px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 12px;
 }
 
 
 .header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 
 .header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 25px;
 }
 
 
 .header p {
-  margin: 7px 0 0;
+  margin: 5px 0 0;
   color: #6b7280;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 
+/* Smaller scanner area */
 .scannerCard {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+
   background: white;
-  border-radius: 18px;
-  padding: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 9px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.08);
 }
 
 
 #reader {
   width: 100%;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 12px;
 }
 
 
 #readyMessage {
-  margin-top: 14px;
-  padding: 13px;
-  border-radius: 12px;
+  margin-top: 8px;
+  padding: 9px;
+
+  border-radius: 10px;
+
   background: #e8f5e9;
   color: #1b5e20;
-  font-size: 17px;
+
+  font-size: 15px;
   font-weight: bold;
   text-align: center;
 }
@@ -101,101 +111,155 @@ body {
 
 #processing {
   display: none;
-  margin-top: 14px;
-  padding: 13px;
-  border-radius: 12px;
+
+  margin-top: 8px;
+  padding: 9px;
+
+  border-radius: 10px;
+
   background: #e8eef9;
   color: #1f3b73;
-  font-size: 17px;
+
+  font-size: 15px;
   font-weight: bold;
   text-align: center;
 }
 
 
+/* Bigger result area */
 #resultCard {
   display: none;
-  margin-top: 18px;
+
+  margin-top: 12px;
+
   background: white;
+
   border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+  padding: 20px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.08);
 }
 
 
 #studentName {
   text-align: center;
+
   font-size: 30px;
+
   font-weight: 800;
-  margin-bottom: 4px;
+
+  line-height: 1.15;
+
+  margin-bottom: 5px;
 }
 
 
 #studentGroup {
   text-align: center;
+
   font-size: 18px;
+
   font-weight: bold;
+
   color: #6b7280;
-  margin-bottom: 22px;
+
+  margin-bottom: 18px;
 }
 
 
 .sectionTitle {
-  margin-top: 18px;
-  margin-bottom: 8px;
+  margin-top: 16px;
+  margin-bottom: 7px;
+
   font-size: 12px;
+
   font-weight: 800;
+
   color: #6b7280;
-  letter-spacing: 0.8px;
+
+  letter-spacing: 0.7px;
+
   text-transform: uppercase;
 }
 
 
+/* Larger readable subject text */
 #classes {
   font-size: 18px;
-  line-height: 1.8;
+
+  line-height: 1.6;
+
+  font-weight: 600;
+
   background: #f8fafc;
-  padding: 14px;
+
+  padding: 13px 14px;
+
   border-radius: 12px;
+}
+
+
+#classes div {
+  padding: 2px 0;
 }
 
 
 .timeGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 10px;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 10px;
+
+  margin-top: 9px;
 }
 
 
 .timeBox {
   background: #f8fafc;
-  padding: 15px;
+
+  padding: 13px;
+
   border-radius: 12px;
+
   text-align: center;
 }
 
 
 .timeLabel {
   font-size: 12px;
+
   color: #6b7280;
-  margin-bottom: 6px;
+
+  margin-bottom: 5px;
+
   text-transform: uppercase;
+
   font-weight: bold;
 }
 
 
 .timeValue {
   font-size: 21px;
+
   font-weight: 800;
 }
 
 
 #statusBox {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 14px;
+  margin-top: 17px;
+
+  padding: 16px;
+
+  border-radius: 13px;
+
   text-align: center;
-  font-size: 24px;
+
+  font-size: 23px;
+
   font-weight: 800;
 }
 
@@ -226,31 +290,61 @@ body {
 
 .footerNote {
   text-align: center;
+
   color: #9ca3af;
-  font-size: 12px;
-  margin-top: 14px;
+
+  font-size: 11px;
+
+  margin-top: 10px;
 }
 
 
 @media (max-width: 480px) {
 
   .page {
-    padding: 12px;
+    padding: 8px;
+  }
+
+
+  .header {
+    margin-bottom: 7px;
   }
 
 
   .header h1 {
-    font-size: 24px;
+    font-size: 21px;
+  }
+
+
+  .header p {
+    font-size: 12px;
+  }
+
+
+  .scannerCard {
+    max-width: 470px;
+    padding: 7px;
   }
 
 
   #studentName {
-    font-size: 26px;
+    font-size: 27px;
+  }
+
+
+  #studentGroup {
+    font-size: 17px;
+  }
+
+
+  #classes {
+    font-size: 17px;
+    line-height: 1.55;
   }
 
 
   .timeValue {
-    font-size: 18px;
+    font-size: 19px;
   }
 
 
@@ -289,9 +383,11 @@ body {
 
     <div id="reader"></div>
 
+
     <div id="readyMessage">
       Ready to scan
     </div>
+
 
     <div id="processing">
       Processing...
@@ -303,21 +399,27 @@ body {
 
   <div id="resultCard">
 
+
     <div id="studentName"></div>
 
+
     <div id="studentGroup"></div>
+
 
 
     <div class="sectionTitle">
       Today's Classes
     </div>
 
+
     <div id="classes"></div>
+
 
 
     <div class="sectionTitle">
       Arrival
     </div>
+
 
 
     <div class="timeGrid">
@@ -355,7 +457,9 @@ body {
     </div>
 
 
+
     <div id="statusBox"></div>
+
 
   </div>
 
@@ -391,22 +495,23 @@ let lastScanTime =
 
 
 
+/*
+  Prevent only the SAME QR
+  from immediately scanning again.
+
+  Different students can scan
+  as soon as the previous request
+  has completed.
+*/
 const SAME_QR_DELAY =
   5000;
-
-
-const REQUEST_TIMEOUT =
-  8000;
-
-
-const MAX_ATTEMPTS =
-  2;
 
 
 
 function formatClasses(
   classText
 ) {
+
 
   if (!classText) {
 
@@ -418,10 +523,12 @@ function formatClasses(
   return classText
     .split(" | ")
     .map(
+
       item =>
         "<div>" +
         item +
         "</div>"
+
     )
     .join("");
 
@@ -433,11 +540,14 @@ function formatLateTime(
   totalMinutes
 ) {
 
+
   totalMinutes =
     Number(totalMinutes) || 0;
 
 
-  if (totalMinutes <= 0) {
+  if (
+    totalMinutes <= 0
+  ) {
 
     return "";
 
@@ -458,7 +568,10 @@ function formatLateTime(
     "";
 
 
-  if (hours > 0) {
+  if (
+    hours > 0
+  ) {
+
 
     result +=
       hours +
@@ -471,9 +584,14 @@ function formatLateTime(
   }
 
 
-  if (minutes > 0) {
+  if (
+    minutes > 0
+  ) {
 
-    if (result) {
+
+    if (
+      result
+    ) {
 
       result +=
         " ";
@@ -503,6 +621,7 @@ function showResult(
     "processing"
   ).style.display =
     "none";
+
 
 
   document.getElementById(
@@ -606,7 +725,9 @@ function showResult(
       "LATE";
 
 
-    if (lateTime) {
+    if (
+      lateTime
+    ) {
 
       message +=
         " — " +
@@ -672,6 +793,7 @@ function showConnectionError() {
     "none";
 
 
+
   document.getElementById(
     "resultCard"
   ).style.display =
@@ -734,16 +856,19 @@ function readyForNextStudent() {
     false;
 
 
+
   document.getElementById(
     "processing"
   ).style.display =
     "none";
 
 
+
   document.getElementById(
     "readyMessage"
   ).innerText =
     "Ready for next student";
+
 
 
   document.getElementById(
@@ -756,14 +881,17 @@ function readyForNextStudent() {
 
 
 function sendScanRequest(
-  qr,
-  attempt
+  qr
 ) {
 
 
-  let finished =
-    false;
+  /*
+    ONE QR SCAN =
+    ONE SERVER REQUEST.
 
+    No automatic retry.
+    No artificial timeout.
+  */
 
 
   const callbackName =
@@ -772,7 +900,7 @@ function sendScanRequest(
     "_" +
     Math.random()
       .toString(36)
-      .substring(2,10);
+      .substring(2, 10);
 
 
 
@@ -821,79 +949,6 @@ function sendScanRequest(
 
 
 
-  function retryOrFail() {
-
-
-    if (finished) {
-
-      return;
-
-    }
-
-
-    finished =
-      true;
-
-
-    clearTimeout(
-      timeoutTimer
-    );
-
-
-    cleanup();
-
-
-
-    if (
-      attempt <
-      MAX_ATTEMPTS
-    ) {
-
-
-      document.getElementById(
-        "processing"
-      ).innerText =
-        "Confirming attendance...";
-
-
-      setTimeout(
-
-        function() {
-
-          sendScanRequest(
-            qr,
-            attempt + 1
-          );
-
-        },
-
-        300
-
-      );
-
-    }
-
-
-    else {
-
-
-      document.getElementById(
-        "processing"
-      ).innerText =
-        "Processing...";
-
-
-      showConnectionError();
-
-
-      readyForNextStudent();
-
-    }
-
-  }
-
-
-
   window[
     callbackName
   ] =
@@ -902,21 +957,9 @@ function sendScanRequest(
     ) {
 
 
-      if (finished) {
-
-        return;
-
-      }
-
-
-      finished =
-        true;
-
-
-      clearTimeout(
-        timeoutTimer
-      );
-
+      /*
+        Apps Script returned successfully.
+      */
 
 
       if (
@@ -945,12 +988,6 @@ function sendScanRequest(
 
 
 
-      document.getElementById(
-        "processing"
-      ).innerText =
-        "Processing...";
-
-
       readyForNextStudent();
 
     };
@@ -960,24 +997,21 @@ function sendScanRequest(
   script.onerror =
     function() {
 
-      retryOrFail();
+
+      /*
+        Actual script/network loading failure.
+      */
+
+
+      cleanup();
+
+
+      showConnectionError();
+
+
+      readyForNextStudent();
 
     };
-
-
-
-  const timeoutTimer =
-    setTimeout(
-
-      function() {
-
-        retryOrFail();
-
-      },
-
-      REQUEST_TIMEOUT
-
-    );
 
 
 
@@ -992,9 +1026,7 @@ function sendScanRequest(
       callbackName
     ) +
     "&t=" +
-    Date.now() +
-    "&attempt=" +
-    attempt;
+    Date.now();
 
 
 
@@ -1021,6 +1053,10 @@ function onScanSuccess(
 
 
 
+  /*
+    Prevent additional QR frames while
+    this student's request is still active.
+  */
   if (
     isProcessing
   ) {
@@ -1031,6 +1067,10 @@ function onScanSuccess(
 
 
 
+  /*
+    Prevent camera repeatedly reading
+    the same student's QR.
+  */
   if (
     qr === lastScannedQR &&
     now - lastScanTime <
@@ -1051,6 +1091,10 @@ function onScanSuccess(
     now;
 
 
+  /*
+    Lock immediately BEFORE the request
+    is sent.
+  */
   isProcessing =
     true;
 
@@ -1062,10 +1106,12 @@ function onScanSuccess(
     "none";
 
 
+
   document.getElementById(
     "processing"
   ).innerText =
     "Processing...";
+
 
 
   document.getElementById(
@@ -1076,20 +1122,22 @@ function onScanSuccess(
 
 
   /*
-    Previous student's result remains visible
-    while the next student is processing.
+    Previous student's result remains
+    visible while next student processes.
   */
 
 
   sendScanRequest(
-    qr,
-    1
+    qr
   );
 
 }
 
 
 
+/*
+  Keep original proven scanner configuration.
+*/
 const scanner =
   new Html5QrcodeScanner(
 
