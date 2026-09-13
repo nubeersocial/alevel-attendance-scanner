@@ -33,8 +33,14 @@
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       background: #eef2f5;
       color: #1f2937;
@@ -42,14 +48,14 @@
 
     .page {
       width: 100%;
-      max-width: 620px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 18px;
+      padding: 16px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .header h1 {
@@ -58,9 +64,13 @@
     }
 
     .header p {
-      margin: 7px 0 0;
+      margin: 5px 0 0;
       color: #6b7280;
-      font-size: 15px;
+      font-size: 14px;
+    }
+
+    .scanWorkspace {
+      width: 100%;
     }
 
     .scannerCard {
@@ -77,103 +87,115 @@
     }
 
     #readyMessage {
-      margin-top: 14px;
-      padding: 13px;
-      border-radius: 12px;
+      margin-top: 10px;
+      padding: 11px;
+      border-radius: 11px;
       background: #e8f5e9;
       color: #1b5e20;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
       text-align: center;
     }
 
     #processing {
       display: none;
-      margin-top: 14px;
-      padding: 13px;
-      border-radius: 12px;
+      margin-top: 10px;
+      padding: 11px;
+      border-radius: 11px;
       background: #e8eef9;
       color: #1f3b73;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
       text-align: center;
     }
 
     #resultCard {
       display: none;
-      margin-top: 18px;
+      margin-top: 16px;
       background: white;
       border-radius: 18px;
-      padding: 22px;
+      padding: 20px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+      opacity: 1;
+      transform: translateY(0);
+
+      transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+    }
+
+    #resultCard.resultFading {
+      opacity: 0;
+      transform: translateY(8px);
     }
 
     #studentName {
       text-align: center;
       font-size: 30px;
       font-weight: 800;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     #studentGroup {
       text-align: center;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: bold;
       color: #6b7280;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
     }
 
     .sectionTitle {
-      margin-top: 18px;
-      margin-bottom: 8px;
-      font-size: 12px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 11px;
       font-weight: 800;
       color: #6b7280;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.7px;
       text-transform: uppercase;
     }
 
     #classes {
-      font-size: 18px;
-      line-height: 1.8;
+      font-size: 17px;
+      line-height: 1.55;
       background: #f8fafc;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 11px;
     }
 
     .timeGrid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 8px;
     }
 
     .timeBox {
       background: #f8fafc;
-      padding: 15px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 11px;
       text-align: center;
     }
 
     .timeLabel {
-      font-size: 12px;
+      font-size: 11px;
       color: #6b7280;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       text-transform: uppercase;
       font-weight: bold;
     }
 
     .timeValue {
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 800;
     }
 
     #statusBox {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 14px;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
       text-align: center;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
     }
 
@@ -201,51 +223,250 @@
       text-align: center;
       color: #9ca3af;
       font-size: 12px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
-    @media (max-width: 480px) {
+
+    /* ==============================
+       TABLET / LAPTOP
+       ============================== */
+
+    @media (min-width: 760px) {
+
+      .scanWorkspace {
+        display: grid;
+        grid-template-columns:
+          minmax(360px, 0.9fr)
+          minmax(360px, 1.1fr);
+
+        gap: 18px;
+        align-items: start;
+      }
+
+      #resultCard {
+        margin-top: 0;
+      }
+
+    }
+
+
+    /* ==============================
+       PHONE
+       Camera + result in same screen
+       ============================== */
+
+    @media (max-width: 759px) {
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        overflow: hidden;
+      }
 
       .page {
-        padding: 12px;
+        height: 100dvh;
+        max-width: 100%;
+        padding: 7px 9px;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        margin-bottom: 6px;
+        flex: 0 0 auto;
       }
 
       .header h1 {
-        font-size: 24px;
+        font-size: 20px;
+        line-height: 1.1;
+      }
+
+      .header p {
+        margin-top: 2px;
+        font-size: 11px;
+      }
+
+      .scanWorkspace {
+        flex: 1 1 auto;
+        min-height: 0;
+
+        display: grid;
+
+        grid-template-rows:
+          minmax(225px, 44dvh)
+          minmax(0, 1fr);
+
+        gap: 7px;
+      }
+
+      .scannerCard {
+        min-height: 0;
+        padding: 7px;
+        border-radius: 13px;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      #reader {
+        flex: 1 1 auto;
+        min-height: 0;
+        border-radius: 10px;
+      }
+
+      #reader video {
+        width: 100% !important;
+        height: 100% !important;
+
+        max-height: 36dvh !important;
+
+        object-fit: cover !important;
+      }
+
+      #readyMessage,
+      #processing {
+        margin-top: 5px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        line-height: 1.15;
+      }
+
+      #resultCard {
+        min-height: 0;
+        max-height: 100%;
+        overflow: hidden;
+
+        margin-top: 0;
+        padding: 9px 11px;
+        border-radius: 13px;
       }
 
       #studentName {
-        font-size: 26px;
+        font-size: 21px;
+        line-height: 1.05;
+        margin-bottom: 1px;
+      }
+
+      #studentGroup {
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .sectionTitle {
+        margin-top: 4px;
+        margin-bottom: 2px;
+        font-size: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      #classes {
+        font-size: 11px;
+        line-height: 1.25;
+
+        padding: 5px 7px;
+
+        border-radius: 7px;
+
+        max-height: 48px;
+        overflow: hidden;
+      }
+
+      .timeGrid {
+        gap: 5px;
+        margin-top: 3px;
+      }
+
+      .timeBox {
+        padding: 5px;
+        border-radius: 7px;
+      }
+
+      .timeLabel {
+        font-size: 8px;
+        margin-bottom: 1px;
       }
 
       .timeValue {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       #statusBox {
-        font-size: 21px;
+        margin-top: 5px;
+        padding: 7px;
+
+        border-radius: 8px;
+
+        font-size: 16px;
+        line-height: 1.1;
       }
+
+      .footerNote {
+        display: none;
+      }
+
+    }
+
+
+    /* Small phones */
+
+    @media (max-width: 380px),
+           (max-height: 690px) {
+
+      .scanWorkspace {
+        grid-template-rows:
+          minmax(200px, 41dvh)
+          minmax(0, 1fr);
+      }
+
+      #reader video {
+        max-height: 33dvh !important;
+      }
+
+      #classes {
+        max-height: 38px;
+      }
+
+      #studentName {
+        font-size: 19px;
+      }
+
+      #statusBox {
+        font-size: 14px;
+        padding: 5px;
+      }
+
     }
 
   </style>
 </head>
 
+
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <div class="header">
+  <div class="header">
 
-      <h1>
-        A-Level Attendance
-      </h1>
+    <h1>
+      A-Level Attendance
+    </h1>
 
-      <p>
-        Scan student QR code
-      </p>
+    <p>
+      Scan student QR code
+    </p>
 
-    </div>
+  </div>
 
+
+  <div class="scanWorkspace">
+
+
+    <!-- CAMERA -->
 
     <div class="scannerCard">
 
@@ -261,6 +482,8 @@
 
     </div>
 
+
+    <!-- RESULT -->
 
     <div id="resultCard">
 
@@ -317,233 +540,800 @@
 
     </div>
 
-
-    <div class="footerNote">
-      A-Level Student Arrival System
-    </div>
-
   </div>
 
 
-  <script>
+  <div class="footerNote">
+    A-Level Student Arrival System
+  </div>
 
-    const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
-
-
-    let isProcessing = false;
-
-    let lastScannedQR = "";
-
-    let lastScanTime = 0;
+</div>
 
 
-    const SAME_QR_DELAY = 5000;
+<script>
 
-    const REQUEST_TIMEOUT = 8000;
+  /* =========================================
+     GOOGLE APPS SCRIPT URL
+     ========================================= */
 
-    const MAX_ATTEMPTS = 2;
+  const WEB_APP_URL =
+    "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
 
 
+  /* =========================================
+     SETTINGS
+     ========================================= */
 
-    function formatClasses(classText) {
+  const SAME_QR_DELAY = 5000;
 
-      if (!classText) {
-        return "No classes";
+  const REQUEST_TIMEOUT = 8000;
+
+  const MAX_ATTEMPTS = 2;
+
+  const RESULT_VISIBLE_MS = 4000;
+
+
+  /* =========================================
+     STATE
+     ========================================= */
+
+  let isProcessing = false;
+
+  let lastScannedQR = "";
+
+  let lastScanTime = 0;
+
+  let resultHideTimer = null;
+
+  let fadeFinishTimer = null;
+
+  let audioContext = null;
+
+
+  /* =========================================
+     BEEP + VIBRATION
+     ========================================= */
+
+  function playScanBeep() {
+
+    try {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
       }
 
-      return classText
-        .split(" | ")
-        .map(
-          item =>
-            "<div>" +
-            item +
-            "</div>"
-        )
-        .join("");
+
+      if (
+        audioContext.state ===
+        "suspended"
+      ) {
+
+        audioContext.resume();
+
+      }
+
+
+      const oscillator =
+        audioContext.createOscillator();
+
+
+      const gain =
+        audioContext.createGain();
+
+
+      oscillator.type =
+        "sine";
+
+
+      oscillator.frequency.value =
+        920;
+
+
+      gain.gain.setValueAtTime(
+        0.0001,
+        audioContext.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.18,
+        audioContext.currentTime + 0.01
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioContext.currentTime + 0.11
+      );
+
+
+      oscillator.connect(
+        gain
+      );
+
+
+      gain.connect(
+        audioContext.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        audioContext.currentTime + 0.12
+      );
+
+    }
+
+    catch (error) {
+
+      // Scanner continues even if phone blocks sound.
+
     }
 
 
+    if (
+      navigator.vibrate
+    ) {
 
-    function formatLateTime(totalMinutes) {
+      navigator.vibrate(
+        45
+      );
 
-      totalMinutes =
-        Number(totalMinutes) || 0;
+    }
 
-      if (totalMinutes <= 0) {
-        return "";
-      }
-
-
-      const hours =
-        Math.floor(
-          totalMinutes / 60
-        );
+  }
 
 
-      const minutes =
-        totalMinutes % 60;
+  /* =========================================
+     RESULT TIMER
+     ========================================= */
 
+  function cancelResultCollapse() {
 
-      let result = "";
+    if (
+      resultHideTimer
+    ) {
 
+      clearTimeout(
+        resultHideTimer
+      );
 
-      if (hours > 0) {
+      resultHideTimer =
+        null;
 
-        result +=
-          hours +
-          (
-            hours === 1
-              ? " HR"
-              : " HRS"
-          );
-      }
-
-
-      if (minutes > 0) {
-
-        if (result) {
-          result += " ";
-        }
-
-        result +=
-          minutes +
-          " MIN";
-      }
-
-
-      return result;
     }
 
 
+    if (
+      fadeFinishTimer
+    ) {
 
-    function showResult(data) {
+      clearTimeout(
+        fadeFinishTimer
+      );
 
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
+      fadeFinishTimer =
+        null;
+
+    }
 
 
+    const card =
       document.getElementById(
         "resultCard"
-      ).style.display =
-        "block";
+      );
 
 
-      document.getElementById(
-        "studentName"
-      ).innerText =
-        data.studentName || "";
+    card.classList.remove(
+      "resultFading"
+    );
+
+  }
 
 
-      document.getElementById(
-        "studentGroup"
-      ).innerText =
-        data.group
-          ? "Class " + data.group
-          : "";
+  function scheduleResultCollapse() {
+
+    cancelResultCollapse();
 
 
-      document.getElementById(
-        "classes"
-      ).innerHTML =
-        formatClasses(
-          data.todaysClasses
-        );
+    resultHideTimer =
+      setTimeout(
+
+        function() {
+
+          const card =
+            document.getElementById(
+              "resultCard"
+            );
 
 
-      document.getElementById(
-        "expectedArrival"
-      ).innerText =
-        data.expectedArrival || "—";
-
-
-      document.getElementById(
-        "actualArrival"
-      ).innerText =
-        data.actualArrival || "—";
-
-
-      const statusBox =
-        document.getElementById(
-          "statusBox"
-        );
-
-
-      statusBox.className =
-        "";
-
-
-  if (
-  data.result ===
-  "ALREADY RECORDED"
-) {
-
-  const recordedTime =
-    data.actualArrival || "Unknown time";
-
-  statusBox.innerHTML =
-    "ALREADY ENTERED" +
-    "<br>" +
-    "<span style='font-size:16px;font-weight:600;'>" +
-    "Arrival recorded at " +
-    recordedTime +
-    "</span>";
-
-  statusBox.classList.add(
-    "duplicate"
-  );
-
-}
-
-
-      else if (
-        data.attendanceStatus ===
-        "Late"
-      ) {
-
-        const lateTime =
-          formatLateTime(
-            data.minutesLate
+          card.classList.add(
+            "resultFading"
           );
 
 
-        let message =
-          "LATE";
+          fadeFinishTimer =
+            setTimeout(
+
+              function() {
+
+                if (
+                  card.classList.contains(
+                    "resultFading"
+                  )
+                ) {
+
+                  card.style.display =
+                    "none";
 
 
-        if (lateTime) {
+                  card.classList.remove(
+                    "resultFading"
+                  );
 
-          message +=
-            " — " +
-            lateTime;
+                }
 
-        }
+              },
+
+              350
+
+            );
+
+        },
+
+        RESULT_VISIBLE_MS
+
+      );
+
+  }
 
 
-        statusBox.innerText =
-          message;
+  /* =========================================
+     FORMAT CLASSES
+     ========================================= */
+
+  function formatClasses(
+    classText
+  ) {
+
+    if (
+      !classText
+    ) {
+
+      return "No classes";
+
+    }
 
 
-        statusBox.classList.add(
-          "late"
+    return classText
+      .split(
+        " | "
+      )
+      .map(
+
+        item =>
+          "<div>" +
+          item +
+          "</div>"
+
+      )
+      .join(
+        ""
+      );
+
+  }
+
+
+  /* =========================================
+     FORMAT LATE TIME
+     ========================================= */
+
+  function formatLateTime(
+    totalMinutes
+  ) {
+
+    totalMinutes =
+      Number(
+        totalMinutes
+      ) || 0;
+
+
+    if (
+      totalMinutes <= 0
+    ) {
+
+      return "";
+
+    }
+
+
+    const hours =
+      Math.floor(
+        totalMinutes / 60
+      );
+
+
+    const minutes =
+      totalMinutes % 60;
+
+
+    let result =
+      "";
+
+
+    if (
+      hours > 0
+    ) {
+
+      result +=
+        hours +
+        (
+          hours === 1
+            ? " HR"
+            : " HRS"
         );
+
+    }
+
+
+    if (
+      minutes > 0
+    ) {
+
+      if (
+        result
+      ) {
+
+        result +=
+          " ";
 
       }
 
 
-      else if (
-        data.attendanceStatus ===
-        "On Time"
+      result +=
+        minutes +
+        " MIN";
+
+    }
+
+
+    return result;
+
+  }
+
+
+  /* =========================================
+     SHOW RESULT
+     ========================================= */
+
+  function showResult(
+    data
+  ) {
+
+    cancelResultCollapse();
+
+
+    document.getElementById(
+      "processing"
+    ).style.display =
+      "none";
+
+
+    const resultCard =
+      document.getElementById(
+        "resultCard"
+      );
+
+
+    resultCard.classList.remove(
+      "resultFading"
+    );
+
+
+    resultCard.style.display =
+      "block";
+
+
+    document.getElementById(
+      "studentName"
+    ).innerText =
+      data.studentName ||
+      "";
+
+
+    document.getElementById(
+      "studentGroup"
+    ).innerText =
+      data.group
+        ? "Class " + data.group
+        : "";
+
+
+    document.getElementById(
+      "classes"
+    ).innerHTML =
+      formatClasses(
+        data.todaysClasses
+      );
+
+
+    document.getElementById(
+      "expectedArrival"
+    ).innerText =
+      data.expectedArrival ||
+      "—";
+
+
+    document.getElementById(
+      "actualArrival"
+    ).innerText =
+      data.actualArrival ||
+      "—";
+
+
+    const statusBox =
+      document.getElementById(
+        "statusBox"
+      );
+
+
+    statusBox.className =
+      "";
+
+
+    /* ALREADY RECORDED */
+
+    if (
+      data.result ===
+      "ALREADY RECORDED"
+    ) {
+
+      const recordedTime =
+        data.actualArrival ||
+        "Unknown time";
+
+
+      statusBox.innerHTML =
+        "ALREADY ENTERED" +
+        "<br>" +
+        "<span style='font-size:13px;font-weight:600;'>" +
+        "Arrival recorded at " +
+        recordedTime +
+        "</span>";
+
+
+      statusBox.classList.add(
+        "duplicate"
+      );
+
+    }
+
+
+    /* LATE */
+
+    else if (
+      data.attendanceStatus ===
+      "Late"
+    ) {
+
+      const lateTime =
+        formatLateTime(
+          data.minutesLate
+        );
+
+
+      let message =
+        "LATE";
+
+
+      if (
+        lateTime
       ) {
 
-        statusBox.innerText =
-          "✓ ON TIME";
+        message +=
+          " — " +
+          lateTime;
+
+      }
 
 
-        statusBox.classList.add(
-          "success"
+      statusBox.innerText =
+        message;
+
+
+      statusBox.classList.add(
+        "late"
+      );
+
+    }
+
+
+    /* ON TIME */
+
+    else if (
+      data.attendanceStatus ===
+      "On Time"
+    ) {
+
+      statusBox.innerText =
+        "✓ ON TIME";
+
+
+      statusBox.classList.add(
+        "success"
+      );
+
+    }
+
+
+    /* OTHER RESULT */
+
+    else {
+
+      statusBox.innerText =
+        data.result ||
+        "UNKNOWN RESULT";
+
+
+      statusBox.classList.add(
+        "error"
+      );
+
+    }
+
+
+    /*
+      IMPORTANT:
+      Result remains visible for 4 seconds.
+
+      Scanner is NOT locked during these 4 seconds.
+    */
+
+    scheduleResultCollapse();
+
+  }
+
+
+  /* =========================================
+     CONNECTION ERROR
+     ========================================= */
+
+  function showConnectionError() {
+
+    cancelResultCollapse();
+
+
+    document.getElementById(
+      "processing"
+    ).style.display =
+      "none";
+
+
+    const resultCard =
+      document.getElementById(
+        "resultCard"
+      );
+
+
+    resultCard.classList.remove(
+      "resultFading"
+    );
+
+
+    resultCard.style.display =
+      "block";
+
+
+    document.getElementById(
+      "studentName"
+    ).innerText =
+      "Connection Error";
+
+
+    document.getElementById(
+      "studentGroup"
+    ).innerText =
+      "";
+
+
+    document.getElementById(
+      "classes"
+    ).innerText =
+      "";
+
+
+    document.getElementById(
+      "expectedArrival"
+    ).innerText =
+      "—";
+
+
+    document.getElementById(
+      "actualArrival"
+    ).innerText =
+      "—";
+
+
+    const statusBox =
+      document.getElementById(
+        "statusBox"
+      );
+
+
+    statusBox.innerText =
+      "PLEASE SCAN AGAIN";
+
+
+    statusBox.className =
+      "error";
+
+
+    scheduleResultCollapse();
+
+  }
+
+
+  /* =========================================
+     READY FOR NEXT STUDENT
+     ========================================= */
+
+  function readyForNextStudent() {
+
+    /*
+      Processing lock ends immediately when
+      server response is received.
+
+      The result may still stay on screen.
+    */
+
+    isProcessing =
+      false;
+
+
+    document.getElementById(
+      "processing"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "readyMessage"
+    ).innerText =
+      "Ready for next student";
+
+
+    document.getElementById(
+      "readyMessage"
+    ).style.display =
+      "block";
+
+  }
+
+
+  /* =========================================
+     SEND SCAN TO APPS SCRIPT
+     ========================================= */
+
+  function sendScanRequest(
+    qr,
+    attempt
+  ) {
+
+    let finished =
+      false;
+
+
+    const callbackName =
+      "attendanceCallback_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .substring(
+          2,
+          10
+        );
+
+
+    const script =
+      document.createElement(
+        "script"
+      );
+
+
+    /* CLEANUP JSONP */
+
+    function cleanup() {
+
+      if (
+        script.parentNode
+      ) {
+
+        script.parentNode
+          .removeChild(
+            script
+          );
+
+      }
+
+
+      try {
+
+        delete window[
+          callbackName
+        ];
+
+      }
+
+      catch (error) {
+
+        window[
+          callbackName
+        ] =
+          undefined;
+
+      }
+
+    }
+
+
+    /* RETRY */
+
+    function retryOrFail() {
+
+      if (
+        finished
+      ) {
+
+        return;
+
+      }
+
+
+      finished =
+        true;
+
+
+      clearTimeout(
+        timeoutTimer
+      );
+
+
+      cleanup();
+
+
+      if (
+        attempt <
+        MAX_ATTEMPTS
+      ) {
+
+        document.getElementById(
+          "processing"
+        ).innerText =
+          "Confirming attendance...";
+
+
+        setTimeout(
+
+          function() {
+
+            sendScanRequest(
+              qr,
+              attempt + 1
+            );
+
+          },
+
+          300
+
         );
 
       }
@@ -551,168 +1341,37 @@
 
       else {
 
-        statusBox.innerText =
-          data.result ||
-          "UNKNOWN RESULT";
+        document.getElementById(
+          "processing"
+        ).innerText =
+          "Processing...";
 
 
-        statusBox.classList.add(
-          "error"
-        );
+        showConnectionError();
+
+
+        readyForNextStudent();
 
       }
-    }
-
-
-
-    function showConnectionError() {
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "resultCard"
-      ).style.display =
-        "block";
-
-
-      document.getElementById(
-        "studentName"
-      ).innerText =
-        "Connection Error";
-
-
-      document.getElementById(
-        "studentGroup"
-      ).innerText =
-        "";
-
-
-      document.getElementById(
-        "classes"
-      ).innerText =
-        "";
-
-
-      document.getElementById(
-        "expectedArrival"
-      ).innerText =
-        "—";
-
-
-      document.getElementById(
-        "actualArrival"
-      ).innerText =
-        "—";
-
-
-      const statusBox =
-        document.getElementById(
-          "statusBox"
-        );
-
-
-      statusBox.innerText =
-        "PLEASE SCAN AGAIN";
-
-
-      statusBox.className =
-        "error";
-    }
-
-
-
-    function readyForNextStudent() {
-
-      isProcessing =
-        false;
-
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "readyMessage"
-      ).innerText =
-        "Ready for next student";
-
-
-      document.getElementById(
-        "readyMessage"
-      ).style.display =
-        "block";
 
     }
 
 
+    /* RESPONSE */
 
-    function sendScanRequest(
-      qr,
-      attempt
-    ) {
-
-      let finished =
-        false;
-
-
-      const callbackName =
-        "attendanceCallback_" +
-        Date.now() +
-        "_" +
-        Math.random()
-          .toString(36)
-          .substring(2, 10);
-
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      function cleanup() {
+    window[
+      callbackName
+    ] =
+      function(
+        response
+      ) {
 
         if (
-          script.parentNode
+          finished
         ) {
 
-          script.parentNode
-            .removeChild(
-              script
-            );
-
-        }
-
-
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        }
-        catch (error) {
-
-          window[
-            callbackName
-          ] =
-            undefined;
-
-        }
-      }
-
-
-
-      function retryOrFail() {
-
-        if (finished) {
           return;
+
         }
 
 
@@ -725,30 +1384,13 @@
         );
 
 
-        cleanup();
-
-
         if (
-          attempt <
-          MAX_ATTEMPTS
+          response &&
+          response.result
         ) {
 
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Confirming attendance...";
-
-
-          setTimeout(
-            function() {
-
-              sendScanRequest(
-                qr,
-                attempt + 1
-              );
-
-            },
-            300
+          showResult(
+            response.result
           );
 
         }
@@ -756,205 +1398,229 @@
 
         else {
 
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Processing...";
-
-
           showConnectionError();
 
-          readyForNextStudent();
-
         }
-      }
 
 
-
-      window[
-        callbackName
-      ] =
-        function(response) {
-
-          if (finished) {
-            return;
-          }
+        cleanup();
 
 
-          finished =
-            true;
+        document.getElementById(
+          "processing"
+        ).innerText =
+          "Processing...";
 
 
-          clearTimeout(
-            timeoutTimer
-          );
+        /*
+          IMPORTANT:
+
+          Scanner is unlocked immediately here.
+
+          It does NOT wait for the
+          4-second result timer.
+        */
+
+        readyForNextStudent();
+
+      };
 
 
-          if (
-            response &&
-            response.result
-          ) {
+    /* NETWORK ERROR */
 
-            showResult(
-              response.result
-            );
+    script.onerror =
+      function() {
 
-          }
+        retryOrFail();
 
-          else {
-
-            showConnectionError();
-
-          }
+      };
 
 
-          cleanup();
+    /* TIMEOUT */
 
+    const timeoutTimer =
+      setTimeout(
 
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Processing...";
-
-
-          readyForNextStudent();
-
-        };
-
-
-
-      script.onerror =
         function() {
 
           retryOrFail();
 
-        };
+        },
+
+        REQUEST_TIMEOUT
+
+      );
 
 
+    /* JSONP URL */
 
-      const timeoutTimer =
-        setTimeout(
-          function() {
-
-            retryOrFail();
-
-          },
-          REQUEST_TIMEOUT
-        );
-
-
-
-      script.src =
-        WEB_APP_URL +
-        "?key=" +
-        encodeURIComponent(qr) +
-        "&callback=" +
-        encodeURIComponent(
-          callbackName
-        ) +
-        "&t=" +
-        Date.now() +
-        "&attempt=" +
-        attempt;
+    script.src =
+      WEB_APP_URL +
+      "?key=" +
+      encodeURIComponent(
+        qr
+      ) +
+      "&callback=" +
+      encodeURIComponent(
+        callbackName
+      ) +
+      "&t=" +
+      Date.now() +
+      "&attempt=" +
+      attempt;
 
 
+    document.body
+      .appendChild(
+        script
+      );
 
-      document.body
-        .appendChild(
-          script
-        );
-
-    }
-
+  }
 
 
-    function onScanSuccess(
-      decodedText
+  /* =========================================
+     QR DETECTED
+     ========================================= */
+
+  function onScanSuccess(
+    decodedText
+  ) {
+
+    const qr =
+      decodedText.trim();
+
+
+    const now =
+      Date.now();
+
+
+    /*
+      Do not accept another QR while
+      the CURRENT server request is
+      still processing.
+    */
+
+    if (
+      isProcessing
     ) {
 
-      const qr =
-        decodedText.trim();
-
-
-      const now =
-        Date.now();
-
-
-      if (
-        isProcessing
-      ) {
-
-        return;
-
-      }
-
-
-      if (
-        qr === lastScannedQR &&
-        now - lastScanTime <
-        SAME_QR_DELAY
-      ) {
-
-        return;
-
-      }
-
-
-      lastScannedQR =
-        qr;
-
-
-      lastScanTime =
-        now;
-
-
-      isProcessing =
-        true;
-
-
-      document.getElementById(
-        "readyMessage"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "processing"
-      ).innerText =
-        "Processing...";
-
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "block";
-
-
-      sendScanRequest(
-        qr,
-        1
-      );
+      return;
 
     }
 
 
+    /*
+      Prevent the SAME QR from being
+      continuously detected while card
+      remains in front of camera.
+    */
 
-    const scanner =
-      new Html5QrcodeScanner(
-        "reader",
-        {
-          fps: 15,
-          qrbox: 250
-        },
-        false
-      );
+    if (
+      qr === lastScannedQR &&
+      now - lastScanTime <
+      SAME_QR_DELAY
+    ) {
+
+      return;
+
+    }
 
 
-    scanner.render(
-      onScanSuccess
+    lastScannedQR =
+      qr;
+
+
+    lastScanTime =
+      now;
+
+
+    /*
+      If an old result is counting down,
+      stop its fade.
+
+      Previous student result remains
+      visible while this new QR processes.
+    */
+
+    cancelResultCollapse();
+
+
+    /*
+      Immediate beep + vibration
+      as soon as QR is recognised.
+    */
+
+    playScanBeep();
+
+
+    isProcessing =
+      true;
+
+
+    document.getElementById(
+      "readyMessage"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "processing"
+    ).innerText =
+      "Processing...";
+
+
+    document.getElementById(
+      "processing"
+    ).style.display =
+      "block";
+
+
+    /*
+      IMPORTANT:
+
+      We DO NOT hide the previous
+      result card here.
+
+      It stays visible until the new
+      result arrives.
+    */
+
+
+    sendScanRequest(
+      qr,
+      1
     );
 
-  </script>
+  }
+
+
+  /* =========================================
+     START CAMERA
+     ========================================= */
+
+  const scanner =
+    new Html5QrcodeScanner(
+
+      "reader",
+
+      {
+
+        fps: 15,
+
+        qrbox: 250
+
+      },
+
+      false
+
+    );
+
+
+  scanner.render(
+    onScanSuccess
+  );
+
+</script>
 
 </body>
 </html>
