@@ -64,9 +64,9 @@
     }
 
 
-    /* ==========================
+    /* ======================================
        HEADER
-       ========================== */
+       ====================================== */
 
     .header {
       text-align:
@@ -110,9 +110,9 @@
     }
 
 
-    /* ==========================
-       CAMERA
-       ========================== */
+    /* ======================================
+       CAMERA CARD
+       ====================================== */
 
     .scannerCard {
       background:
@@ -133,11 +133,10 @@
     /*
       IMPORTANT:
 
-      We are NOT forcing video height,
-      width, object-fit or flex anymore.
+      Do not force the video height
+      or crop the camera.
 
-      html5-qrcode controls its own
-      camera layout.
+      html5-qrcode controls it.
     */
 
     #reader {
@@ -152,11 +151,57 @@
     }
 
 
-    /* ==========================
+    /* ======================================
+       SOUND BUTTON
+       ====================================== */
+
+    #soundButton {
+
+      width:
+        100%;
+
+      margin-top:
+        8px;
+
+      padding:
+        9px;
+
+      border:
+        none;
+
+      border-radius:
+        9px;
+
+      background:
+        #1f3b73;
+
+      color:
+        white;
+
+      font-size:
+        13px;
+
+      font-weight:
+        bold;
+
+      cursor:
+        pointer;
+
+    }
+
+
+    #soundButton:disabled {
+      cursor:
+        default;
+    }
+
+
+    /* ======================================
        READY / PROCESSING
-       ========================== */
+       ====================================== */
 
     #readyMessage {
+
       margin-top:
         8px;
 
@@ -180,10 +225,18 @@
 
       text-align:
         center;
+
+      position:
+        relative;
+
+      z-index:
+        10000;
+
     }
 
 
     #processing {
+
       display:
         none;
 
@@ -210,12 +263,65 @@
 
       text-align:
         center;
+
     }
 
 
-    /* ==========================
+    /* ======================================
+       FLOATING READY BADGE
+
+       This makes it obvious that the
+       next QR can already be scanned.
+       ====================================== */
+
+    #readyBadge {
+
+      display:
+        none;
+
+      position:
+        fixed;
+
+      top:
+        10px;
+
+      right:
+        10px;
+
+      z-index:
+        20000;
+
+      padding:
+        7px 10px;
+
+      border-radius:
+        999px;
+
+      background:
+        #1b5e20;
+
+      color:
+        white;
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+      box-shadow:
+        0 4px 14px
+        rgba(0,0,0,0.18);
+
+      pointer-events:
+        none;
+
+    }
+
+
+    /* ======================================
        RESULT CARD
-       ========================== */
+       ====================================== */
 
     #resultCard {
 
@@ -491,13 +597,9 @@
     }
 
 
-    /* ====================================
+    /* ======================================
        PHONE
-
-       Result appears as bottom sheet.
-
-       Camera stays exactly where it is.
-       ==================================== */
+       ====================================== */
 
     @media (max-width: 700px) {
 
@@ -544,6 +646,20 @@
       }
 
 
+      #soundButton {
+
+        margin-top:
+          5px;
+
+        padding:
+          7px;
+
+        font-size:
+          11px;
+
+      }
+
+
       #readyMessage,
       #processing {
 
@@ -560,9 +676,10 @@
 
 
       /*
-        Result sits over bottom of screen.
+        Result floats at the bottom.
 
-        NO scrolling is required.
+        Maximum 32% of screen so it does
+        not dominate the camera area.
       */
 
       #resultCard {
@@ -586,10 +703,10 @@
           0;
 
         padding:
-          11px 12px;
+          9px 10px;
 
         max-height:
-          43vh;
+          32vh;
 
         overflow-y:
           auto;
@@ -598,13 +715,25 @@
           1px solid
           rgba(0,0,0,0.08);
 
+        /*
+          Result does not require taps,
+          so it cannot interfere with
+          other page controls.
+        */
+
+        pointer-events:
+          none;
+
       }
 
 
       #studentName {
 
         font-size:
-          21px;
+          20px;
+
+        line-height:
+          1.05;
 
       }
 
@@ -612,10 +741,10 @@
       #studentGroup {
 
         font-size:
-          12px;
+          11px;
 
         margin-bottom:
-          5px;
+          4px;
 
       }
 
@@ -623,7 +752,7 @@
       .sectionTitle {
 
         margin-top:
-          5px;
+          4px;
 
         margin-bottom:
           2px;
@@ -640,7 +769,7 @@
           11px;
 
         line-height:
-          1.25;
+          1.2;
 
         padding:
           5px 7px;
@@ -686,13 +815,13 @@
       #statusBox {
 
         margin-top:
-          6px;
+          5px;
 
         padding:
-          7px;
+          6px;
 
         font-size:
-          16px;
+          15px;
 
       }
 
@@ -705,6 +834,11 @@
 
 
 <body>
+
+
+<div id="readyBadge">
+  ✓ READY FOR NEXT STUDENT
+</div>
 
 
 <div class="page">
@@ -732,6 +866,14 @@
 
 
     <div id="reader"></div>
+
+
+    <button
+      id="soundButton"
+      onclick="enableScanSound()"
+    >
+      🔊 Enable Scan Beep
+    </button>
 
 
     <div id="readyMessage">
@@ -867,8 +1009,18 @@
     5000;
 
 
+  /*
+    IMPORTANT:
+
+    This is only the maximum time before
+    we consider a request unsuccessful.
+
+    A normal 1-second response still
+    appears in 1 second.
+  */
+
   const REQUEST_TIMEOUT =
-    8000;
+    10000;
 
 
   const MAX_ATTEMPTS =
@@ -911,22 +1063,20 @@
 
 
   /* ======================================
-     SOUND UNLOCK
-
-     Mobile Safari/Chrome sometimes requires
-     user interaction before sounds work.
-
-     Any tap on page attempts to unlock it.
+     ENABLE SOUND
      ====================================== */
 
 
-  function unlockAudio() {
+  async function enableScanSound() {
+
 
     try {
+
 
       if (
         !audioContext
       ) {
+
 
         audioContext =
           new (
@@ -934,7 +1084,9 @@
             window.webkitAudioContext
           )();
 
+
       }
+
 
 
       if (
@@ -942,48 +1094,99 @@
         "suspended"
       ) {
 
-        audioContext.resume();
+
+        await audioContext.resume();
+
 
       }
 
+
+
+      /*
+        Test beep.
+      */
+
+
+      const oscillator =
+        audioContext.createOscillator();
+
+
+      const gain =
+        audioContext.createGain();
+
+
+      oscillator.type =
+        "sine";
+
+
+      oscillator.frequency.value =
+        1000;
+
+
+      gain.gain.setValueAtTime(
+        0.20,
+        audioContext.currentTime
+      );
+
+
+      oscillator.connect(
+        gain
+      );
+
+
+      gain.connect(
+        audioContext.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        audioContext.currentTime +
+        0.15
+      );
+
+
+
+      const button =
+        document.getElementById(
+          "soundButton"
+        );
+
+
+      button.innerText =
+        "✓ Scan Beep Enabled";
+
+
+      button.disabled =
+        true;
+
+
+      button.style.background =
+        "#1b5e20";
+
+
     }
+
 
     catch (error) {
 
-      // Ignore sound errors.
+
+      alert(
+        "Sound could not be enabled on this device."
+      );
+
 
     }
+
 
   }
 
 
 
-  document.addEventListener(
-
-    "touchstart",
-
-    unlockAudio,
-
-    {
-      passive: true
-    }
-
-  );
-
-
-
-  document.addEventListener(
-
-    "click",
-
-    unlockAudio
-
-  );
-
-
-
   /* ======================================
-     BEEP
+     BEEP + VIBRATION
      ====================================== */
 
 
@@ -993,108 +1196,82 @@
     try {
 
 
-      unlockAudio();
-
-
       if (
-        !audioContext
+        audioContext &&
+        audioContext.state ===
+        "running"
       ) {
 
-        return;
 
-      }
-
-
-      const oscillator =
-        audioContext
-          .createOscillator();
+        const oscillator =
+          audioContext.createOscillator();
 
 
-      const gain =
-        audioContext
-          .createGain();
+        const gain =
+          audioContext.createGain();
 
 
-      oscillator.type =
-        "sine";
+        oscillator.type =
+          "sine";
 
 
-      oscillator
-        .frequency
-        .value =
-        1000;
+        oscillator.frequency.value =
+          1000;
 
 
-      gain
-        .gain
-        .setValueAtTime(
-
+        gain.gain.setValueAtTime(
           0.001,
-
-          audioContext
-            .currentTime
-
+          audioContext.currentTime
         );
 
 
-      gain
-        .gain
-        .exponentialRampToValueAtTime(
-
+        gain.gain.exponentialRampToValueAtTime(
           0.25,
-
-          audioContext
-            .currentTime +
-            0.01
-
+          audioContext.currentTime +
+          0.01
         );
 
 
-      gain
-        .gain
-        .exponentialRampToValueAtTime(
-
+        gain.gain.exponentialRampToValueAtTime(
           0.001,
-
-          audioContext
-            .currentTime +
-            0.13
-
+          audioContext.currentTime +
+          0.13
         );
 
 
-      oscillator
-        .connect(
+        oscillator.connect(
           gain
         );
 
 
-      gain
-        .connect(
-          audioContext
-            .destination
+        gain.connect(
+          audioContext.destination
         );
 
 
-      oscillator
-        .start();
+        oscillator.start();
 
 
-      oscillator
-        .stop(
-
-          audioContext
-            .currentTime +
-            0.14
-
+        oscillator.stop(
+          audioContext.currentTime +
+          0.14
         );
+
+
+      }
 
 
     }
 
+
     catch (error) {
 
-      // Scanning continues even if sound fails.
+
+      /*
+        Sound failure must never stop
+        attendance scanning.
+      */
+
 
     }
 
@@ -1104,9 +1281,11 @@
       navigator.vibrate
     ) {
 
+
       navigator.vibrate(
         50
       );
+
 
     }
 
@@ -1116,7 +1295,7 @@
 
 
   /* ======================================
-     RESULT FADE TIMER
+     RESULT FADE
      ====================================== */
 
 
@@ -1127,6 +1306,7 @@
       resultHideTimer
     ) {
 
+
       clearTimeout(
         resultHideTimer
       );
@@ -1134,6 +1314,7 @@
 
       resultHideTimer =
         null;
+
 
     }
 
@@ -1143,6 +1324,7 @@
       fadeFinishTimer
     ) {
 
+
       clearTimeout(
         fadeFinishTimer
       );
@@ -1150,6 +1332,7 @@
 
       fadeFinishTimer =
         null;
+
 
     }
 
@@ -1262,7 +1445,9 @@
       !classText
     ) {
 
+
       return "No classes";
+
 
     }
 
@@ -1294,7 +1479,7 @@
 
 
   /* ======================================
-     LATE TIME
+     FORMAT LATE TIME
      ====================================== */
 
 
@@ -1314,7 +1499,9 @@
       totalMinutes <= 0
     ) {
 
+
       return "";
+
 
     }
 
@@ -1366,8 +1553,10 @@
         result
       ) {
 
+
         result +=
           " ";
+
 
       }
 
@@ -1510,9 +1699,9 @@
 
 
 
-    /* ==============================
+    /* ==================================
        ALREADY RECORDED
-       ============================== */
+       ================================== */
 
 
     if (
@@ -1557,9 +1746,9 @@
 
 
 
-    /* ==============================
+    /* ==================================
        LATE
-       ============================== */
+       ================================== */
 
 
     else if (
@@ -1613,9 +1802,9 @@
 
 
 
-    /* ==============================
+    /* ==================================
        ON TIME
-       ============================== */
+       ================================== */
 
 
     else if (
@@ -1642,9 +1831,9 @@
 
 
 
-    /* ==============================
+    /* ==================================
        OTHER
-       ============================== */
+       ================================== */
 
 
     else {
@@ -1669,7 +1858,7 @@
 
 
     /*
-      Result stays visible for
+      Result remains visible for
       4 seconds.
 
       Scanner does NOT stay locked.
@@ -1710,6 +1899,14 @@
         .getElementById(
           "resultCard"
         );
+
+
+
+    resultCard
+      .classList
+      .remove(
+        "resultFading"
+      );
 
 
 
@@ -1789,7 +1986,7 @@
 
 
   /* ======================================
-     READY
+     READY FOR NEXT STUDENT
      ====================================== */
 
 
@@ -1797,9 +1994,13 @@
 
 
     /*
-      ONLY server processing lock ends here.
+      THIS is where the processing lock
+      ends.
 
-      Result can still remain visible.
+      It happens immediately after the
+      server response.
+
+      It does NOT wait for result fade.
     */
 
 
@@ -1830,6 +2031,73 @@
     document
       .getElementById(
         "readyMessage"
+      )
+      .style
+      .display =
+      "block";
+
+
+
+    /*
+      Floating badge makes the unlocked
+      state visible even while result
+      card is still on screen.
+    */
+
+
+    document
+      .getElementById(
+        "readyBadge"
+      )
+      .style
+      .display =
+      "block";
+
+
+  }
+
+
+
+  /* ======================================
+     PROCESSING STATE
+     ====================================== */
+
+
+  function showProcessingState() {
+
+
+    document
+      .getElementById(
+        "readyMessage"
+      )
+      .style
+      .display =
+      "none";
+
+
+
+    document
+      .getElementById(
+        "readyBadge"
+      )
+      .style
+      .display =
+      "none";
+
+
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .innerText =
+      "Processing...";
+
+
+
+    document
+      .getElementById(
+        "processing"
       )
       .style
       .display =
@@ -1882,7 +2150,9 @@
 
 
 
-    /* CLEANUP */
+    /* ==================================
+       CLEANUP
+       ================================== */
 
 
     function cleanup() {
@@ -1931,7 +2201,9 @@
 
 
 
-    /* RETRY */
+    /* ==================================
+       RETRY
+       ================================== */
 
 
     function retryOrFail() {
@@ -1941,7 +2213,9 @@
         finished
       ) {
 
+
         return;
+
 
       }
 
@@ -2030,7 +2304,9 @@
 
 
 
-    /* RESPONSE */
+    /* ==================================
+       SERVER RESPONSE
+       ================================== */
 
 
     window[
@@ -2046,7 +2322,9 @@
           finished
         ) {
 
+
           return;
+
 
         }
 
@@ -2104,10 +2382,12 @@
 
 
         /*
-          Scanner immediately becomes
-          available again.
+          CRITICAL:
 
-          It does NOT wait 4 seconds.
+          Unlock IMMEDIATELY.
+
+          We do not wait for the
+          4-second result card.
         */
 
 
@@ -2118,7 +2398,9 @@
 
 
 
-    /* ERROR */
+    /* ==================================
+       NETWORK ERROR
+       ================================== */
 
 
     script.onerror =
@@ -2133,7 +2415,9 @@
 
 
 
-    /* TIMEOUT */
+    /* ==================================
+       TIMEOUT
+       ================================== */
 
 
     const timeoutTimer =
@@ -2154,7 +2438,9 @@
 
 
 
-    /* JSONP */
+    /* ==================================
+       JSONP URL
+       ================================== */
 
 
     script.src =
@@ -2195,7 +2481,7 @@
 
 
   /* ======================================
-     QR SUCCESS
+     QR DETECTED
      ====================================== */
 
 
@@ -2215,8 +2501,8 @@
 
 
     /*
-      Current attendance request
-      still processing.
+      Ignore another detection ONLY while
+      the current server request is active.
     */
 
 
@@ -2224,15 +2510,25 @@
       isProcessing
     ) {
 
+
       return;
+
 
     }
 
 
 
     /*
-      Ignore repeated reading
-      of same card for 5 seconds.
+      Prevent the SAME QR from firing
+      continuously while it remains in
+      front of the camera.
+
+      IMPORTANT:
+
+      Different students can scan
+      immediately.
+
+      Same student QR waits 5 seconds.
     */
 
 
@@ -2267,8 +2563,10 @@
 
 
     /*
-      Previous result remains visible
-      while the NEW scan processes.
+      Stop old result from fading while
+      this new scan is processing.
+
+      Previous result remains visible.
     */
 
 
@@ -2277,7 +2575,7 @@
 
 
     /*
-      Immediate feedback.
+      Immediate scan feedback.
     */
 
 
@@ -2285,45 +2583,26 @@
 
 
 
+    /*
+      Lock only while the server request
+      is actually in progress.
+    */
+
+
     isProcessing =
       true;
 
 
 
-    document
-      .getElementById(
-        "readyMessage"
-      )
-      .style
-      .display =
-      "none";
-
-
-
-    document
-      .getElementById(
-        "processing"
-      )
-      .innerText =
-      "Processing...";
-
-
-
-    document
-      .getElementById(
-        "processing"
-      )
-      .style
-      .display =
-      "block";
+    showProcessingState();
 
 
 
     /*
       IMPORTANT:
 
-      We DO NOT hide the previous
-      result here.
+      We deliberately DO NOT hide
+      the previous result card here.
     */
 
 
@@ -2338,7 +2617,9 @@
 
 
   /* ======================================
-     START ORIGINAL SCANNER
+     START CAMERA
+
+     Same working camera configuration.
      ====================================== */
 
 
