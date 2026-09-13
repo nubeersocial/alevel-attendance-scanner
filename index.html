@@ -3,294 +3,264 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <meta
-    http-equiv="Cache-Control"
-    content="no-cache, no-store, must-revalidate"
-  >
-
-  <meta
-    http-equiv="Pragma"
-    content="no-cache"
-  >
+<meta
+  http-equiv="Cache-Control"
+  content="no-cache, no-store, must-revalidate"
+>
 
-  <meta
-    http-equiv="Expires"
-    content="0"
-  >
-
-  <title>
-    A-Level Attendance Scanner
-  </title>
-
-  <script
-    src="https://unpkg.com/html5-qrcode">
-  </script>
-
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef2f5;
-      color: #1f2937;
-    }
-
-
-    .page {
-      width: 100%;
-      max-width: 620px;
-      margin: 0 auto;
-      padding: 8px;
-    }
-
-
-    .header {
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
-
-    .header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-
-    .header p {
-      margin: 3px 0 0;
-      color: #6b7280;
-      font-size: 12px;
-    }
-
-
-    .scannerCard {
-      background: white;
-      border-radius: 14px;
-      padding: 6px;
-      box-shadow:
-        0 4px 14px rgba(0,0,0,0.08);
-    }
-
-
-    #reader {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-
-    #readyMessage {
-      margin-top: 5px;
-      padding: 7px;
-      border-radius: 9px;
-      background: #e8f5e9;
-      color: #1b5e20;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-
-    #processing {
-      display: none;
-      margin-top: 5px;
-      padding: 7px;
-      border-radius: 9px;
-      background: #e8eef9;
-      color: #1f3b73;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-
-    #resultCard {
-      display: none;
-      margin-top: 8px;
-      background: white;
-      border-radius: 14px;
-      padding: 15px;
-      box-shadow:
-        0 4px 14px rgba(0,0,0,0.08);
-    }
-
-
-    .studentTop {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-
-    #studentName {
-      font-size: 24px;
-      font-weight: 800;
-      line-height: 1.15;
-    }
-
-
-    #studentGroup {
-      flex-shrink: 0;
-      font-size: 14px;
-      font-weight: bold;
-      color: #4b5563;
-      background: #f3f4f6;
-      padding: 6px 9px;
-      border-radius: 8px;
-    }
-
-
-    .timeGrid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-top: 12px;
-    }
+<meta
+  http-equiv="Pragma"
+  content="no-cache"
+>
 
+<meta
+  http-equiv="Expires"
+  content="0"
+>
 
-    .timeBox {
-      background: #f8fafc;
-      padding: 10px;
-      border-radius: 9px;
-      text-align: center;
-    }
+<title>A-Level Attendance Scanner</title>
 
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 
-    .timeLabel {
-      font-size: 11px;
-      color: #6b7280;
-      text-transform: uppercase;
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
+<style>
 
+* {
+  box-sizing: border-box;
+}
 
-    .timeValue {
-      font-size: 19px;
-      font-weight: 800;
-    }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef2f5;
+  color: #1f2937;
+}
 
+
+.page {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 18px;
+}
 
-    #statusBox {
-      margin-top: 9px;
-      padding: 11px;
-      border-radius: 9px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 800;
-    }
+
+.header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+
+.header p {
+  margin: 7px 0 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+
+.scannerCard {
+  background: white;
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+
+#reader {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+
+#readyMessage {
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #e8f5e9;
+  color: #1b5e20;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+#processing {
+  display: none;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #e8eef9;
+  color: #1f3b73;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+#resultCard {
+  display: none;
+  margin-top: 18px;
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+
+#studentName {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+
+#studentGroup {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #6b7280;
+  margin-bottom: 22px;
+}
+
 
+.sectionTitle {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #6b7280;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
 
-    .success {
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
 
+#classes {
+  font-size: 18px;
+  line-height: 1.8;
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 12px;
+}
 
-    .late {
-      background: #ffebee;
-      color: #b71c1c;
-    }
 
+.timeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
 
-    .duplicate {
-      background: #fff3e0;
-      color: #e65100;
-    }
 
+.timeBox {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
 
-    .error {
-      background: #ffebee;
-      color: #b71c1c;
-    }
 
+.timeLabel {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
 
-    .classesLabel {
-      margin-top: 12px;
-      margin-bottom: 5px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #6b7280;
-      text-transform: uppercase;
-    }
 
+.timeValue {
+  font-size: 21px;
+  font-weight: 800;
+}
 
-    #classes {
-      font-size: 16px;
-      line-height: 1.55;
-      font-weight: 600;
-      background: #f8fafc;
-      padding: 10px;
-      border-radius: 8px;
-    }
 
+#statusBox {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+}
 
-    #classes div {
-      padding: 2px 0;
-    }
 
+.success {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
 
-    .footerNote {
-      text-align: center;
-      color: #9ca3af;
-      font-size: 10px;
-      margin-top: 7px;
-    }
 
+.late {
+  background: #ffebee;
+  color: #b71c1c;
+}
 
-    @media (max-width: 480px) {
 
-      .page {
-        padding: 6px;
-      }
+.duplicate {
+  background: #fff3e0;
+  color: #e65100;
+}
 
 
-      .header h1 {
-        font-size: 20px;
-      }
+.error {
+  background: #ffebee;
+  color: #b71c1c;
+}
 
 
-      .header p {
-        font-size: 11px;
-      }
+.footerNote {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 14px;
+}
 
 
-      #studentName {
-        font-size: 22px;
-      }
+@media (max-width: 480px) {
 
+  .page {
+    padding: 12px;
+  }
 
-      #statusBox {
-        font-size: 19px;
-      }
 
+  .header h1 {
+    font-size: 24px;
+  }
 
-      .timeValue {
-        font-size: 18px;
-      }
 
+  #studentName {
+    font-size: 26px;
+  }
 
-      #classes {
-        font-size: 16px;
-      }
 
-    }
+  .timeValue {
+    font-size: 18px;
+  }
 
-  </style>
+
+  #statusBox {
+    font-size: 21px;
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -298,714 +268,530 @@
 <body>
 
 
-  <div class="page">
+<div class="page">
 
 
-    <div class="header">
+  <div class="header">
 
-      <h1>
-        A-Level Attendance
-      </h1>
+    <h1>
+      A-Level Attendance
+    </h1>
 
-      <p>
-        Scan student QR code
-      </p>
-
-    </div>
-
-
-
-    <div class="scannerCard">
-
-      <div id="reader"></div>
-
-
-      <div id="readyMessage">
-        Ready to scan
-      </div>
-
-
-      <div id="processing">
-        Processing...
-      </div>
-
-    </div>
-
-
-
-    <div id="resultCard">
-
-
-      <div class="studentTop">
-
-        <div id="studentName"></div>
-
-        <div id="studentGroup"></div>
-
-      </div>
-
-
-
-      <div class="timeGrid">
-
-
-        <div class="timeBox">
-
-          <div class="timeLabel">
-            Expected
-          </div>
-
-          <div
-            class="timeValue"
-            id="expectedArrival">
-          </div>
-
-        </div>
-
-
-
-        <div class="timeBox">
-
-          <div class="timeLabel">
-            Actual
-          </div>
-
-          <div
-            class="timeValue"
-            id="actualArrival">
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-
-      <div id="statusBox"></div>
-
-
-
-      <div class="classesLabel">
-        Today's Classes
-      </div>
-
-
-      <div id="classes"></div>
-
-
-    </div>
-
-
-
-    <div class="footerNote">
-      A-Level Student Arrival System
-    </div>
-
+    <p>
+      Scan student QR code
+    </p>
 
   </div>
 
 
 
-  <script>
+  <div class="scannerCard">
 
+    <div id="reader"></div>
 
-    const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
+    <div id="readyMessage">
+      Ready to scan
+    </div>
 
+    <div id="processing">
+      Processing...
+    </div>
 
-    let isProcessing =
-      false;
-
-
-    let lastScannedQR =
-      "";
-
-
-    let lastScanTime =
-      0;
-
-
-    const SAME_QR_DELAY =
-      5000;
-
-
-    const REQUEST_TIMEOUT =
-      8000;
-
-
-    const MAX_ATTEMPTS =
-      2;
+  </div>
 
 
 
-    function formatClasses(
-      classText
+  <div id="resultCard">
+
+    <div id="studentName"></div>
+
+    <div id="studentGroup"></div>
+
+
+    <div class="sectionTitle">
+      Today's Classes
+    </div>
+
+    <div id="classes"></div>
+
+
+    <div class="sectionTitle">
+      Arrival
+    </div>
+
+
+    <div class="timeGrid">
+
+
+      <div class="timeBox">
+
+        <div class="timeLabel">
+          Expected
+        </div>
+
+        <div
+          class="timeValue"
+          id="expectedArrival">
+        </div>
+
+      </div>
+
+
+
+      <div class="timeBox">
+
+        <div class="timeLabel">
+          Actual
+        </div>
+
+        <div
+          class="timeValue"
+          id="actualArrival">
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div id="statusBox"></div>
+
+  </div>
+
+
+
+  <div class="footerNote">
+    A-Level Student Arrival System
+  </div>
+
+
+</div>
+
+
+
+<script>
+
+
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
+
+
+
+let isProcessing =
+  false;
+
+
+let lastScannedQR =
+  "";
+
+
+let lastScanTime =
+  0;
+
+
+
+const SAME_QR_DELAY =
+  5000;
+
+
+const REQUEST_TIMEOUT =
+  8000;
+
+
+const MAX_ATTEMPTS =
+  2;
+
+
+
+function formatClasses(
+  classText
+) {
+
+  if (!classText) {
+
+    return "No classes";
+
+  }
+
+
+  return classText
+    .split(" | ")
+    .map(
+      item =>
+        "<div>" +
+        item +
+        "</div>"
+    )
+    .join("");
+
+}
+
+
+
+function formatLateTime(
+  totalMinutes
+) {
+
+  totalMinutes =
+    Number(totalMinutes) || 0;
+
+
+  if (totalMinutes <= 0) {
+
+    return "";
+
+  }
+
+
+  const hours =
+    Math.floor(
+      totalMinutes / 60
+    );
+
+
+  const minutes =
+    totalMinutes % 60;
+
+
+  let result =
+    "";
+
+
+  if (hours > 0) {
+
+    result +=
+      hours +
+      (
+        hours === 1
+          ? " HR"
+          : " HRS"
+      );
+
+  }
+
+
+  if (minutes > 0) {
+
+    if (result) {
+
+      result +=
+        " ";
+
+    }
+
+
+    result +=
+      minutes +
+      " MIN";
+
+  }
+
+
+  return result;
+
+}
+
+
+
+function showResult(
+  data
+) {
+
+
+  document.getElementById(
+    "processing"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "resultCard"
+  ).style.display =
+    "block";
+
+
+
+  document.getElementById(
+    "studentName"
+  ).innerText =
+    data.studentName || "";
+
+
+
+  document.getElementById(
+    "studentGroup"
+  ).innerText =
+    data.group
+      ? "Class " + data.group
+      : "";
+
+
+
+  document.getElementById(
+    "classes"
+  ).innerHTML =
+    formatClasses(
+      data.todaysClasses
+    );
+
+
+
+  document.getElementById(
+    "expectedArrival"
+  ).innerText =
+    data.expectedArrival || "—";
+
+
+
+  document.getElementById(
+    "actualArrival"
+  ).innerText =
+    data.actualArrival || "—";
+
+
+
+  const statusBox =
+    document.getElementById(
+      "statusBox"
+    );
+
+
+  statusBox.className =
+    "";
+
+
+
+  if (
+    data.result ===
+    "ALREADY RECORDED"
+  ) {
+
+
+    const recordedTime =
+      data.actualArrival ||
+      "Unknown time";
+
+
+    statusBox.innerHTML =
+      "ALREADY ENTERED" +
+      "<br>" +
+      "<span style='font-size:16px;font-weight:600;'>" +
+      "Arrival recorded at " +
+      recordedTime +
+      "</span>";
+
+
+    statusBox.classList.add(
+      "duplicate"
+    );
+
+  }
+
+
+
+  else if (
+    data.attendanceStatus ===
+    "Late"
+  ) {
+
+
+    const lateTime =
+      formatLateTime(
+        data.minutesLate
+      );
+
+
+    let message =
+      "LATE";
+
+
+    if (lateTime) {
+
+      message +=
+        " — " +
+        lateTime;
+
+    }
+
+
+    statusBox.innerText =
+      message;
+
+
+    statusBox.classList.add(
+      "late"
+    );
+
+  }
+
+
+
+  else if (
+    data.attendanceStatus ===
+    "On Time"
+  ) {
+
+
+    statusBox.innerText =
+      "✓ ON TIME";
+
+
+    statusBox.classList.add(
+      "success"
+    );
+
+  }
+
+
+
+  else {
+
+
+    statusBox.innerText =
+      data.result ||
+      "UNKNOWN RESULT";
+
+
+    statusBox.classList.add(
+      "error"
+    );
+
+  }
+
+}
+
+
+
+function showConnectionError() {
+
+
+  document.getElementById(
+    "processing"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "resultCard"
+  ).style.display =
+    "block";
+
+
+
+  document.getElementById(
+    "studentName"
+  ).innerText =
+    "Connection Error";
+
+
+  document.getElementById(
+    "studentGroup"
+  ).innerText =
+    "";
+
+
+  document.getElementById(
+    "classes"
+  ).innerText =
+    "";
+
+
+  document.getElementById(
+    "expectedArrival"
+  ).innerText =
+    "—";
+
+
+  document.getElementById(
+    "actualArrival"
+  ).innerText =
+    "—";
+
+
+
+  const statusBox =
+    document.getElementById(
+      "statusBox"
+    );
+
+
+  statusBox.innerText =
+    "PLEASE SCAN AGAIN";
+
+
+  statusBox.className =
+    "error";
+
+}
+
+
+
+function readyForNextStudent() {
+
+
+  isProcessing =
+    false;
+
+
+  document.getElementById(
+    "processing"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "readyMessage"
+  ).innerText =
+    "Ready for next student";
+
+
+  document.getElementById(
+    "readyMessage"
+  ).style.display =
+    "block";
+
+}
+
+
+
+function sendScanRequest(
+  qr,
+  attempt
+) {
+
+
+  let finished =
+    false;
+
+
+
+  const callbackName =
+    "attendanceCallback_" +
+    Date.now() +
+    "_" +
+    Math.random()
+      .toString(36)
+      .substring(2,10);
+
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+
+  function cleanup() {
+
+
+    if (
+      script.parentNode
     ) {
 
-      if (!classText) {
-
-        return "No classes";
-
-      }
-
-
-      return classText
-        .split(" | ")
-        .map(
-
-          item =>
-            "<div>" +
-            item +
-            "</div>"
-
-        )
-        .join("");
-
-    }
-
-
-
-    function formatLateTime(
-      totalMinutes
-    ) {
-
-      totalMinutes =
-        Number(totalMinutes) || 0;
-
-
-      if (totalMinutes <= 0) {
-
-        return "";
-
-      }
-
-
-      const hours =
-        Math.floor(
-          totalMinutes / 60
-        );
-
-
-      const minutes =
-        totalMinutes % 60;
-
-
-      let result =
-        "";
-
-
-      if (hours > 0) {
-
-        result +=
-          hours +
-          (
-            hours === 1
-              ? " HR"
-              : " HRS"
-          );
-
-      }
-
-
-      if (minutes > 0) {
-
-        if (result) {
-
-          result += " ";
-
-        }
-
-
-        result +=
-          minutes +
-          " MIN";
-
-      }
-
-
-      return result;
-
-    }
-
-
-
-    function showResult(
-      data
-    ) {
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
-      const resultCard =
-        document.getElementById(
-          "resultCard"
-        );
-
-
-      resultCard.style.display =
-        "block";
-
-
-      document.getElementById(
-        "studentName"
-      ).innerText =
-        data.studentName || "";
-
-
-      document.getElementById(
-        "studentGroup"
-      ).innerText =
-        data.group || "";
-
-
-      document.getElementById(
-        "expectedArrival"
-      ).innerText =
-        data.expectedArrival || "—";
-
-
-      document.getElementById(
-        "actualArrival"
-      ).innerText =
-        data.actualArrival || "—";
-
-
-      document.getElementById(
-        "classes"
-      ).innerHTML =
-        formatClasses(
-          data.todaysClasses
-        );
-
-
-      const statusBox =
-        document.getElementById(
-          "statusBox"
-        );
-
-
-      statusBox.className =
-        "";
-
-
-      if (
-        data.result ===
-        "ALREADY RECORDED"
-      ) {
-
-        const recordedTime =
-          data.actualArrival ||
-          "Unknown time";
-
-
-        statusBox.innerHTML =
-          "ALREADY ENTERED" +
-          "<br>" +
-          "<span style='font-size:14px;font-weight:600;'>" +
-          "Arrival recorded at " +
-          recordedTime +
-          "</span>";
-
-
-        statusBox.classList.add(
-          "duplicate"
-        );
-
-      }
-
-
-      else if (
-        data.attendanceStatus ===
-        "Late"
-      ) {
-
-        const lateTime =
-          formatLateTime(
-            data.minutesLate
-          );
-
-
-        let message =
-          "LATE";
-
-
-        if (lateTime) {
-
-          message +=
-            " — " +
-            lateTime;
-
-        }
-
-
-        statusBox.innerText =
-          message;
-
-
-        statusBox.classList.add(
-          "late"
-        );
-
-      }
-
-
-      else if (
-        data.attendanceStatus ===
-        "On Time"
-      ) {
-
-        statusBox.innerText =
-          "✓ ON TIME";
-
-
-        statusBox.classList.add(
-          "success"
-        );
-
-      }
-
-
-      else {
-
-        statusBox.innerText =
-          data.result ||
-          "UNKNOWN RESULT";
-
-
-        statusBox.classList.add(
-          "error"
-        );
-
-      }
-
-    }
-
-
-
-    function showConnectionError() {
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
-      const resultCard =
-        document.getElementById(
-          "resultCard"
-        );
-
-
-      resultCard.style.display =
-        "block";
-
-
-      document.getElementById(
-        "studentName"
-      ).innerText =
-        "Connection Error";
-
-
-      document.getElementById(
-        "studentGroup"
-      ).innerText =
-        "";
-
-
-      document.getElementById(
-        "expectedArrival"
-      ).innerText =
-        "—";
-
-
-      document.getElementById(
-        "actualArrival"
-      ).innerText =
-        "—";
-
-
-      document.getElementById(
-        "classes"
-      ).innerText =
-        "";
-
-
-      const statusBox =
-        document.getElementById(
-          "statusBox"
-        );
-
-
-      statusBox.innerText =
-        "PLEASE SCAN AGAIN";
-
-
-      statusBox.className =
-        "error";
-
-    }
-
-
-
-    function readyForNextStudent() {
-
-      isProcessing =
-        false;
-
-
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "readyMessage"
-      ).innerText =
-        "Ready for next student";
-
-
-      document.getElementById(
-        "readyMessage"
-      ).style.display =
-        "block";
-
-    }
-
-
-
-    function sendScanRequest(
-      qr,
-      attempt
-    ) {
-
-      let finished =
-        false;
-
-
-      const callbackName =
-        "attendanceCallback_" +
-        Date.now() +
-        "_" +
-        Math.random()
-          .toString(36)
-          .substring(2,10);
-
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-
-      function cleanup() {
-
-        if (
-          script.parentNode
-        ) {
-
-          script.parentNode
-            .removeChild(
-              script
-            );
-
-        }
-
-
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        }
-
-        catch (error) {
-
-          window[
-            callbackName
-          ] =
-            undefined;
-
-        }
-
-      }
-
-
-
-      function retryOrFail() {
-
-        if (finished) {
-
-          return;
-
-        }
-
-
-        finished =
-          true;
-
-
-        clearTimeout(
-          timeoutTimer
-        );
-
-
-        cleanup();
-
-
-
-        if (
-          attempt <
-          MAX_ATTEMPTS
-        ) {
-
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Confirming attendance...";
-
-
-          setTimeout(
-
-            function() {
-
-              sendScanRequest(
-                qr,
-                attempt + 1
-              );
-
-            },
-
-            300
-
-          );
-
-        }
-
-
-        else {
-
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Processing...";
-
-
-          showConnectionError();
-
-
-          readyForNextStudent();
-
-        }
-
-      }
-
-
-
-      window[
-        callbackName
-      ] =
-        function(
-          response
-        ) {
-
-          if (finished) {
-
-            return;
-
-          }
-
-
-          finished =
-            true;
-
-
-          clearTimeout(
-            timeoutTimer
-          );
-
-
-          if (
-            response &&
-            response.result
-          ) {
-
-            showResult(
-              response.result
-            );
-
-          }
-
-
-          else {
-
-            showConnectionError();
-
-          }
-
-
-          cleanup();
-
-
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Processing...";
-
-
-          readyForNextStudent();
-
-        };
-
-
-
-      script.onerror =
-        function() {
-
-          retryOrFail();
-
-        };
-
-
-
-      const timeoutTimer =
-        setTimeout(
-
-          function() {
-
-            retryOrFail();
-
-          },
-
-          REQUEST_TIMEOUT
-
-        );
-
-
-
-      script.src =
-        WEB_APP_URL +
-        "?key=" +
-        encodeURIComponent(qr) +
-        "&callback=" +
-        encodeURIComponent(
-          callbackName
-        ) +
-        "&t=" +
-        Date.now() +
-        "&attempt=" +
-        attempt;
-
-
-
-      document.body
-        .appendChild(
+      script.parentNode
+        .removeChild(
           script
         );
 
@@ -1013,54 +799,82 @@
 
 
 
-    function onScanSuccess(
-      decodedText
+    try {
+
+      delete window[
+        callbackName
+      ];
+
+    }
+
+
+    catch (error) {
+
+      window[
+        callbackName
+      ] =
+        undefined;
+
+    }
+
+  }
+
+
+
+  function retryOrFail() {
+
+
+    if (finished) {
+
+      return;
+
+    }
+
+
+    finished =
+      true;
+
+
+    clearTimeout(
+      timeoutTimer
+    );
+
+
+    cleanup();
+
+
+
+    if (
+      attempt <
+      MAX_ATTEMPTS
     ) {
-
-      const qr =
-        decodedText.trim();
-
-
-      const now =
-        Date.now();
-
-
-      if (
-        isProcessing
-      ) {
-
-        return;
-
-      }
-
-
-      if (
-        qr === lastScannedQR &&
-        now - lastScanTime <
-        SAME_QR_DELAY
-      ) {
-
-        return;
-
-      }
-
-
-      lastScannedQR =
-        qr;
-
-
-      lastScanTime =
-        now;
-
-
-      isProcessing =
-        true;
 
 
       document.getElementById(
-        "readyMessage"
-      ).style.display =
-        "none";
+        "processing"
+      ).innerText =
+        "Confirming attendance...";
+
+
+      setTimeout(
+
+        function() {
+
+          sendScanRequest(
+            qr,
+            attempt + 1
+          );
+
+        },
+
+        300
+
+      );
+
+    }
+
+
+    else {
 
 
       document.getElementById(
@@ -1069,53 +883,240 @@
         "Processing...";
 
 
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "block";
+      showConnectionError();
 
 
-      /*
-        Keep previous result visible.
-        Do not clear result card here.
-      */
-
-
-      sendScanRequest(
-        qr,
-        1
-      );
+      readyForNextStudent();
 
     }
 
+  }
 
 
-    const scanner =
-      new Html5QrcodeScanner(
 
-        "reader",
+  window[
+    callbackName
+  ] =
+    function(
+      response
+    ) {
 
-        {
 
-          fps:
-            15,
+      if (finished) {
 
-          qrbox:
-            250
+        return;
 
-        },
+      }
 
-        false
 
+      finished =
+        true;
+
+
+      clearTimeout(
+        timeoutTimer
       );
 
 
-    scanner.render(
-      onScanSuccess
+
+      if (
+        response &&
+        response.result
+      ) {
+
+
+        showResult(
+          response.result
+        );
+
+      }
+
+
+      else {
+
+
+        showConnectionError();
+
+      }
+
+
+
+      cleanup();
+
+
+
+      document.getElementById(
+        "processing"
+      ).innerText =
+        "Processing...";
+
+
+      readyForNextStudent();
+
+    };
+
+
+
+  script.onerror =
+    function() {
+
+      retryOrFail();
+
+    };
+
+
+
+  const timeoutTimer =
+    setTimeout(
+
+      function() {
+
+        retryOrFail();
+
+      },
+
+      REQUEST_TIMEOUT
+
     );
 
 
-  </script>
+
+  script.src =
+    WEB_APP_URL +
+    "?key=" +
+    encodeURIComponent(
+      qr
+    ) +
+    "&callback=" +
+    encodeURIComponent(
+      callbackName
+    ) +
+    "&t=" +
+    Date.now() +
+    "&attempt=" +
+    attempt;
+
+
+
+  document.body
+    .appendChild(
+      script
+    );
+
+}
+
+
+
+function onScanSuccess(
+  decodedText
+) {
+
+
+  const qr =
+    decodedText.trim();
+
+
+  const now =
+    Date.now();
+
+
+
+  if (
+    isProcessing
+  ) {
+
+    return;
+
+  }
+
+
+
+  if (
+    qr === lastScannedQR &&
+    now - lastScanTime <
+    SAME_QR_DELAY
+  ) {
+
+    return;
+
+  }
+
+
+
+  lastScannedQR =
+    qr;
+
+
+  lastScanTime =
+    now;
+
+
+  isProcessing =
+    true;
+
+
+
+  document.getElementById(
+    "readyMessage"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "processing"
+  ).innerText =
+    "Processing...";
+
+
+  document.getElementById(
+    "processing"
+  ).style.display =
+    "block";
+
+
+
+  /*
+    Previous student's result remains visible
+    while the next student is processing.
+  */
+
+
+  sendScanRequest(
+    qr,
+    1
+  );
+
+}
+
+
+
+const scanner =
+  new Html5QrcodeScanner(
+
+    "reader",
+
+    {
+
+      fps:
+        15,
+
+      qrbox:
+        250
+
+    },
+
+    false
+
+  );
+
+
+
+scanner.render(
+  onScanSuccess
+);
+
+
+</script>
 
 
 </body>
