@@ -49,62 +49,71 @@ body {
   width: 100%;
   max-width: 620px;
   margin: 0 auto;
-  padding: 12px;
+  padding: 7px;
 }
 
 
+/* =========================
+   HEADER
+========================= */
+
 .header {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 
 .header h1 {
   margin: 0;
-  font-size: 25px;
+  font-size: 21px;
 }
 
 
 .header p {
-  margin: 5px 0 0;
+  margin: 2px 0 0;
   color: #6b7280;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 
-/* Smaller scanner area */
+/* =========================
+   SCANNER
+========================= */
+
 .scannerCard {
   width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
 
   background: white;
-  border-radius: 16px;
-  padding: 9px;
+
+  border-radius: 13px;
+
+  padding: 5px;
 
   box-shadow:
-    0 4px 14px rgba(0,0,0,0.08);
+    0 3px 10px rgba(0,0,0,0.07);
 }
 
 
 #reader {
   width: 100%;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 9px;
 }
 
 
 #readyMessage {
-  margin-top: 8px;
-  padding: 9px;
+  margin-top: 4px;
 
-  border-radius: 10px;
+  padding: 6px;
+
+  border-radius: 8px;
 
   background: #e8f5e9;
   color: #1b5e20;
 
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
+
   text-align: center;
 }
 
@@ -112,99 +121,84 @@ body {
 #processing {
   display: none;
 
-  margin-top: 8px;
-  padding: 9px;
+  margin-top: 4px;
 
-  border-radius: 10px;
+  padding: 6px;
+
+  border-radius: 8px;
 
   background: #e8eef9;
   color: #1f3b73;
 
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
+
   text-align: center;
 }
 
 
-/* Bigger result area */
+/* =========================
+   RESULT CARD
+========================= */
+
 #resultCard {
   display: none;
 
-  margin-top: 12px;
+  margin-top: 6px;
 
   background: white;
 
-  border-radius: 18px;
+  border-radius: 14px;
 
-  padding: 20px;
+  padding: 11px;
 
   box-shadow:
-    0 4px 14px rgba(0,0,0,0.08);
+    0 3px 10px rgba(0,0,0,0.08);
+}
+
+
+/* NAME + GROUP SAME ROW */
+
+.studentTop {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 8px;
 }
 
 
 #studentName {
-  text-align: center;
-
-  font-size: 30px;
+  font-size: 22px;
 
   font-weight: 800;
 
-  line-height: 1.15;
-
-  margin-bottom: 5px;
+  line-height: 1.1;
 }
 
 
 #studentGroup {
-  text-align: center;
+  flex-shrink: 0;
 
-  font-size: 18px;
+  font-size: 13px;
 
-  font-weight: bold;
+  font-weight: 700;
 
-  color: #6b7280;
+  color: #4b5563;
 
-  margin-bottom: 18px;
+  background: #f3f4f6;
+
+  padding: 5px 8px;
+
+  border-radius: 8px;
 }
 
 
-.sectionTitle {
-  margin-top: 16px;
-  margin-bottom: 7px;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  color: #6b7280;
-
-  letter-spacing: 0.7px;
-
-  text-transform: uppercase;
-}
-
-
-/* Larger readable subject text */
-#classes {
-  font-size: 18px;
-
-  line-height: 1.6;
-
-  font-weight: 600;
-
-  background: #f8fafc;
-
-  padding: 13px 14px;
-
-  border-radius: 12px;
-}
-
-
-#classes div {
-  padding: 2px 0;
-}
-
+/* =========================
+   TIMES
+========================= */
 
 .timeGrid {
   display: grid;
@@ -212,29 +206,29 @@ body {
   grid-template-columns:
     1fr 1fr;
 
-  gap: 10px;
+  gap: 7px;
 
-  margin-top: 9px;
+  margin-top: 8px;
 }
 
 
 .timeBox {
   background: #f8fafc;
 
-  padding: 13px;
+  padding: 7px;
 
-  border-radius: 12px;
+  border-radius: 8px;
 
   text-align: center;
 }
 
 
 .timeLabel {
-  font-size: 12px;
+  font-size: 10px;
 
   color: #6b7280;
 
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 
   text-transform: uppercase;
 
@@ -243,22 +237,26 @@ body {
 
 
 .timeValue {
-  font-size: 21px;
+  font-size: 17px;
 
   font-weight: 800;
 }
 
 
+/* =========================
+   STATUS
+========================= */
+
 #statusBox {
-  margin-top: 17px;
+  margin-top: 7px;
 
-  padding: 16px;
+  padding: 9px;
 
-  border-radius: 13px;
+  border-radius: 9px;
 
   text-align: center;
 
-  font-size: 23px;
+  font-size: 19px;
 
   font-weight: 800;
 }
@@ -288,68 +286,128 @@ body {
 }
 
 
+/* =========================
+   CLASSES
+========================= */
+
+.classesLabel {
+  margin-top: 8px;
+
+  margin-bottom: 4px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  color: #6b7280;
+
+  text-transform: uppercase;
+}
+
+
+#classes {
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  font-weight: 600;
+
+  background: #f8fafc;
+
+  padding: 8px 9px;
+
+  border-radius: 8px;
+}
+
+
+#classes div {
+  padding: 1px 0;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
 .footerNote {
   text-align: center;
 
   color: #9ca3af;
 
-  font-size: 11px;
+  font-size: 9px;
 
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 480px) {
 
   .page {
-    padding: 8px;
+    padding: 5px;
   }
 
 
   .header {
-    margin-bottom: 7px;
+    margin-bottom: 4px;
   }
 
 
   .header h1 {
-    font-size: 21px;
-  }
-
-
-  .header p {
-    font-size: 12px;
-  }
-
-
-  .scannerCard {
-    max-width: 470px;
-    padding: 7px;
-  }
-
-
-  #studentName {
-    font-size: 27px;
-  }
-
-
-  #studentGroup {
-    font-size: 17px;
-  }
-
-
-  #classes {
-    font-size: 17px;
-    line-height: 1.55;
-  }
-
-
-  .timeValue {
     font-size: 19px;
   }
 
 
-  #statusBox {
+  .header p {
+    font-size: 10px;
+  }
+
+
+  .scannerCard {
+    padding: 4px;
+  }
+
+
+  #readyMessage,
+  #processing {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+
+  #resultCard {
+    margin-top: 5px;
+    padding: 10px;
+  }
+
+
+  #studentName {
     font-size: 21px;
+  }
+
+
+  #studentGroup {
+    font-size: 12px;
+  }
+
+
+  .timeValue {
+    font-size: 16px;
+  }
+
+
+  #statusBox {
+    font-size: 18px;
+    padding: 8px;
+  }
+
+
+  #classes {
+    font-size: 16px;
+    line-height: 1.35;
   }
 
 }
@@ -400,24 +458,12 @@ body {
   <div id="resultCard">
 
 
-    <div id="studentName"></div>
+    <div class="studentTop">
 
+      <div id="studentName"></div>
 
-    <div id="studentGroup"></div>
+      <div id="studentGroup"></div>
 
-
-
-    <div class="sectionTitle">
-      Today's Classes
-    </div>
-
-
-    <div id="classes"></div>
-
-
-
-    <div class="sectionTitle">
-      Arrival
     </div>
 
 
@@ -461,6 +507,15 @@ body {
     <div id="statusBox"></div>
 
 
+
+    <div class="classesLabel">
+      Today's Classes
+    </div>
+
+
+    <div id="classes"></div>
+
+
   </div>
 
 
@@ -495,14 +550,6 @@ let lastScanTime =
 
 
 
-/*
-  Prevent only the SAME QR
-  from immediately scanning again.
-
-  Different students can scan
-  as soon as the previous request
-  has completed.
-*/
 const SAME_QR_DELAY =
   5000;
 
@@ -648,15 +695,6 @@ function showResult(
 
 
   document.getElementById(
-    "classes"
-  ).innerHTML =
-    formatClasses(
-      data.todaysClasses
-    );
-
-
-
-  document.getElementById(
     "expectedArrival"
   ).innerText =
     data.expectedArrival || "—";
@@ -667,6 +705,15 @@ function showResult(
     "actualArrival"
   ).innerText =
     data.actualArrival || "—";
+
+
+
+  document.getElementById(
+    "classes"
+  ).innerHTML =
+    formatClasses(
+      data.todaysClasses
+    );
 
 
 
@@ -695,7 +742,7 @@ function showResult(
     statusBox.innerHTML =
       "ALREADY ENTERED" +
       "<br>" +
-      "<span style='font-size:16px;font-weight:600;'>" +
+      "<span style='font-size:13px;font-weight:600;'>" +
       "Arrival recorded at " +
       recordedTime +
       "</span>";
@@ -814,12 +861,6 @@ function showConnectionError() {
 
 
   document.getElementById(
-    "classes"
-  ).innerText =
-    "";
-
-
-  document.getElementById(
     "expectedArrival"
   ).innerText =
     "—";
@@ -829,6 +870,12 @@ function showConnectionError() {
     "actualArrival"
   ).innerText =
     "—";
+
+
+  document.getElementById(
+    "classes"
+  ).innerText =
+    "";
 
 
 
@@ -883,15 +930,6 @@ function readyForNextStudent() {
 function sendScanRequest(
   qr
 ) {
-
-
-  /*
-    ONE QR SCAN =
-    ONE SERVER REQUEST.
-
-    No automatic retry.
-    No artificial timeout.
-  */
 
 
   const callbackName =
@@ -957,11 +995,6 @@ function sendScanRequest(
     ) {
 
 
-      /*
-        Apps Script returned successfully.
-      */
-
-
       if (
         response &&
         response.result
@@ -996,11 +1029,6 @@ function sendScanRequest(
 
   script.onerror =
     function() {
-
-
-      /*
-        Actual script/network loading failure.
-      */
 
 
       cleanup();
@@ -1053,10 +1081,6 @@ function onScanSuccess(
 
 
 
-  /*
-    Prevent additional QR frames while
-    this student's request is still active.
-  */
   if (
     isProcessing
   ) {
@@ -1067,10 +1091,6 @@ function onScanSuccess(
 
 
 
-  /*
-    Prevent camera repeatedly reading
-    the same student's QR.
-  */
   if (
     qr === lastScannedQR &&
     now - lastScanTime <
@@ -1091,10 +1111,6 @@ function onScanSuccess(
     now;
 
 
-  /*
-    Lock immediately BEFORE the request
-    is sent.
-  */
   isProcessing =
     true;
 
@@ -1121,12 +1137,6 @@ function onScanSuccess(
 
 
 
-  /*
-    Previous student's result remains
-    visible while next student processes.
-  */
-
-
   sendScanRequest(
     qr
   );
@@ -1135,9 +1145,6 @@ function onScanSuccess(
 
 
 
-/*
-  Keep original proven scanner configuration.
-*/
 const scanner =
   new Html5QrcodeScanner(
 
