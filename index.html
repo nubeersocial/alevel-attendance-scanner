@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -25,13 +23,9 @@
     content="0"
   >
 
-  <title>
-    A-Level Attendance Scanner
-  </title>
-
+  <title>A-Level Attendance Scanner</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
-
 
   <style>
 
@@ -39,557 +33,225 @@
       box-sizing: border-box;
     }
 
-
     body {
-
       margin: 0;
-
-      font-family:
-        Arial,
-        sans-serif;
-
-      background:
-        #eef2f5;
-
-      color:
-        #1f2937;
-
+      font-family: Arial, sans-serif;
+      background: #eef2f5;
+      color: #1f2937;
     }
-
 
     .page {
-
-      width:
-        100%;
-
-      max-width:
-        620px;
-
-      margin:
-        0 auto;
-
-      padding:
-        18px;
-
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 12px;
     }
-
-
-    /* =========================
-       HEADER
-       ========================= */
-
 
     .header {
-
-      text-align:
-        center;
-
-      margin-bottom:
-        18px;
-
+      text-align: center;
+      margin-bottom: 10px;
     }
-
 
     .header h1 {
-
-      margin:
-        0;
-
-      font-size:
-        28px;
-
+      margin: 0;
+      font-size: 24px;
     }
-
 
     .header p {
-
-      margin:
-        7px 0 0;
-
-      color:
-        #6b7280;
-
-      font-size:
-        15px;
-
+      margin: 4px 0 0;
+      color: #6b7280;
+      font-size: 13px;
     }
-
-
-
-    /* =========================
-       SCANNER
-       ========================= */
-
 
     .scannerCard {
-
-      background:
-        white;
-
-      border-radius:
-        18px;
-
-      padding:
-        14px;
-
-      box-shadow:
-        0 4px 14px
-        rgba(0,0,0,0.08);
-
+      background: white;
+      border-radius: 14px;
+      padding: 9px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
-
 
     #reader {
-
-      width:
-        100%;
-
-      overflow:
-        hidden;
-
-      border-radius:
-        14px;
-
+      width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
     }
-
-
-
-    /* =========================
-       READY
-       ========================= */
-
 
     #readyMessage {
-
-      margin-top:
-        14px;
-
-      padding:
-        13px;
-
-      border-radius:
-        12px;
-
-      background:
-        #e8f5e9;
-
-      color:
-        #1b5e20;
-
-      font-size:
-        17px;
-
-      font-weight:
-        bold;
-
-      text-align:
-        center;
-
+      margin-top: 7px;
+      padding: 8px;
+      border-radius: 9px;
+      background: #e8f5e9;
+      color: #1b5e20;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
     }
-
-
-
-    /* =========================
-       PROCESSING
-
-       This stays ABOVE the
-       result card so it can
-       never hide behind it.
-       ========================= */
-
 
     #processing {
-
-      display:
-        none;
-
-      margin-top:
-        14px;
-
-      padding:
-        13px;
-
-      border-radius:
-        12px;
-
-      background:
-        #e8eef9;
-
-      color:
-        #1f3b73;
-
-      font-size:
-        17px;
-
-      font-weight:
-        bold;
-
-      text-align:
-        center;
-
-      position:
-        relative;
-
-      z-index:
-        50;
-
+      display: none;
+      margin-top: 7px;
+      padding: 8px;
+      border-radius: 9px;
+      background: #e8eef9;
+      color: #1f3b73;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
     }
-
-
-
-    /* =========================
-       RESULT CARD
-       ========================= */
-
 
     #resultCard {
-
-      display:
-        none;
-
-      margin-top:
-        18px;
-
-      background:
-        white;
-
-      border-radius:
-        18px;
-
-      padding:
-        22px;
-
-      box-shadow:
-        0 4px 14px
-        rgba(0,0,0,0.08);
-
-      opacity:
-        1;
-
-      transition:
-        opacity 0.3s ease;
-
+      display: none;
+      margin-top: 9px;
+      background: white;
+      border-radius: 14px;
+      padding: 11px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     }
 
-
-    #resultCard.fadeOut {
-
-      opacity:
-        0;
-
+    .studentTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
     }
-
-
 
     #studentName {
-
-      text-align:
-        center;
-
-      font-size:
-        30px;
-
-      font-weight:
-        800;
-
-      margin-bottom:
-        4px;
-
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.1;
     }
-
 
     #studentGroup {
-
-      text-align:
-        center;
-
-      font-size:
-        18px;
-
-      font-weight:
-        bold;
-
-      color:
-        #6b7280;
-
-      margin-bottom:
-        22px;
-
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: bold;
+      color: #4b5563;
+      background: #f3f4f6;
+      padding: 5px 8px;
+      border-radius: 8px;
     }
-
-
-
-    .sectionTitle {
-
-      margin-top:
-        18px;
-
-      margin-bottom:
-        8px;
-
-      font-size:
-        12px;
-
-      font-weight:
-        800;
-
-      color:
-        #6b7280;
-
-      letter-spacing:
-        0.8px;
-
-      text-transform:
-        uppercase;
-
-    }
-
-
-
-    #classes {
-
-      font-size:
-        18px;
-
-      line-height:
-        1.8;
-
-      background:
-        #f8fafc;
-
-      padding:
-        14px;
-
-      border-radius:
-        12px;
-
-    }
-
-
 
     .timeGrid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        12px;
-
-      margin-top:
-        10px;
-
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 9px;
     }
-
-
 
     .timeBox {
-
-      background:
-        #f8fafc;
-
-      padding:
-        15px;
-
-      border-radius:
-        12px;
-
-      text-align:
-        center;
-
+      background: #f8fafc;
+      padding: 7px;
+      border-radius: 9px;
+      text-align: center;
     }
-
-
 
     .timeLabel {
-
-      font-size:
-        12px;
-
-      color:
-        #6b7280;
-
-      margin-bottom:
-        6px;
-
-      text-transform:
-        uppercase;
-
-      font-weight:
-        bold;
-
+      font-size: 9px;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 2px;
     }
-
-
 
     .timeValue {
-
-      font-size:
-        21px;
-
-      font-weight:
-        800;
-
+      font-size: 16px;
+      font-weight: 800;
     }
-
-
 
     #statusBox {
-
-      margin-top:
-        20px;
-
-      padding:
-        18px;
-
-      border-radius:
-        14px;
-
-      text-align:
-        center;
-
-      font-size:
-        24px;
-
-      font-weight:
-        800;
-
+      margin-top: 7px;
+      padding: 8px;
+      border-radius: 9px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
     }
-
-
 
     .success {
-
-      background:
-        #e8f5e9;
-
-      color:
-        #1b5e20;
-
+      background: #e8f5e9;
+      color: #1b5e20;
     }
-
-
 
     .late {
-
-      background:
-        #ffebee;
-
-      color:
-        #b71c1c;
-
+      background: #ffebee;
+      color: #b71c1c;
     }
-
-
 
     .duplicate {
-
-      background:
-        #fff3e0;
-
-      color:
-        #e65100;
-
+      background: #fff3e0;
+      color: #e65100;
     }
-
-
 
     .error {
-
-      background:
-        #ffebee;
-
-      color:
-        #b71c1c;
-
+      background: #ffebee;
+      color: #b71c1c;
     }
 
+    .classesLabel {
+      margin-top: 8px;
+      margin-bottom: 3px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
 
+    #classes {
+      font-size: 11px;
+      line-height: 1.3;
+      background: #f8fafc;
+      padding: 6px 7px;
+      border-radius: 8px;
+    }
 
     .footerNote {
-
-      text-align:
-        center;
-
-      color:
-        #9ca3af;
-
-      font-size:
-        12px;
-
-      margin-top:
-        14px;
-
+      text-align: center;
+      color: #9ca3af;
+      font-size: 10px;
+      margin-top: 8px;
     }
-
-
-
-    /* =========================
-       MOBILE
-       ========================= */
-
 
     @media (max-width: 480px) {
 
-
       .page {
-
-        padding:
-          12px;
-
+        padding: 8px;
       }
 
+      .header {
+        margin-bottom: 7px;
+      }
 
       .header h1 {
-
-        font-size:
-          24px;
-
+        font-size: 20px;
       }
 
+      .header p {
+        font-size: 11px;
+      }
+
+      .scannerCard {
+        padding: 7px;
+      }
 
       #studentName {
-
-        font-size:
-          26px;
-
+        font-size: 19px;
       }
-
-
-      .timeValue {
-
-        font-size:
-          18px;
-
-      }
-
 
       #statusBox {
-
-        font-size:
-          21px;
-
+        font-size: 15px;
       }
 
-
+      .timeValue {
+        font-size: 14px;
+      }
     }
 
-
   </style>
-
 </head>
-
-
 
 <body>
 
-
   <div class="page">
-
-
-    <!-- HEADER -->
 
     <div class="header">
 
@@ -604,145 +266,87 @@
     </div>
 
 
-
-    <!-- SCANNER -->
-
     <div class="scannerCard">
-
 
       <div id="reader"></div>
 
-
       <div id="readyMessage">
-
         Ready to scan
-
       </div>
-
 
       <div id="processing">
-
-        Processing...
-
+        Processing next student...
       </div>
-
 
     </div>
 
 
-
-    <!-- RESULT -->
-
     <div id="resultCard">
 
+      <div class="studentTop">
 
-      <div id="studentName"></div>
+        <div id="studentName"></div>
 
-
-      <div id="studentGroup"></div>
-
-
-
-      <div class="sectionTitle">
-
-        Today's Classes
+        <div id="studentGroup"></div>
 
       </div>
-
-
-      <div id="classes"></div>
-
-
-
-      <div class="sectionTitle">
-
-        Arrival
-
-      </div>
-
 
 
       <div class="timeGrid">
 
-
         <div class="timeBox">
 
-
           <div class="timeLabel">
-
             Expected
-
           </div>
-
 
           <div
             class="timeValue"
             id="expectedArrival">
           </div>
 
-
         </div>
-
 
 
         <div class="timeBox">
 
-
           <div class="timeLabel">
-
             Actual
-
           </div>
-
 
           <div
             class="timeValue"
             id="actualArrival">
           </div>
 
-
         </div>
 
-
       </div>
-
 
 
       <div id="statusBox"></div>
 
 
-    </div>
+      <div class="classesLabel">
+        Today's Classes
+      </div>
 
+      <div id="classes"></div>
+
+    </div>
 
 
     <div class="footerNote">
-
       A-Level Student Arrival System
-
     </div>
-
 
   </div>
 
 
-
   <script>
 
-
-    /* =========================================
-       WEB APP
-       ========================================= */
-
-
     const WEB_APP_URL =
-
       "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
-
-
-
-    /* =========================================
-       SETTINGS
-       ========================================= */
 
 
     const SAME_QR_DELAY =
@@ -751,16 +355,6 @@
 
     const REQUEST_TIMEOUT =
       8000;
-
-
-    const RESULT_VISIBLE_MS =
-      3000;
-
-
-
-    /* =========================================
-       STATE
-       ========================================= */
 
 
     let isProcessing =
@@ -775,769 +369,336 @@
       0;
 
 
-    let resultTimer =
-      null;
-
-
-    let fadeTimer =
-      null;
-
-
-
-    /* =========================================
-       RESULT TIMER
-       ========================================= */
-
-
-    function cancelResultTimer() {
-
-
-      if (
-        resultTimer
-      ) {
-
-
-        clearTimeout(
-          resultTimer
-        );
-
-
-        resultTimer =
-          null;
-
-
-      }
-
-
-
-      if (
-        fadeTimer
-      ) {
-
-
-        clearTimeout(
-          fadeTimer
-        );
-
-
-        fadeTimer =
-          null;
-
-
-      }
-
-
-
-      const card =
-
-        document.getElementById(
-          "resultCard"
-        );
-
-
-
-      card.classList.remove(
-        "fadeOut"
-      );
-
-
-    }
-
-
-
-    function scheduleResultHide() {
-
-
-      cancelResultTimer();
-
-
-
-      resultTimer =
-
-        setTimeout(
-
-          function() {
-
-
-            const card =
-
-              document.getElementById(
-                "resultCard"
-              );
-
-
-
-            card.classList.add(
-              "fadeOut"
-            );
-
-
-
-            fadeTimer =
-
-              setTimeout(
-
-                function() {
-
-
-                  if (
-
-                    card
-                      .classList
-                      .contains(
-                        "fadeOut"
-                      )
-
-                  ) {
-
-
-                    card.style.display =
-                      "none";
-
-
-                    card
-                      .classList
-                      .remove(
-                        "fadeOut"
-                      );
-
-
-                  }
-
-
-                },
-
-                300
-
-              );
-
-
-          },
-
-          RESULT_VISIBLE_MS
-
-        );
-
-
-    }
-
-
-
-    /* =========================================
-       CLASS FORMAT
-       ========================================= */
-
 
     function formatClasses(
       classText
     ) {
 
-
-      if (
-        !classText
-      ) {
-
-
+      if (!classText) {
         return "No classes";
-
-
       }
 
-
-
       return classText
-
-        .split(
-          " | "
-        )
-
+        .split(" | ")
         .map(
-
           item =>
-
             "<div>" +
             item +
             "</div>"
-
         )
-
-        .join(
-          ""
-        );
-
-
+        .join("");
     }
 
-
-
-    /* =========================================
-       LATE FORMAT
-       ========================================= */
 
 
     function formatLateTime(
       totalMinutes
     ) {
 
-
       totalMinutes =
+        Number(totalMinutes) || 0;
 
-        Number(
-          totalMinutes
-        ) || 0;
-
-
-
-      if (
-        totalMinutes <= 0
-      ) {
-
-
+      if (totalMinutes <= 0) {
         return "";
-
-
       }
 
 
-
       const hours =
-
         Math.floor(
           totalMinutes / 60
         );
 
 
-
       const minutes =
-
         totalMinutes % 60;
-
 
 
       let result =
         "";
 
 
-
-      if (
-        hours > 0
-      ) {
-
+      if (hours > 0) {
 
         result +=
-
           hours +
-
           (
             hours === 1
               ? " HR"
               : " HRS"
           );
-
-
       }
 
 
+      if (minutes > 0) {
 
-      if (
-        minutes > 0
-      ) {
-
-
-        if (
-          result
-        ) {
-
-
-          result +=
-            " ";
-
-
+        if (result) {
+          result += " ";
         }
 
-
-
         result +=
-
           minutes +
           " MIN";
-
-
       }
-
 
 
       return result;
-
-
     }
 
-
-
-    /* =========================================
-       SHOW RESULT
-       ========================================= */
 
 
     function showResult(
       data
     ) {
 
-
-      /*
-        Stop any old result timer.
-
-        New student's result now replaces
-        previous student's result.
-      */
-
-
-      cancelResultTimer();
-
-
-
-      document
-        .getElementById(
-          "processing"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "processing"
+      ).style.display =
         "none";
 
 
-
       const resultCard =
-
         document.getElementById(
           "resultCard"
         );
-
-
-
-      resultCard
-        .classList
-        .remove(
-          "fadeOut"
-        );
-
 
 
       resultCard.style.display =
         "block";
 
 
-
-      document
-        .getElementById(
-          "studentName"
-        )
-        .innerText =
-
-        data.studentName ||
-        "";
+      document.getElementById(
+        "studentName"
+      ).innerText =
+        data.studentName || "";
 
 
-
-      document
-        .getElementById(
-          "studentGroup"
-        )
-        .innerText =
-
+      document.getElementById(
+        "studentGroup"
+      ).innerText =
         data.group
-
-          ? "Class " +
-            data.group
-
+          ? data.group
           : "";
 
 
+      document.getElementById(
+        "expectedArrival"
+      ).innerText =
+        data.expectedArrival || "—";
 
-      document
-        .getElementById(
-          "classes"
-        )
-        .innerHTML =
 
+      document.getElementById(
+        "actualArrival"
+      ).innerText =
+        data.actualArrival || "—";
+
+
+      document.getElementById(
+        "classes"
+      ).innerHTML =
         formatClasses(
           data.todaysClasses
         );
 
 
-
-      document
-        .getElementById(
-          "expectedArrival"
-        )
-        .innerText =
-
-        data.expectedArrival ||
-        "—";
-
-
-
-      document
-        .getElementById(
-          "actualArrival"
-        )
-        .innerText =
-
-        data.actualArrival ||
-        "—";
-
-
-
       const statusBox =
-
         document.getElementById(
           "statusBox"
         );
-
 
 
       statusBox.className =
         "";
 
 
-
-      /* ================================
-         DUPLICATE
-         ================================ */
-
-
       if (
-
         data.result ===
         "ALREADY RECORDED"
-
       ) {
 
-
         const recordedTime =
-
           data.actualArrival ||
           "Unknown time";
 
 
-
         statusBox.innerHTML =
-
           "ALREADY ENTERED" +
-
           "<br>" +
-
-          "<span style='font-size:16px;font-weight:600;'>" +
-
+          "<span style='font-size:11px;font-weight:600;'>" +
           "Arrival recorded at " +
-
           recordedTime +
-
           "</span>";
-
 
 
         statusBox.classList.add(
           "duplicate"
         );
 
-
       }
 
 
-
-      /* ================================
-         LATE
-         ================================ */
-
-
       else if (
-
         data.attendanceStatus ===
         "Late"
-
       ) {
 
-
         const lateTime =
-
           formatLateTime(
             data.minutesLate
           );
-
 
 
         let message =
           "LATE";
 
 
-
-        if (
-          lateTime
-        ) {
-
+        if (lateTime) {
 
           message +=
-
             " — " +
             lateTime;
 
-
         }
-
 
 
         statusBox.innerText =
           message;
 
 
-
         statusBox.classList.add(
           "late"
         );
 
-
       }
 
 
-
-      /* ================================
-         ON TIME
-         ================================ */
-
-
       else if (
-
         data.attendanceStatus ===
         "On Time"
-
       ) {
-
 
         statusBox.innerText =
           "✓ ON TIME";
-
 
 
         statusBox.classList.add(
           "success"
         );
 
-
       }
-
-
-
-      /* ================================
-         OTHER
-         ================================ */
 
 
       else {
 
-
         statusBox.innerText =
-
           data.result ||
           "UNKNOWN RESULT";
-
 
 
         statusBox.classList.add(
           "error"
         );
 
-
       }
-
-
-
-      /*
-        Leave result visible for
-        three seconds.
-      */
-
-
-      scheduleResultHide();
-
 
     }
 
 
 
-    /* =========================================
-       CONNECTION ERROR
-       ========================================= */
-
-
     function showConnectionError() {
 
-
-      cancelResultTimer();
-
-
-
-      document
-        .getElementById(
-          "processing"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "processing"
+      ).style.display =
         "none";
 
 
-
       const resultCard =
-
         document.getElementById(
           "resultCard"
         );
-
-
-
-      resultCard
-        .classList
-        .remove(
-          "fadeOut"
-        );
-
 
 
       resultCard.style.display =
         "block";
 
 
-
-      document
-        .getElementById(
-          "studentName"
-        )
-        .innerText =
-
+      document.getElementById(
+        "studentName"
+      ).innerText =
         "Connection Error";
 
 
-
-      document
-        .getElementById(
-          "studentGroup"
-        )
-        .innerText =
+      document.getElementById(
+        "studentGroup"
+      ).innerText =
         "";
 
 
+      document.getElementById(
+        "expectedArrival"
+      ).innerText =
+        "—";
 
-      document
-        .getElementById(
-          "classes"
-        )
-        .innerText =
+
+      document.getElementById(
+        "actualArrival"
+      ).innerText =
+        "—";
+
+
+      document.getElementById(
+        "classes"
+      ).innerText =
         "";
-
-
-
-      document
-        .getElementById(
-          "expectedArrival"
-        )
-        .innerText =
-        "—";
-
-
-
-      document
-        .getElementById(
-          "actualArrival"
-        )
-        .innerText =
-        "—";
-
 
 
       const statusBox =
-
         document.getElementById(
           "statusBox"
         );
-
 
 
       statusBox.innerText =
         "PLEASE SCAN AGAIN";
 
 
-
       statusBox.className =
         "error";
-
-
-
-      scheduleResultHide();
-
 
     }
 
 
 
-    /* =========================================
-       READY
-       ========================================= */
-
-
     function readyForNextStudent() {
-
-
-      /*
-        Unlock immediately after
-        server response.
-      */
-
 
       isProcessing =
         false;
 
 
-
-      document
-        .getElementById(
-          "processing"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "processing"
+      ).style.display =
         "none";
 
 
-
-      document
-        .getElementById(
-          "readyMessage"
-        )
-        .innerText =
+      document.getElementById(
+        "readyMessage"
+      ).innerText =
         "Ready for next student";
 
 
-
-      document
-        .getElementById(
-          "readyMessage"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "readyMessage"
+      ).style.display =
         "block";
-
 
     }
 
 
 
-    /* =========================================
-       SEND REQUEST
-       ========================================= */
-
-
     function sendScanRequest(
       qr
     ) {
-
 
       let finished =
         false;
@@ -1547,115 +708,69 @@
         null;
 
 
-
       const callbackName =
-
         "attendanceCallback_" +
-
         Date.now() +
-
         "_" +
-
-        Math
-          .random()
+        Math.random()
           .toString(36)
-          .substring(
-            2,
-            10
-          );
-
+          .substring(2, 10);
 
 
       const script =
-
         document.createElement(
           "script"
         );
 
 
-
-      /* =====================================
-         CLEANUP
-         ===================================== */
-
-
       function cleanup() {
 
-
-        if (
-          timeoutTimer
-        ) {
-
+        if (timeoutTimer) {
 
           clearTimeout(
             timeoutTimer
           );
 
-
           timeoutTimer =
             null;
-
 
         }
 
 
-
-        if (
-          script.parentNode
-        ) {
-
+        if (script.parentNode) {
 
           script.parentNode
             .removeChild(
               script
             );
 
-
         }
 
 
-
-        /*
-          Neutralise callback first.
-
-          This protects against a very
-          late Apps Script response.
-        */
-
-
-        window[
-          callbackName
-        ] = function() {};
-
+        window[callbackName] =
+          function() {};
 
 
         setTimeout(
 
           function() {
 
-
             try {
-
 
               delete window[
                 callbackName
               ];
 
-
             }
 
-
             catch (error) {
-
 
               window[
                 callbackName
               ] =
                 undefined;
 
-
             }
-
 
           },
 
@@ -1663,131 +778,72 @@
 
         );
 
-
       }
 
 
 
-      /* =====================================
-         FAILURE
-         ===================================== */
-
-
       function failRequest() {
 
-
-        if (
-          finished
-        ) {
-
-
+        if (finished) {
           return;
-
-
         }
-
 
 
         finished =
           true;
 
 
-
         cleanup();
-
 
 
         showConnectionError();
 
 
-
         readyForNextStudent();
-
 
       }
 
 
 
-      /* =====================================
-         SUCCESS
-         ===================================== */
-
-
-      window[
-        callbackName
-      ] =
-
+      window[callbackName] =
         function(
           response
         ) {
 
-
-          if (
-            finished
-          ) {
-
-
+          if (finished) {
             return;
-
-
           }
-
 
 
           finished =
             true;
 
 
-
           cleanup();
 
 
-
           if (
-
             response &&
             response.result
-
           ) {
-
 
             showResult(
               response.result
             );
 
-
           }
-
 
           else {
 
-
             showConnectionError();
 
-
           }
-
-
-
-          /*
-            Scanner becomes available
-            immediately.
-
-            We DO NOT wait three seconds
-            for result card to disappear.
-          */
 
 
           readyForNextStudent();
 
-
         };
 
-
-
-      /* =====================================
-         SCRIPT ERROR
-         ===================================== */
 
 
       script.onerror =
@@ -1795,13 +851,7 @@
 
 
 
-      /* =====================================
-         TIMEOUT
-         ===================================== */
-
-
       timeoutTimer =
-
         setTimeout(
 
           failRequest,
@@ -1812,184 +862,92 @@
 
 
 
-      /* =====================================
-         URL
-         ===================================== */
-
-
       script.src =
-
         WEB_APP_URL +
-
         "?key=" +
-
-        encodeURIComponent(
-          qr
-        ) +
-
+        encodeURIComponent(qr) +
         "&callback=" +
-
         encodeURIComponent(
           callbackName
         ) +
-
         "&t=" +
-
         Date.now();
 
 
 
-      document
-        .body
+      document.body
         .appendChild(
           script
         );
 
-
     }
 
-
-
-    /* =========================================
-       QR DETECTED
-       ========================================= */
 
 
     function onScanSuccess(
       decodedText
     ) {
 
-
       const qr =
-
         decodedText.trim();
 
 
-
       const now =
-
         Date.now();
-
-
-
-      /*
-        Ignore detections while actual
-        backend request is active.
-      */
 
 
       if (
         isProcessing
       ) {
-
-
         return;
-
-
       }
-
-
-
-      /*
-        Stop same QR repeatedly triggering
-        while held in front of camera.
-      */
 
 
       if (
-
-        qr ===
-        lastScannedQR &&
-
-        (
-          now -
-          lastScanTime
-        ) <
-
+        qr === lastScannedQR &&
+        now - lastScanTime <
         SAME_QR_DELAY
-
       ) {
-
-
         return;
-
-
       }
-
 
 
       lastScannedQR =
         qr;
 
 
-
       lastScanTime =
         now;
-
-
-
-      /*
-        IMPORTANT:
-
-        Do NOT hide the previous result.
-
-        We only stop its fade timer so
-        it remains visible while the new
-        student is processing.
-      */
-
-
-      cancelResultTimer();
-
 
 
       isProcessing =
         true;
 
 
-
-      /*
-        Hide READY.
-      */
-
-
-      document
-        .getElementById(
-          "readyMessage"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "readyMessage"
+      ).style.display =
         "none";
 
 
-
-      /*
-        Show PROCESSING clearly ABOVE
-        previous result.
-      */
-
-
-      document
-        .getElementById(
-          "processing"
-        )
-        .innerText =
+      document.getElementById(
+        "processing"
+      ).innerText =
         "Processing next student...";
 
 
-
-      document
-        .getElementById(
-          "processing"
-        )
-        .style
-        .display =
+      document.getElementById(
+        "processing"
+      ).style.display =
         "block";
 
 
-
       /*
-        Previous result remains below it.
+        IMPORTANT:
+
+        Existing result remains visible
+        while the next student is being
+        processed.
       */
 
 
@@ -1997,49 +955,27 @@
         qr
       );
 
-
     }
 
 
 
-    /* =========================================
-       CAMERA
-       ========================================= */
-
-
     const scanner =
-
       new Html5QrcodeScanner(
-
         "reader",
-
         {
-
-          fps:
-            15,
-
-          qrbox:
-            250,
-
-          verbose:
-            false
-
+          fps: 15,
+          qrbox: 250,
+          verbose: false
         },
-
         false
-
       );
-
 
 
     scanner.render(
       onScanSuccess
     );
 
-
   </script>
 
-
 </body>
-
 </html>
