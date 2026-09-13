@@ -1,359 +1,626 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
 
   <meta charset="UTF-8">
+
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
+
   <meta
     http-equiv="Cache-Control"
     content="no-cache, no-store, must-revalidate"
   >
+
 
   <meta
     http-equiv="Pragma"
     content="no-cache"
   >
 
+
   <meta
     http-equiv="Expires"
     content="0"
   >
 
-  <title>A-Level Attendance Scanner</title>
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <title>
+    A-Level Attendance Scanner
+  </title>
+
+
+  <script
+    src="https://unpkg.com/html5-qrcode">
+  </script>
+
 
 
   <style>
 
+
     * {
-      box-sizing: border-box;
+
+      box-sizing:
+        border-box;
+
     }
+
 
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef2f5;
-      color: #1f2937;
+
+      margin:
+        0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #eef2f5;
+
+      color:
+        #1f2937;
+
     }
+
 
 
     .page {
-      width: 100%;
-      max-width: 620px;
-      margin: 0 auto;
-      padding: 10px;
+
+      width:
+        100%;
+
+      max-width:
+        620px;
+
+      margin:
+        0 auto;
+
+      padding:
+        8px;
+
     }
+
 
 
     .header {
-      text-align: center;
-      margin-bottom: 8px;
+
+      text-align:
+        center;
+
+      margin-bottom:
+        6px;
+
     }
+
 
 
     .header h1 {
-      margin: 0;
-      font-size: 23px;
+
+      margin:
+        0;
+
+      font-size:
+        22px;
+
     }
+
 
 
     .header p {
-      margin: 3px 0 0;
-      color: #6b7280;
-      font-size: 13px;
+
+      margin:
+        3px 0 0;
+
+      color:
+        #6b7280;
+
+      font-size:
+        12px;
+
     }
+
 
 
     .scannerCard {
-      background: white;
-      border-radius: 14px;
-      padding: 7px;
+
+      background:
+        white;
+
+      border-radius:
+        14px;
+
+      padding:
+        6px;
+
       box-shadow:
-        0 4px 14px rgba(0,0,0,0.08);
+        0 4px 14px
+        rgba(0,0,0,0.08);
+
     }
+
 
 
     #reader {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 10px;
+
+      width:
+        100%;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        10px;
+
     }
+
 
 
     #readyMessage {
-      margin-top: 6px;
-      padding: 7px;
-      border-radius: 9px;
 
-      background: #e8f5e9;
-      color: #1b5e20;
+      margin-top:
+        5px;
 
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
+      padding:
+        7px;
+
+      border-radius:
+        9px;
+
+      background:
+        #e8f5e9;
+
+      color:
+        #1b5e20;
+
+      font-size:
+        14px;
+
+      font-weight:
+        bold;
+
+      text-align:
+        center;
+
     }
+
 
 
     #processing {
-      display: none;
 
-      margin-top: 6px;
-      padding: 7px;
+      display:
+        none;
 
-      border-radius: 9px;
+      margin-top:
+        5px;
 
-      background: #e8eef9;
-      color: #1f3b73;
+      padding:
+        7px;
 
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
+      border-radius:
+        9px;
+
+      background:
+        #e8eef9;
+
+      color:
+        #1f3b73;
+
+      font-size:
+        14px;
+
+      font-weight:
+        bold;
+
+      text-align:
+        center;
+
     }
+
 
 
     #resultCard {
-      display: none;
 
-      margin-top: 9px;
+      display:
+        none;
 
-      background: white;
+      margin-top:
+        8px;
 
-      border-radius: 14px;
+      background:
+        white;
 
-      padding: 14px;
+      border-radius:
+        14px;
+
+      padding:
+        15px;
 
       box-shadow:
-        0 4px 14px rgba(0,0,0,0.08);
+        0 4px 14px
+        rgba(0,0,0,0.08);
+
     }
+
 
 
     .studentTop {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
 
-      gap: 10px;
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
     }
+
 
 
     #studentName {
-      font-size: 23px;
-      font-weight: 800;
-      line-height: 1.15;
+
+      font-size:
+        24px;
+
+      font-weight:
+        800;
+
+      line-height:
+        1.15;
+
     }
+
 
 
     #studentGroup {
-      flex-shrink: 0;
 
-      font-size: 14px;
-      font-weight: bold;
+      flex-shrink:
+        0;
 
-      color: #4b5563;
+      font-size:
+        14px;
 
-      background: #f3f4f6;
+      font-weight:
+        bold;
 
-      padding: 6px 9px;
+      color:
+        #4b5563;
 
-      border-radius: 8px;
+      background:
+        #f3f4f6;
+
+      padding:
+        6px 9px;
+
+      border-radius:
+        8px;
+
     }
 
 
+
     .timeGrid {
-      display: grid;
+
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap: 8px;
+      gap:
+        9px;
 
-      margin-top: 11px;
+      margin-top:
+        12px;
+
     }
+
 
 
     .timeBox {
-      background: #f8fafc;
 
-      padding: 9px;
+      background:
+        #f8fafc;
 
-      border-radius: 9px;
+      padding:
+        10px;
 
-      text-align: center;
+      border-radius:
+        9px;
+
+      text-align:
+        center;
+
     }
+
 
 
     .timeLabel {
-      font-size: 11px;
 
-      color: #6b7280;
+      font-size:
+        11px;
 
-      text-transform: uppercase;
+      color:
+        #6b7280;
 
-      font-weight: bold;
+      text-transform:
+        uppercase;
 
-      margin-bottom: 3px;
+      font-weight:
+        bold;
+
+      margin-bottom:
+        3px;
+
     }
+
 
 
     .timeValue {
-      font-size: 18px;
-      font-weight: 800;
+
+      font-size:
+        19px;
+
+      font-weight:
+        800;
+
     }
+
 
 
     #statusBox {
-      margin-top: 9px;
 
-      padding: 10px;
+      margin-top:
+        9px;
 
-      border-radius: 9px;
+      padding:
+        11px;
 
-      text-align: center;
+      border-radius:
+        9px;
 
-      font-size: 19px;
+      text-align:
+        center;
 
-      font-weight: 800;
+      font-size:
+        20px;
+
+      font-weight:
+        800;
+
     }
+
 
 
     .success {
-      background: #e8f5e9;
-      color: #1b5e20;
+
+      background:
+        #e8f5e9;
+
+      color:
+        #1b5e20;
+
     }
+
 
 
     .late {
-      background: #ffebee;
-      color: #b71c1c;
+
+      background:
+        #ffebee;
+
+      color:
+        #b71c1c;
+
     }
+
 
 
     .duplicate {
-      background: #fff3e0;
-      color: #e65100;
+
+      background:
+        #fff3e0;
+
+      color:
+        #e65100;
+
     }
+
 
 
     .error {
-      background: #ffebee;
-      color: #b71c1c;
+
+      background:
+        #ffebee;
+
+      color:
+        #b71c1c;
+
     }
+
 
 
     .classesLabel {
-      margin-top: 11px;
-      margin-bottom: 5px;
 
-      font-size: 11px;
+      margin-top:
+        12px;
 
-      font-weight: 800;
+      margin-bottom:
+        5px;
 
-      color: #6b7280;
+      font-size:
+        12px;
 
-      text-transform: uppercase;
+      font-weight:
+        800;
+
+      color:
+        #6b7280;
+
+      text-transform:
+        uppercase;
+
     }
+
 
 
     #classes {
-      font-size: 15px;
 
-      line-height: 1.55;
+      font-size:
+        16px;
 
-      font-weight: 600;
+      line-height:
+        1.55;
 
-      background: #f8fafc;
+      font-weight:
+        600;
 
-      padding: 9px 10px;
+      background:
+        #f8fafc;
 
-      border-radius: 8px;
+      padding:
+        10px;
+
+      border-radius:
+        8px;
+
     }
+
 
 
     #classes div {
-      padding: 2px 0;
+
+      padding:
+        2px 0;
+
     }
+
 
 
     .footerNote {
-      text-align: center;
 
-      color: #9ca3af;
+      text-align:
+        center;
 
-      font-size: 10px;
+      color:
+        #9ca3af;
 
-      margin-top: 7px;
+      font-size:
+        10px;
+
+      margin-top:
+        7px;
+
     }
 
 
 
-    @media (max-width: 480px) {
+    .hiddenRequestFrame {
+
+      position:
+        absolute;
+
+      width:
+        1px;
+
+      height:
+        1px;
+
+      left:
+        -9999px;
+
+      top:
+        -9999px;
+
+      border:
+        0;
+
+      visibility:
+        hidden;
+
+    }
+
+
+
+    @media (
+      max-width:
+      480px
+    ) {
+
 
       .page {
-        padding: 7px;
-      }
 
+        padding:
+          6px;
 
-      .header {
-        margin-bottom: 6px;
       }
 
 
       .header h1 {
-        font-size: 20px;
+
+        font-size:
+          20px;
+
       }
 
 
       .header p {
-        font-size: 11px;
-      }
 
+        font-size:
+          11px;
 
-      .scannerCard {
-        padding: 6px;
       }
 
 
       #studentName {
-        font-size: 21px;
-      }
 
+        font-size:
+          22px;
 
-      #studentGroup {
-        font-size: 13px;
       }
 
 
       #statusBox {
-        font-size: 18px;
+
+        font-size:
+          19px;
+
       }
 
 
       .timeValue {
-        font-size: 17px;
-      }
 
+        font-size:
+          18px;
 
-      .timeLabel {
-        font-size: 10px;
       }
 
 
       #classes {
-        font-size: 15px;
-        line-height: 1.5;
+
+        font-size:
+          16px;
+
       }
 
     }
 
 
   </style>
+
 
 </head>
 
@@ -362,82 +629,134 @@
 <body>
 
 
-  <div class="page">
+  <div
+    class="page"
+  >
 
 
-    <div class="header">
+    <div
+      class="header"
+    >
+
 
       <h1>
         A-Level Attendance
       </h1>
 
+
       <p>
         Scan student QR code
       </p>
 
+
     </div>
 
 
 
-    <div class="scannerCard">
+    <div
+      class="scannerCard"
+    >
 
-      <div id="reader"></div>
+
+      <div
+        id="reader"
+      ></div>
 
 
-      <div id="readyMessage">
+      <div
+        id="readyMessage"
+      >
+
         Ready to scan
+
       </div>
 
 
-      <div id="processing">
+      <div
+        id="processing"
+      >
+
         Processing next student...
+
       </div>
+
 
     </div>
 
 
 
-    <div id="resultCard">
+    <div
+      id="resultCard"
+    >
 
 
-      <div class="studentTop">
+      <div
+        class="studentTop"
+      >
 
-        <div id="studentName"></div>
 
-        <div id="studentGroup"></div>
+        <div
+          id="studentName"
+        ></div>
+
+
+        <div
+          id="studentGroup"
+        ></div>
+
 
       </div>
 
 
 
-      <div class="timeGrid">
+      <div
+        class="timeGrid"
+      >
 
 
-        <div class="timeBox">
+        <div
+          class="timeBox"
+        >
 
-          <div class="timeLabel">
+
+          <div
+            class="timeLabel"
+          >
+
             Expected
+
           </div>
+
 
           <div
             class="timeValue"
-            id="expectedArrival">
-          </div>
+            id="expectedArrival"
+          ></div>
+
 
         </div>
 
 
 
-        <div class="timeBox">
+        <div
+          class="timeBox"
+        >
 
-          <div class="timeLabel">
+
+          <div
+            class="timeLabel"
+          >
+
             Actual
+
           </div>
+
 
           <div
             class="timeValue"
-            id="actualArrival">
-          </div>
+            id="actualArrival"
+          ></div>
+
 
         </div>
 
@@ -446,24 +765,36 @@
 
 
 
-      <div id="statusBox"></div>
+      <div
+        id="statusBox"
+      ></div>
 
 
 
-      <div class="classesLabel">
+      <div
+        class="classesLabel"
+      >
+
         Today's Classes
+
       </div>
 
 
-      <div id="classes"></div>
+      <div
+        id="classes"
+      ></div>
 
 
     </div>
 
 
 
-    <div class="footerNote">
+    <div
+      class="footerNote"
+    >
+
       A-Level Student Arrival System
+
     </div>
 
 
@@ -475,26 +806,25 @@
 
 
     const WEB_APP_URL =
+
       "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
+
 
 
     const SAME_QR_DELAY =
       5000;
 
 
-    /*
-      First request normally finishes
-      in around 1–3 seconds.
 
-      If response is lost,
-      retry after 6 seconds.
+    /*
+      Backend normally finishes
+      in roughly 1–2 seconds.
+
+      We give the iframe 6 seconds.
     */
 
-    const FIRST_REQUEST_TIMEOUT =
-    3500;
-
-    const RETRY_REQUEST_TIMEOUT =
-    6000;
+    const REQUEST_TIMEOUT =
+      6000;
 
 
 
@@ -502,8 +832,10 @@
       false;
 
 
+
     let lastScannedQR =
       "";
+
 
 
     let lastScanTime =
@@ -511,9 +843,15 @@
 
 
 
+    let activeRequest =
+      null;
+
+
+
     function formatClasses(
       classText
     ) {
+
 
       if (!classText) {
 
@@ -523,7 +861,11 @@
 
 
       return classText
-        .split(" | ")
+
+        .split(
+          " | "
+        )
+
         .map(
 
           item =>
@@ -533,6 +875,7 @@
             "</div>"
 
         )
+
         .join("");
 
     }
@@ -543,11 +886,16 @@
       totalMinutes
     ) {
 
+
       totalMinutes =
-        Number(totalMinutes) || 0;
+        Number(
+          totalMinutes
+        ) || 0;
 
 
-      if (totalMinutes <= 0) {
+      if (
+        totalMinutes <= 0
+      ) {
 
         return "";
 
@@ -568,30 +916,45 @@
         "";
 
 
-      if (hours > 0) {
+      if (
+        hours > 0
+      ) {
+
 
         result +=
+
           hours +
+
           (
             hours === 1
+
               ? " HR"
+
               : " HRS"
           );
 
       }
 
 
-      if (minutes > 0) {
+      if (
+        minutes > 0
+      ) {
 
-        if (result) {
 
-          result += " ";
+        if (
+          result
+        ) {
+
+          result +=
+            " ";
 
         }
 
 
         result +=
+
           minutes +
+
           " MIN";
 
       }
@@ -608,13 +971,8 @@
     ) {
 
 
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
       const resultCard =
+
         document.getElementById(
           "resultCard"
         );
@@ -624,41 +982,55 @@
         "block";
 
 
+
       document.getElementById(
         "studentName"
       ).innerText =
-        data.studentName || "";
+
+        data.studentName ||
+        "";
+
 
 
       document.getElementById(
         "studentGroup"
       ).innerText =
-        data.group
-          ? data.group
-          : "";
+
+        data.group ||
+        "";
+
 
 
       document.getElementById(
         "expectedArrival"
       ).innerText =
-        data.expectedArrival || "—";
+
+        data.expectedArrival ||
+        "—";
+
 
 
       document.getElementById(
         "actualArrival"
       ).innerText =
-        data.actualArrival || "—";
+
+        data.actualArrival ||
+        "—";
+
 
 
       document.getElementById(
         "classes"
       ).innerHTML =
+
         formatClasses(
           data.todaysClasses
         );
 
 
+
       const statusBox =
+
         document.getElementById(
           "statusBox"
         );
@@ -676,6 +1048,7 @@
 
 
         const recordedTime =
+
           data.actualArrival ||
           "Unknown time";
 
@@ -686,7 +1059,7 @@
 
           "<br>" +
 
-          "<span style='font-size:13px;font-weight:600;'>" +
+          "<span style='font-size:14px;font-weight:600;'>" +
 
           "Arrival recorded at " +
 
@@ -710,6 +1083,7 @@
 
 
         const lateTime =
+
           formatLateTime(
             data.minutesLate
           );
@@ -719,10 +1093,15 @@
           "LATE";
 
 
-        if (lateTime) {
+        if (
+          lateTime
+        ) {
+
 
           message +=
+
             " — " +
+
             lateTime;
 
         }
@@ -762,6 +1141,7 @@
 
 
         statusBox.innerText =
+
           data.result ||
           "UNKNOWN RESULT";
 
@@ -779,13 +1159,8 @@
     function showConnectionError() {
 
 
-      document.getElementById(
-        "processing"
-      ).style.display =
-        "none";
-
-
       const resultCard =
+
         document.getElementById(
           "resultCard"
         );
@@ -793,6 +1168,7 @@
 
       resultCard.style.display =
         "block";
+
 
 
       document.getElementById(
@@ -825,7 +1201,9 @@
         "";
 
 
+
       const statusBox =
+
         document.getElementById(
           "statusBox"
         );
@@ -849,16 +1227,19 @@
         false;
 
 
+
       document.getElementById(
         "processing"
       ).style.display =
         "none";
 
 
+
       document.getElementById(
         "readyMessage"
       ).innerText =
         "Ready for next student";
+
 
 
       document.getElementById(
@@ -870,23 +1251,63 @@
 
 
 
-    function sendScanRequest(
+    function removeActiveRequest() {
+
+
+      if (
+        !activeRequest
+      ) {
+
+        return;
+
+      }
+
+
+
+      if (
+        activeRequest.timeout
+      ) {
+
+        clearTimeout(
+          activeRequest.timeout
+        );
+
+      }
+
+
+
+      if (
+        activeRequest.frame &&
+        activeRequest.frame.parentNode
+      ) {
+
+
+        activeRequest.frame
+          .parentNode
+          .removeChild(
+            activeRequest.frame
+          );
+
+      }
+
+
+
+      activeRequest =
+        null;
+
+    }
+
+
+
+    function sendIframeRequest(
       qr,
       attempt = 0
     ) {
 
 
-      let finished =
-        false;
+      const requestId =
 
-
-      let timeoutTimer =
-        null;
-
-
-      const callbackName =
-
-        "attendanceCallback_" +
+        "attendance_" +
 
         Date.now() +
 
@@ -894,268 +1315,238 @@
 
         Math.random()
           .toString(36)
-          .substring(2, 10);
+          .substring(2,10);
 
 
 
-      const script =
+      const iframe =
+
         document.createElement(
-          "script"
+          "iframe"
         );
 
 
-
-      function cleanup() {
-
-
-        if (timeoutTimer) {
-
-
-          clearTimeout(
-            timeoutTimer
-          );
-
-
-          timeoutTimer =
-            null;
-
-        }
+      iframe.className =
+        "hiddenRequestFrame";
 
 
 
-        if (script.parentNode) {
+      activeRequest = {
+
+        requestId:
+          requestId,
+
+        qr:
+          qr,
+
+        attempt:
+          attempt,
+
+        frame:
+          iframe,
+
+        timeout:
+          null
+
+      };
 
 
-          script.parentNode
-            .removeChild(
-              script
-            );
 
-        }
-
-
-
-        /*
-          Keep temporary empty callback
-          so a very late JSONP response
-          cannot cause an error.
-        */
-
-        window[callbackName] =
-          function() {};
-
+      const timeout =
 
         setTimeout(
 
           function() {
 
 
-            try {
+            if (
+              !activeRequest ||
+              activeRequest.requestId !==
+              requestId
+            ) {
 
-              delete window[
-                callbackName
-              ];
-
-            }
-
-
-            catch (error) {
-
-              window[
-                callbackName
-              ] =
-                undefined;
+              return;
 
             }
 
-          },
 
-          1500
 
-        );
-
-      }
+            removeActiveRequest();
 
 
 
-      function failRequest() {
+            /*
+              Retry once.
+
+              If first attendance was
+              already recorded, backend
+              duplicate protection will
+              return ALREADY RECORDED.
+            */
+
+            if (
+              attempt === 0
+            ) {
 
 
-        if (finished) {
-
-          return;
-
-        }
-
-
-        finished =
-          true;
+              document.getElementById(
+                "processing"
+              ).innerText =
+                "Processing...";
 
 
-        cleanup();
+              setTimeout(
+
+                function() {
 
 
-
-        /*
-          FIRST FAILURE:
-
-          Don't show Connection Error.
-
-          Automatically try exactly
-          one more time.
-        */
-
-        if (attempt === 0) {
+                  sendIframeRequest(
+                    qr,
+                    1
+                  );
 
 
-          document.getElementById(
-            "processing"
-          ).innerText =
-            "Processing...";
+                },
 
+                100
 
-          setTimeout(
-
-            function() {
-
-              sendScanRequest(
-                qr,
-                1
               );
 
-            },
 
-            50
+              return;
 
-          );
+            }
 
-
-          return;
-
-        }
-
-
-
-        /*
-          SECOND FAILURE:
-
-          Now show real connection error.
-        */
-
-        showConnectionError();
-
-
-        readyForNextStudent();
-
-      }
-
-
-
-      window[callbackName] =
-        function(
-          response
-        ) {
-
-
-          if (finished) {
-
-            return;
-
-          }
-
-
-          finished =
-            true;
-
-
-          cleanup();
-
-
-
-          if (
-            response &&
-            response.result
-          ) {
-
-
-            showResult(
-              response.result
-            );
-
-          }
-
-
-          else {
 
 
             showConnectionError();
 
-          }
+
+            readyForNextStudent();
 
 
+          },
 
-          readyForNextStudent();
-
-        };
-
-
-
-      script.onerror =
-        failRequest;
-
-
-
-      const timeoutLength =
-
-        attempt === 0
-
-          ? FIRST_REQUEST_TIMEOUT
-
-          : RETRY_REQUEST_TIMEOUT;
-
-
-
-      timeoutTimer =
-        setTimeout(
-
-          failRequest,
-
-          timeoutLength
+          REQUEST_TIMEOUT
 
         );
 
 
 
-      script.src =
+      activeRequest.timeout =
+        timeout;
+
+
+
+      iframe.src =
 
         WEB_APP_URL +
 
         "?key=" +
 
-        encodeURIComponent(qr) +
+        encodeURIComponent(
+          qr
+        ) +
 
-        "&callback=" +
+        "&requestId=" +
 
         encodeURIComponent(
-          callbackName
+          requestId
         ) +
 
         "&t=" +
 
-        Date.now() +
-
-        "&attempt=" +
-
-        attempt;
+        Date.now();
 
 
 
-      document.body
-        .appendChild(
-          script
-        );
+      document.body.appendChild(
+        iframe
+      );
 
     }
+
+
+
+    window.addEventListener(
+
+      "message",
+
+      function(
+        event
+      ) {
+
+
+        const response =
+          event.data;
+
+
+
+        if (
+          !response ||
+          response.type !==
+          "KIMS_ATTENDANCE_RESPONSE"
+        ) {
+
+          return;
+
+        }
+
+
+
+        if (
+          !activeRequest
+        ) {
+
+          return;
+
+        }
+
+
+
+        if (
+          response.requestId !==
+          activeRequest.requestId
+        ) {
+
+          return;
+
+        }
+
+
+
+        removeActiveRequest();
+
+
+
+        if (
+          response.result
+        ) {
+
+
+          showResult(
+            response.result
+          );
+
+
+        }
+
+
+        else {
+
+
+          showConnectionError();
+
+        }
+
+
+
+        readyForNextStudent();
+
+
+      }
+
+    );
 
 
 
@@ -1165,7 +1556,9 @@
 
 
       const qr =
+
         decodedText.trim();
+
 
 
       const now =
@@ -1184,9 +1577,12 @@
 
 
       if (
+
         qr === lastScannedQR &&
+
         now - lastScanTime <
         SAME_QR_DELAY
+
       ) {
 
         return;
@@ -1214,10 +1610,12 @@
         "none";
 
 
+
       document.getElementById(
         "processing"
       ).innerText =
         "Processing next student...";
+
 
 
       document.getElementById(
@@ -1226,14 +1624,8 @@
         "block";
 
 
-      /*
-        Keep previous student's
-        result visible while next
-        student is processing.
-      */
 
-
-      sendScanRequest(
+      sendIframeRequest(
         qr
       );
 
@@ -1249,23 +1641,27 @@
 
         {
 
-          fps: 15,
+          fps:
+            15,
+
 
           qrbox: {
-            width: 220,
-            height: 220
+
+            width:
+              220,
+
+            height:
+              220
+
           },
 
-          /*
-            Wider preview makes the
-            camera section less tall
-            without forcing CSS onto
-            the camera video.
-          */
 
-          aspectRatio: 1.7777778,
+          aspectRatio:
+            1.7777778,
 
-          verbose: false
+
+          verbose:
+            false
 
         },
 
@@ -1284,4 +1680,5 @@
 
 
 </body>
+
 </html>
