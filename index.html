@@ -927,10 +927,9 @@ function readyForNextStudent() {
 
 
 
-function sendScanRequest(
-  qr
-) {
+function sendScanRequest(qr) {
 
+  let finished = false;
 
   const callbackName =
     "attendanceCallback_" +
@@ -940,128 +939,109 @@ function sendScanRequest(
       .toString(36)
       .substring(2, 10);
 
-
-
   const script =
-    document.createElement(
-      "script"
-    );
-
+    document.createElement("script");
 
 
   function cleanup() {
 
+    clearTimeout(safetyTimer);
 
-    if (
-      script.parentNode
-    ) {
-
-      script.parentNode
-        .removeChild(
-          script
-        );
-
+    if (script.parentNode) {
+      script.parentNode.removeChild(script);
     }
-
-
 
     try {
-
-      delete window[
-        callbackName
-      ];
-
+      delete window[callbackName];
     }
-
-
     catch (error) {
-
-      window[
-        callbackName
-      ] =
-        undefined;
-
+      window[callbackName] = undefined;
     }
 
   }
 
 
+  function failRequest() {
 
-  window[
-    callbackName
-  ] =
-    function(
-      response
-    ) {
+    if (finished) {
+      return;
+    }
 
+    finished = true;
+
+    cleanup();
+
+    showConnectionError();
+
+    readyForNextStudent();
+
+  }
+
+
+  window[callbackName] =
+    function(response) {
+
+      if (finished) {
+        return;
+      }
+
+      finished = true;
+
+      cleanup();
 
       if (
         response &&
         response.result
       ) {
 
-
         showResult(
           response.result
         );
 
       }
-
-
       else {
-
 
         showConnectionError();
 
       }
 
-
-
-      cleanup();
-
-
-
       readyForNextStudent();
 
     };
-
 
 
   script.onerror =
     function() {
 
-
-      cleanup();
-
-
-      showConnectionError();
-
-
-      readyForNextStudent();
+      failRequest();
 
     };
 
+
+  const safetyTimer =
+    setTimeout(
+      function() {
+
+        failRequest();
+
+      },
+      8000
+    );
 
 
   script.src =
     WEB_APP_URL +
     "?key=" +
-    encodeURIComponent(
-      qr
-    ) +
+    encodeURIComponent(qr) +
     "&callback=" +
-    encodeURIComponent(
-      callbackName
-    ) +
+    encodeURIComponent(callbackName) +
     "&t=" +
     Date.now();
 
 
-
-  document.body
-    .appendChild(
-      script
-    );
+  document.body.appendChild(
+    script
+  );
 
 }
 
