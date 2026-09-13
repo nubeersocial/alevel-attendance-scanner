@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -23,9 +24,11 @@
     content="0"
   >
 
-  <title>A-Level Attendance Scanner</title>
+  <title>KIMS A-Level Attendance</title>
+
 
   <script src="https://unpkg.com/html5-qrcode"></script>
+
 
   <style>
 
@@ -33,572 +36,897 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      min-height: 100%;
-    }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #eef2f5;
-      color: #1f2937;
+      margin: 0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #eef2f5;
+
+      color:
+        #1f2937;
     }
+
 
     .page {
       width: 100%;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 16px;
+      max-width: 620px;
+
+      margin:
+        0 auto;
+
+      padding:
+        12px;
     }
+
+
+    /* ==========================
+       HEADER
+       ========================== */
 
     .header {
-      text-align: center;
-      margin-bottom: 14px;
+      text-align:
+        center;
+
+      margin-bottom:
+        10px;
     }
+
 
     .header h1 {
-      margin: 0;
-      font-size: 28px;
+      margin:
+        0;
+
+      font-size:
+        24px;
     }
+
 
     .header p {
-      margin: 5px 0 0;
-      color: #6b7280;
-      font-size: 14px;
+      margin:
+        4px 0 0;
+
+      color:
+        #6b7280;
+
+      font-size:
+        13px;
     }
 
-    .scanWorkspace {
-      width: 100%;
+
+    .version {
+      margin-top:
+        4px;
+
+      font-size:
+        10px;
+
+      color:
+        #9ca3af;
     }
+
+
+    /* ==========================
+       CAMERA
+       ========================== */
 
     .scannerCard {
-      background: white;
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      background:
+        white;
+
+      border-radius:
+        16px;
+
+      padding:
+        10px;
+
+      box-shadow:
+        0 4px 14px
+        rgba(0,0,0,0.08);
     }
+
+
+    /*
+      IMPORTANT:
+
+      We are NOT forcing video height,
+      width, object-fit or flex anymore.
+
+      html5-qrcode controls its own
+      camera layout.
+    */
 
     #reader {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 14px;
+      width:
+        100%;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        12px;
     }
+
+
+    /* ==========================
+       READY / PROCESSING
+       ========================== */
 
     #readyMessage {
-      margin-top: 10px;
-      padding: 11px;
-      border-radius: 11px;
-      background: #e8f5e9;
-      color: #1b5e20;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
+      margin-top:
+        8px;
+
+      padding:
+        9px;
+
+      border-radius:
+        9px;
+
+      background:
+        #e8f5e9;
+
+      color:
+        #1b5e20;
+
+      font-size:
+        14px;
+
+      font-weight:
+        bold;
+
+      text-align:
+        center;
     }
+
 
     #processing {
-      display: none;
-      margin-top: 10px;
-      padding: 11px;
-      border-radius: 11px;
-      background: #e8eef9;
-      color: #1f3b73;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
+      display:
+        none;
+
+      margin-top:
+        8px;
+
+      padding:
+        9px;
+
+      border-radius:
+        9px;
+
+      background:
+        #e8eef9;
+
+      color:
+        #1f3b73;
+
+      font-size:
+        14px;
+
+      font-weight:
+        bold;
+
+      text-align:
+        center;
     }
 
-    #resultCard {
-      display: none;
-      margin-top: 16px;
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 
-      opacity: 1;
-      transform: translateY(0);
+    /* ==========================
+       RESULT CARD
+       ========================== */
+
+    #resultCard {
+
+      display:
+        none;
+
+      background:
+        white;
+
+      border-radius:
+        17px;
+
+      padding:
+        16px;
+
+      box-shadow:
+        0 8px 30px
+        rgba(0,0,0,0.18);
+
+      opacity:
+        1;
+
+      transform:
+        translateY(0);
 
       transition:
         opacity 0.35s ease,
         transform 0.35s ease;
+
     }
+
 
     #resultCard.resultFading {
-      opacity: 0;
-      transform: translateY(8px);
+
+      opacity:
+        0;
+
+      transform:
+        translateY(15px);
+
     }
+
 
     #studentName {
-      text-align: center;
-      font-size: 30px;
-      font-weight: 800;
-      margin-bottom: 3px;
+
+      text-align:
+        center;
+
+      font-size:
+        27px;
+
+      font-weight:
+        800;
+
+      margin-bottom:
+        2px;
+
     }
+
 
     #studentGroup {
-      text-align: center;
-      font-size: 17px;
-      font-weight: bold;
-      color: #6b7280;
-      margin-bottom: 16px;
+
+      text-align:
+        center;
+
+      font-size:
+        15px;
+
+      font-weight:
+        bold;
+
+      color:
+        #6b7280;
+
+      margin-bottom:
+        10px;
+
     }
+
 
     .sectionTitle {
-      margin-top: 14px;
-      margin-bottom: 6px;
-      font-size: 11px;
-      font-weight: 800;
-      color: #6b7280;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
+
+      margin-top:
+        8px;
+
+      margin-bottom:
+        4px;
+
+      font-size:
+        10px;
+
+      font-weight:
+        800;
+
+      color:
+        #6b7280;
+
+      letter-spacing:
+        0.7px;
+
+      text-transform:
+        uppercase;
+
     }
+
 
     #classes {
-      font-size: 17px;
-      line-height: 1.55;
-      background: #f8fafc;
-      padding: 12px;
-      border-radius: 11px;
+
+      font-size:
+        14px;
+
+      line-height:
+        1.35;
+
+      background:
+        #f8fafc;
+
+      padding:
+        8px 10px;
+
+      border-radius:
+        9px;
+
     }
+
 
     .timeGrid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 8px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        8px;
+
+      margin-top:
+        5px;
+
     }
+
 
     .timeBox {
-      background: #f8fafc;
-      padding: 12px;
-      border-radius: 11px;
-      text-align: center;
+
+      background:
+        #f8fafc;
+
+      padding:
+        8px;
+
+      border-radius:
+        9px;
+
+      text-align:
+        center;
+
     }
+
 
     .timeLabel {
-      font-size: 11px;
-      color: #6b7280;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      font-weight: bold;
+
+      font-size:
+        9px;
+
+      color:
+        #6b7280;
+
+      margin-bottom:
+        3px;
+
+      text-transform:
+        uppercase;
+
+      font-weight:
+        bold;
+
     }
+
 
     .timeValue {
-      font-size: 20px;
-      font-weight: 800;
+
+      font-size:
+        17px;
+
+      font-weight:
+        800;
+
     }
+
 
     #statusBox {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: 800;
+
+      margin-top:
+        9px;
+
+      padding:
+        10px;
+
+      border-radius:
+        10px;
+
+      text-align:
+        center;
+
+      font-size:
+        19px;
+
+      font-weight:
+        800;
+
     }
+
 
     .success {
-      background: #e8f5e9;
-      color: #1b5e20;
+
+      background:
+        #e8f5e9;
+
+      color:
+        #1b5e20;
+
     }
+
 
     .late {
-      background: #ffebee;
-      color: #b71c1c;
+
+      background:
+        #ffebee;
+
+      color:
+        #b71c1c;
+
     }
+
 
     .duplicate {
-      background: #fff3e0;
-      color: #e65100;
+
+      background:
+        #fff3e0;
+
+      color:
+        #e65100;
+
     }
+
 
     .error {
-      background: #ffebee;
-      color: #b71c1c;
+
+      background:
+        #ffebee;
+
+      color:
+        #b71c1c;
+
     }
+
 
     .footerNote {
-      text-align: center;
-      color: #9ca3af;
-      font-size: 12px;
-      margin-top: 12px;
-    }
 
+      text-align:
+        center;
 
-    /* ==============================
-       TABLET / LAPTOP
-       ============================== */
+      color:
+        #9ca3af;
 
-    @media (min-width: 760px) {
+      font-size:
+        11px;
 
-      .scanWorkspace {
-        display: grid;
-        grid-template-columns:
-          minmax(360px, 0.9fr)
-          minmax(360px, 1.1fr);
-
-        gap: 18px;
-        align-items: start;
-      }
-
-      #resultCard {
-        margin-top: 0;
-      }
+      margin-top:
+        10px;
 
     }
 
 
-    /* ==============================
+    /* ====================================
        PHONE
-       Camera + result in same screen
-       ============================== */
 
-    @media (max-width: 759px) {
+       Result appears as bottom sheet.
 
-      html,
-      body {
-        height: 100%;
-      }
+       Camera stays exactly where it is.
+       ==================================== */
 
-      body {
-        overflow: hidden;
-      }
+    @media (max-width: 700px) {
 
       .page {
-        height: 100dvh;
-        max-width: 100%;
-        padding: 7px 9px;
 
-        display: flex;
-        flex-direction: column;
+        padding:
+          8px;
+
       }
+
 
       .header {
-        margin-bottom: 6px;
-        flex: 0 0 auto;
+
+        margin-bottom:
+          7px;
+
       }
+
 
       .header h1 {
-        font-size: 20px;
-        line-height: 1.1;
+
+        font-size:
+          20px;
+
       }
+
 
       .header p {
-        margin-top: 2px;
-        font-size: 11px;
+
+        font-size:
+          11px;
+
       }
 
-      .scanWorkspace {
-        flex: 1 1 auto;
-        min-height: 0;
-
-        display: grid;
-
-        grid-template-rows:
-          minmax(225px, 44dvh)
-          minmax(0, 1fr);
-
-        gap: 7px;
-      }
 
       .scannerCard {
-        min-height: 0;
-        padding: 7px;
-        border-radius: 13px;
 
-        display: flex;
-        flex-direction: column;
+        padding:
+          7px;
+
+        border-radius:
+          13px;
+
       }
 
-      #reader {
-        flex: 1 1 auto;
-        min-height: 0;
-        border-radius: 10px;
-      }
-
-      #reader video {
-        width: 100% !important;
-        height: 100% !important;
-
-        max-height: 36dvh !important;
-
-        object-fit: cover !important;
-      }
 
       #readyMessage,
       #processing {
-        margin-top: 5px;
-        padding: 6px 8px;
-        border-radius: 8px;
-        font-size: 12px;
-        line-height: 1.15;
+
+        margin-top:
+          5px;
+
+        padding:
+          6px;
+
+        font-size:
+          12px;
+
       }
+
+
+      /*
+        Result sits over bottom of screen.
+
+        NO scrolling is required.
+      */
 
       #resultCard {
-        min-height: 0;
-        max-height: 100%;
-        overflow: hidden;
 
-        margin-top: 0;
-        padding: 9px 11px;
-        border-radius: 13px;
+        position:
+          fixed;
+
+        left:
+          8px;
+
+        right:
+          8px;
+
+        bottom:
+          8px;
+
+        z-index:
+          9999;
+
+        margin:
+          0;
+
+        padding:
+          11px 12px;
+
+        max-height:
+          43vh;
+
+        overflow-y:
+          auto;
+
+        border:
+          1px solid
+          rgba(0,0,0,0.08);
+
       }
+
 
       #studentName {
-        font-size: 21px;
-        line-height: 1.05;
-        margin-bottom: 1px;
+
+        font-size:
+          21px;
+
       }
+
 
       #studentGroup {
-        font-size: 12px;
-        margin-bottom: 5px;
+
+        font-size:
+          12px;
+
+        margin-bottom:
+          5px;
+
       }
+
 
       .sectionTitle {
-        margin-top: 4px;
-        margin-bottom: 2px;
-        font-size: 8px;
-        letter-spacing: 0.5px;
+
+        margin-top:
+          5px;
+
+        margin-bottom:
+          2px;
+
+        font-size:
+          8px;
+
       }
+
 
       #classes {
-        font-size: 11px;
-        line-height: 1.25;
 
-        padding: 5px 7px;
+        font-size:
+          11px;
 
-        border-radius: 7px;
+        line-height:
+          1.25;
 
-        max-height: 48px;
-        overflow: hidden;
+        padding:
+          5px 7px;
+
       }
+
 
       .timeGrid {
-        gap: 5px;
-        margin-top: 3px;
+
+        gap:
+          5px;
+
+        margin-top:
+          3px;
+
       }
+
 
       .timeBox {
-        padding: 5px;
-        border-radius: 7px;
+
+        padding:
+          5px;
+
       }
+
 
       .timeLabel {
-        font-size: 8px;
-        margin-bottom: 1px;
+
+        font-size:
+          8px;
+
       }
+
 
       .timeValue {
-        font-size: 14px;
+
+        font-size:
+          14px;
+
       }
+
 
       #statusBox {
-        margin-top: 5px;
-        padding: 7px;
 
-        border-radius: 8px;
+        margin-top:
+          6px;
 
-        font-size: 16px;
-        line-height: 1.1;
-      }
+        padding:
+          7px;
 
-      .footerNote {
-        display: none;
+        font-size:
+          16px;
+
       }
 
     }
 
-
-    /* Small phones */
-
-    @media (max-width: 380px),
-           (max-height: 690px) {
-
-      .scanWorkspace {
-        grid-template-rows:
-          minmax(200px, 41dvh)
-          minmax(0, 1fr);
-      }
-
-      #reader video {
-        max-height: 33dvh !important;
-      }
-
-      #classes {
-        max-height: 38px;
-      }
-
-      #studentName {
-        font-size: 19px;
-      }
-
-      #statusBox {
-        font-size: 14px;
-        padding: 5px;
-      }
-
-    }
 
   </style>
+
 </head>
 
 
 <body>
 
+
 <div class="page">
+
 
   <div class="header">
 
     <h1>
-      A-Level Attendance
+      KIMS A-Level Attendance
     </h1>
 
     <p>
       Scan student QR code
     </p>
 
+    <div class="version">
+      Scanner V3
+    </div>
+
   </div>
 
 
-  <div class="scanWorkspace">
+
+  <div class="scannerCard">
 
 
-    <!-- CAMERA -->
+    <div id="reader"></div>
 
-    <div class="scannerCard">
 
-      <div id="reader"></div>
+    <div id="readyMessage">
 
-      <div id="readyMessage">
-        Ready to scan
-      </div>
-
-      <div id="processing">
-        Processing...
-      </div>
+      Ready to scan
 
     </div>
 
 
-    <!-- RESULT -->
+    <div id="processing">
 
-    <div id="resultCard">
-
-      <div id="studentName"></div>
-
-      <div id="studentGroup"></div>
-
-
-      <div class="sectionTitle">
-        Today's Classes
-      </div>
-
-      <div id="classes"></div>
-
-
-      <div class="sectionTitle">
-        Arrival
-      </div>
-
-
-      <div class="timeGrid">
-
-        <div class="timeBox">
-
-          <div class="timeLabel">
-            Expected
-          </div>
-
-          <div
-            class="timeValue"
-            id="expectedArrival">
-          </div>
-
-        </div>
-
-
-        <div class="timeBox">
-
-          <div class="timeLabel">
-            Actual
-          </div>
-
-          <div
-            class="timeValue"
-            id="actualArrival">
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div id="statusBox"></div>
+      Processing...
 
     </div>
 
+
   </div>
+
+
+
+  <div id="resultCard">
+
+
+    <div id="studentName"></div>
+
+
+    <div id="studentGroup"></div>
+
+
+
+    <div class="sectionTitle">
+
+      Today's Classes
+
+    </div>
+
+
+    <div id="classes"></div>
+
+
+
+    <div class="sectionTitle">
+
+      Arrival
+
+    </div>
+
+
+
+    <div class="timeGrid">
+
+
+      <div class="timeBox">
+
+
+        <div class="timeLabel">
+
+          Expected
+
+        </div>
+
+
+        <div
+          class="timeValue"
+          id="expectedArrival">
+        </div>
+
+
+      </div>
+
+
+
+      <div class="timeBox">
+
+
+        <div class="timeLabel">
+
+          Actual
+
+        </div>
+
+
+        <div
+          class="timeValue"
+          id="actualArrival">
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <div id="statusBox"></div>
+
+
+  </div>
+
 
 
   <div class="footerNote">
+
     A-Level Student Arrival System
+
   </div>
+
 
 </div>
 
 
+
 <script>
 
-  /* =========================================
-     GOOGLE APPS SCRIPT URL
-     ========================================= */
+
+  /* ======================================
+     APPS SCRIPT
+     ====================================== */
+
 
   const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbxFMgFv1cEijDef2vJQ5FXgkJ7xxcx5IG3BKiPuToEqoHFLk2dKDavzlOFBcDt5HMPO/exec";
 
 
-  /* =========================================
+
+  /* ======================================
      SETTINGS
-     ========================================= */
-
-  const SAME_QR_DELAY = 5000;
-
-  const REQUEST_TIMEOUT = 8000;
-
-  const MAX_ATTEMPTS = 2;
-
-  const RESULT_VISIBLE_MS = 4000;
+     ====================================== */
 
 
-  /* =========================================
-     STATE
-     ========================================= */
-
-  let isProcessing = false;
-
-  let lastScannedQR = "";
-
-  let lastScanTime = 0;
-
-  let resultHideTimer = null;
-
-  let fadeFinishTimer = null;
-
-  let audioContext = null;
+  const SAME_QR_DELAY =
+    5000;
 
 
-  /* =========================================
-     BEEP + VIBRATION
-     ========================================= */
+  const REQUEST_TIMEOUT =
+    8000;
 
-  function playScanBeep() {
+
+  const MAX_ATTEMPTS =
+    2;
+
+
+  const RESULT_VISIBLE_MS =
+    4000;
+
+
+
+  /* ======================================
+     VARIABLES
+     ====================================== */
+
+
+  let isProcessing =
+    false;
+
+
+  let lastScannedQR =
+    "";
+
+
+  let lastScanTime =
+    0;
+
+
+  let resultHideTimer =
+    null;
+
+
+  let fadeFinishTimer =
+    null;
+
+
+  let audioContext =
+    null;
+
+
+
+  /* ======================================
+     SOUND UNLOCK
+
+     Mobile Safari/Chrome sometimes requires
+     user interaction before sounds work.
+
+     Any tap on page attempts to unlock it.
+     ====================================== */
+
+
+  function unlockAudio() {
 
     try {
 
-      if (!audioContext) {
+      if (
+        !audioContext
+      ) {
 
         audioContext =
           new (
@@ -618,65 +946,158 @@
 
       }
 
+    }
+
+    catch (error) {
+
+      // Ignore sound errors.
+
+    }
+
+  }
+
+
+
+  document.addEventListener(
+
+    "touchstart",
+
+    unlockAudio,
+
+    {
+      passive: true
+    }
+
+  );
+
+
+
+  document.addEventListener(
+
+    "click",
+
+    unlockAudio
+
+  );
+
+
+
+  /* ======================================
+     BEEP
+     ====================================== */
+
+
+  function playScanBeep() {
+
+
+    try {
+
+
+      unlockAudio();
+
+
+      if (
+        !audioContext
+      ) {
+
+        return;
+
+      }
+
 
       const oscillator =
-        audioContext.createOscillator();
+        audioContext
+          .createOscillator();
 
 
       const gain =
-        audioContext.createGain();
+        audioContext
+          .createGain();
 
 
       oscillator.type =
         "sine";
 
 
-      oscillator.frequency.value =
-        920;
+      oscillator
+        .frequency
+        .value =
+        1000;
 
 
-      gain.gain.setValueAtTime(
-        0.0001,
-        audioContext.currentTime
-      );
+      gain
+        .gain
+        .setValueAtTime(
+
+          0.001,
+
+          audioContext
+            .currentTime
+
+        );
 
 
-      gain.gain.exponentialRampToValueAtTime(
-        0.18,
-        audioContext.currentTime + 0.01
-      );
+      gain
+        .gain
+        .exponentialRampToValueAtTime(
+
+          0.25,
+
+          audioContext
+            .currentTime +
+            0.01
+
+        );
 
 
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + 0.11
-      );
+      gain
+        .gain
+        .exponentialRampToValueAtTime(
+
+          0.001,
+
+          audioContext
+            .currentTime +
+            0.13
+
+        );
 
 
-      oscillator.connect(
-        gain
-      );
+      oscillator
+        .connect(
+          gain
+        );
 
 
-      gain.connect(
-        audioContext.destination
-      );
+      gain
+        .connect(
+          audioContext
+            .destination
+        );
 
 
-      oscillator.start();
+      oscillator
+        .start();
 
 
-      oscillator.stop(
-        audioContext.currentTime + 0.12
-      );
+      oscillator
+        .stop(
+
+          audioContext
+            .currentTime +
+            0.14
+
+        );
+
 
     }
 
     catch (error) {
 
-      // Scanner continues even if phone blocks sound.
+      // Scanning continues even if sound fails.
 
     }
+
 
 
     if (
@@ -684,19 +1105,23 @@
     ) {
 
       navigator.vibrate(
-        45
+        50
       );
 
     }
 
+
   }
 
 
-  /* =========================================
-     RESULT TIMER
-     ========================================= */
+
+  /* ======================================
+     RESULT FADE TIMER
+     ====================================== */
+
 
   function cancelResultCollapse() {
+
 
     if (
       resultHideTimer
@@ -706,10 +1131,12 @@
         resultHideTimer
       );
 
+
       resultHideTimer =
         null;
 
     }
+
 
 
     if (
@@ -720,10 +1147,12 @@
         fadeFinishTimer
       );
 
+
       fadeFinishTimer =
         null;
 
     }
+
 
 
     const card =
@@ -732,16 +1161,22 @@
       );
 
 
-    card.classList.remove(
-      "resultFading"
-    );
+    card
+      .classList
+      .remove(
+        "resultFading"
+      );
+
 
   }
 
 
+
   function scheduleResultCollapse() {
 
+
     cancelResultCollapse();
+
 
 
     resultHideTimer =
@@ -749,15 +1184,19 @@
 
         function() {
 
+
           const card =
             document.getElementById(
               "resultCard"
             );
 
 
-          card.classList.add(
-            "resultFading"
-          );
+          card
+            .classList
+            .add(
+              "resultFading"
+            );
+
 
 
           fadeFinishTimer =
@@ -765,21 +1204,31 @@
 
               function() {
 
+
                 if (
-                  card.classList.contains(
-                    "resultFading"
-                  )
+
+                  card
+                    .classList
+                    .contains(
+                      "resultFading"
+                    )
+
                 ) {
+
 
                   card.style.display =
                     "none";
 
 
-                  card.classList.remove(
-                    "resultFading"
-                  );
+                  card
+                    .classList
+                    .remove(
+                      "resultFading"
+                    );
+
 
                 }
+
 
               },
 
@@ -787,22 +1236,27 @@
 
             );
 
+
         },
 
         RESULT_VISIBLE_MS
 
       );
 
+
   }
 
 
-  /* =========================================
+
+  /* ======================================
      FORMAT CLASSES
-     ========================================= */
+     ====================================== */
+
 
   function formatClasses(
     classText
   ) {
+
 
     if (
       !classText
@@ -813,37 +1267,47 @@
     }
 
 
+
     return classText
+
       .split(
         " | "
       )
+
       .map(
 
         item =>
+
           "<div>" +
           item +
           "</div>"
 
       )
+
       .join(
         ""
       );
 
+
   }
 
 
-  /* =========================================
-     FORMAT LATE TIME
-     ========================================= */
+
+  /* ======================================
+     LATE TIME
+     ====================================== */
+
 
   function formatLateTime(
     totalMinutes
   ) {
 
+
     totalMinutes =
       Number(
         totalMinutes
       ) || 0;
+
 
 
     if (
@@ -855,38 +1319,48 @@
     }
 
 
+
     const hours =
       Math.floor(
         totalMinutes / 60
       );
 
 
+
     const minutes =
       totalMinutes % 60;
+
 
 
     let result =
       "";
 
 
+
     if (
       hours > 0
     ) {
 
+
       result +=
+
         hours +
+
         (
           hours === 1
             ? " HR"
             : " HRS"
         );
 
+
     }
+
 
 
     if (
       minutes > 0
     ) {
+
 
       if (
         result
@@ -898,131 +1372,203 @@
       }
 
 
+
       result +=
+
         minutes +
         " MIN";
+
 
     }
 
 
+
     return result;
+
 
   }
 
 
-  /* =========================================
+
+  /* ======================================
      SHOW RESULT
-     ========================================= */
+     ====================================== */
+
 
   function showResult(
     data
   ) {
 
+
     cancelResultCollapse();
 
 
-    document.getElementById(
-      "processing"
-    ).style.display =
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .style
+      .display =
       "none";
 
 
+
     const resultCard =
-      document.getElementById(
-        "resultCard"
+      document
+        .getElementById(
+          "resultCard"
+        );
+
+
+
+    resultCard
+      .classList
+      .remove(
+        "resultFading"
       );
 
 
-    resultCard.classList.remove(
-      "resultFading"
-    );
 
-
-    resultCard.style.display =
+    resultCard
+      .style
+      .display =
       "block";
 
 
-    document.getElementById(
-      "studentName"
-    ).innerText =
+
+    document
+      .getElementById(
+        "studentName"
+      )
+      .innerText =
+
       data.studentName ||
       "";
 
 
-    document.getElementById(
-      "studentGroup"
-    ).innerText =
+
+    document
+      .getElementById(
+        "studentGroup"
+      )
+      .innerText =
+
       data.group
-        ? "Class " + data.group
+
+        ? "Class " +
+          data.group
+
         : "";
 
 
-    document.getElementById(
-      "classes"
-    ).innerHTML =
+
+    document
+      .getElementById(
+        "classes"
+      )
+      .innerHTML =
+
       formatClasses(
         data.todaysClasses
       );
 
 
-    document.getElementById(
-      "expectedArrival"
-    ).innerText =
+
+    document
+      .getElementById(
+        "expectedArrival"
+      )
+      .innerText =
+
       data.expectedArrival ||
       "—";
 
 
-    document.getElementById(
-      "actualArrival"
-    ).innerText =
+
+    document
+      .getElementById(
+        "actualArrival"
+      )
+      .innerText =
+
       data.actualArrival ||
       "—";
 
 
+
     const statusBox =
-      document.getElementById(
-        "statusBox"
-      );
+      document
+        .getElementById(
+          "statusBox"
+        );
+
 
 
     statusBox.className =
       "";
 
 
-    /* ALREADY RECORDED */
+
+    /* ==============================
+       ALREADY RECORDED
+       ============================== */
+
 
     if (
+
       data.result ===
       "ALREADY RECORDED"
+
     ) {
 
+
       const recordedTime =
+
         data.actualArrival ||
         "Unknown time";
 
 
+
       statusBox.innerHTML =
+
         "ALREADY ENTERED" +
+
         "<br>" +
-        "<span style='font-size:13px;font-weight:600;'>" +
+
+        "<span style='font-size:12px;font-weight:600;'>" +
+
         "Arrival recorded at " +
+
         recordedTime +
+
         "</span>";
 
 
-      statusBox.classList.add(
-        "duplicate"
-      );
+
+      statusBox
+        .classList
+        .add(
+          "duplicate"
+        );
+
 
     }
 
 
-    /* LATE */
+
+    /* ==============================
+       LATE
+       ============================== */
+
 
     else if (
+
       data.attendanceStatus ===
       "Late"
+
     ) {
+
 
       const lateTime =
         formatLateTime(
@@ -1030,212 +1576,296 @@
         );
 
 
+
       let message =
         "LATE";
+
 
 
       if (
         lateTime
       ) {
 
+
         message +=
+
           " — " +
           lateTime;
 
+
       }
+
 
 
       statusBox.innerText =
         message;
 
 
-      statusBox.classList.add(
-        "late"
-      );
+
+      statusBox
+        .classList
+        .add(
+          "late"
+        );
+
 
     }
 
 
-    /* ON TIME */
+
+    /* ==============================
+       ON TIME
+       ============================== */
+
 
     else if (
+
       data.attendanceStatus ===
       "On Time"
+
     ) {
+
 
       statusBox.innerText =
         "✓ ON TIME";
 
 
-      statusBox.classList.add(
-        "success"
-      );
+
+      statusBox
+        .classList
+        .add(
+          "success"
+        );
+
 
     }
 
 
-    /* OTHER RESULT */
+
+    /* ==============================
+       OTHER
+       ============================== */
+
 
     else {
 
+
       statusBox.innerText =
+
         data.result ||
         "UNKNOWN RESULT";
 
 
-      statusBox.classList.add(
-        "error"
-      );
+
+      statusBox
+        .classList
+        .add(
+          "error"
+        );
+
 
     }
 
 
-    /*
-      IMPORTANT:
-      Result remains visible for 4 seconds.
 
-      Scanner is NOT locked during these 4 seconds.
+    /*
+      Result stays visible for
+      4 seconds.
+
+      Scanner does NOT stay locked.
     */
 
+
     scheduleResultCollapse();
+
 
   }
 
 
-  /* =========================================
+
+  /* ======================================
      CONNECTION ERROR
-     ========================================= */
+     ====================================== */
+
 
   function showConnectionError() {
+
 
     cancelResultCollapse();
 
 
-    document.getElementById(
-      "processing"
-    ).style.display =
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .style
+      .display =
       "none";
 
 
+
     const resultCard =
-      document.getElementById(
-        "resultCard"
-      );
+      document
+        .getElementById(
+          "resultCard"
+        );
 
-
-    resultCard.classList.remove(
-      "resultFading"
-    );
 
 
     resultCard.style.display =
       "block";
 
 
-    document.getElementById(
-      "studentName"
-    ).innerText =
+
+    document
+      .getElementById(
+        "studentName"
+      )
+      .innerText =
       "Connection Error";
 
 
-    document.getElementById(
-      "studentGroup"
-    ).innerText =
+
+    document
+      .getElementById(
+        "studentGroup"
+      )
+      .innerText =
       "";
 
 
-    document.getElementById(
-      "classes"
-    ).innerText =
+
+    document
+      .getElementById(
+        "classes"
+      )
+      .innerText =
       "";
 
 
-    document.getElementById(
-      "expectedArrival"
-    ).innerText =
+
+    document
+      .getElementById(
+        "expectedArrival"
+      )
+      .innerText =
       "—";
 
 
-    document.getElementById(
-      "actualArrival"
-    ).innerText =
+
+    document
+      .getElementById(
+        "actualArrival"
+      )
+      .innerText =
       "—";
+
 
 
     const statusBox =
-      document.getElementById(
-        "statusBox"
-      );
+      document
+        .getElementById(
+          "statusBox"
+        );
+
 
 
     statusBox.innerText =
       "PLEASE SCAN AGAIN";
 
 
+
     statusBox.className =
       "error";
 
 
+
     scheduleResultCollapse();
+
 
   }
 
 
-  /* =========================================
-     READY FOR NEXT STUDENT
-     ========================================= */
+
+  /* ======================================
+     READY
+     ====================================== */
+
 
   function readyForNextStudent() {
 
-    /*
-      Processing lock ends immediately when
-      server response is received.
 
-      The result may still stay on screen.
+    /*
+      ONLY server processing lock ends here.
+
+      Result can still remain visible.
     */
+
 
     isProcessing =
       false;
 
 
-    document.getElementById(
-      "processing"
-    ).style.display =
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .style
+      .display =
       "none";
 
 
-    document.getElementById(
-      "readyMessage"
-    ).innerText =
+
+    document
+      .getElementById(
+        "readyMessage"
+      )
+      .innerText =
       "Ready for next student";
 
 
-    document.getElementById(
-      "readyMessage"
-    ).style.display =
+
+    document
+      .getElementById(
+        "readyMessage"
+      )
+      .style
+      .display =
       "block";
+
 
   }
 
 
-  /* =========================================
-     SEND SCAN TO APPS SCRIPT
-     ========================================= */
+
+  /* ======================================
+     SEND REQUEST
+     ====================================== */
+
 
   function sendScanRequest(
     qr,
     attempt
   ) {
 
+
     let finished =
       false;
 
 
+
     const callbackName =
+
       "attendanceCallback_" +
+
       Date.now() +
+
       "_" +
-      Math.random()
+
+      Math
+        .random()
         .toString(36)
         .substring(
           2,
@@ -1243,51 +1873,69 @@
         );
 
 
+
     const script =
-      document.createElement(
-        "script"
-      );
+      document
+        .createElement(
+          "script"
+        );
 
 
-    /* CLEANUP JSONP */
+
+    /* CLEANUP */
+
 
     function cleanup() {
+
 
       if (
         script.parentNode
       ) {
 
-        script.parentNode
+
+        script
+          .parentNode
           .removeChild(
             script
           );
 
+
       }
 
 
+
       try {
+
 
         delete window[
           callbackName
         ];
 
+
       }
 
+
       catch (error) {
+
 
         window[
           callbackName
         ] =
           undefined;
 
+
       }
+
 
     }
 
 
+
     /* RETRY */
 
+
     function retryOrFail() {
+
 
       if (
         finished
@@ -1298,8 +1946,10 @@
       }
 
 
+
       finished =
         true;
+
 
 
       clearTimeout(
@@ -1307,28 +1957,41 @@
       );
 
 
+
       cleanup();
 
 
+
       if (
+
         attempt <
         MAX_ATTEMPTS
+
       ) {
 
-        document.getElementById(
-          "processing"
-        ).innerText =
+
+        document
+          .getElementById(
+            "processing"
+          )
+          .innerText =
           "Confirming attendance...";
+
 
 
         setTimeout(
 
           function() {
 
+
             sendScanRequest(
+
               qr,
+
               attempt + 1
+
             );
+
 
           },
 
@@ -1336,35 +1999,48 @@
 
         );
 
+
       }
+
 
 
       else {
 
-        document.getElementById(
-          "processing"
-        ).innerText =
+
+        document
+          .getElementById(
+            "processing"
+          )
+          .innerText =
           "Processing...";
+
 
 
         showConnectionError();
 
 
+
         readyForNextStudent();
 
+
       }
+
 
     }
 
 
+
     /* RESPONSE */
+
 
     window[
       callbackName
     ] =
+
       function(
         response
       ) {
+
 
         if (
           finished
@@ -1375,8 +2051,10 @@
         }
 
 
+
         finished =
           true;
+
 
 
         clearTimeout(
@@ -1384,66 +2062,89 @@
         );
 
 
+
         if (
+
           response &&
           response.result
+
         ) {
+
 
           showResult(
             response.result
           );
 
+
         }
+
 
 
         else {
 
+
           showConnectionError();
 
+
         }
+
 
 
         cleanup();
 
 
-        document.getElementById(
-          "processing"
-        ).innerText =
+
+        document
+          .getElementById(
+            "processing"
+          )
+          .innerText =
           "Processing...";
 
 
+
         /*
-          IMPORTANT:
+          Scanner immediately becomes
+          available again.
 
-          Scanner is unlocked immediately here.
-
-          It does NOT wait for the
-          4-second result timer.
+          It does NOT wait 4 seconds.
         */
+
 
         readyForNextStudent();
 
+
       };
 
 
-    /* NETWORK ERROR */
+
+    /* ERROR */
+
 
     script.onerror =
+
       function() {
+
 
         retryOrFail();
 
+
       };
+
 
 
     /* TIMEOUT */
 
+
     const timeoutTimer =
+
       setTimeout(
 
         function() {
 
+
           retryOrFail();
+
 
         },
 
@@ -1452,53 +2153,72 @@
       );
 
 
-    /* JSONP URL */
+
+    /* JSONP */
+
 
     script.src =
+
       WEB_APP_URL +
+
       "?key=" +
+
       encodeURIComponent(
         qr
       ) +
+
       "&callback=" +
+
       encodeURIComponent(
         callbackName
       ) +
+
       "&t=" +
+
       Date.now() +
+
       "&attempt=" +
+
       attempt;
 
 
-    document.body
+
+    document
+      .body
       .appendChild(
         script
       );
 
+
   }
 
 
-  /* =========================================
-     QR DETECTED
-     ========================================= */
+
+  /* ======================================
+     QR SUCCESS
+     ====================================== */
+
 
   function onScanSuccess(
     decodedText
   ) {
 
+
     const qr =
       decodedText.trim();
+
 
 
     const now =
       Date.now();
 
 
+
     /*
-      Do not accept another QR while
-      the CURRENT server request is
+      Current attendance request
       still processing.
     */
+
 
     if (
       isProcessing
@@ -1509,80 +2229,101 @@
     }
 
 
+
     /*
-      Prevent the SAME QR from being
-      continuously detected while card
-      remains in front of camera.
+      Ignore repeated reading
+      of same card for 5 seconds.
     */
 
+
     if (
-      qr === lastScannedQR &&
-      now - lastScanTime <
+
+      qr ===
+      lastScannedQR &&
+
+      now -
+      lastScanTime <
+
       SAME_QR_DELAY
+
     ) {
+
 
       return;
 
+
     }
+
 
 
     lastScannedQR =
       qr;
 
 
+
     lastScanTime =
       now;
 
 
-    /*
-      If an old result is counting down,
-      stop its fade.
 
-      Previous student result remains
-      visible while this new QR processes.
+    /*
+      Previous result remains visible
+      while the NEW scan processes.
     */
+
 
     cancelResultCollapse();
 
 
+
     /*
-      Immediate beep + vibration
-      as soon as QR is recognised.
+      Immediate feedback.
     */
 
+
     playScanBeep();
+
 
 
     isProcessing =
       true;
 
 
-    document.getElementById(
-      "readyMessage"
-    ).style.display =
+
+    document
+      .getElementById(
+        "readyMessage"
+      )
+      .style
+      .display =
       "none";
 
 
-    document.getElementById(
-      "processing"
-    ).innerText =
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .innerText =
       "Processing...";
 
 
-    document.getElementById(
-      "processing"
-    ).style.display =
+
+    document
+      .getElementById(
+        "processing"
+      )
+      .style
+      .display =
       "block";
+
 
 
     /*
       IMPORTANT:
 
       We DO NOT hide the previous
-      result card here.
-
-      It stays visible until the new
-      result arrives.
+      result here.
     */
 
 
@@ -1591,23 +2332,29 @@
       1
     );
 
+
   }
 
 
-  /* =========================================
-     START CAMERA
-     ========================================= */
+
+  /* ======================================
+     START ORIGINAL SCANNER
+     ====================================== */
+
 
   const scanner =
+
     new Html5QrcodeScanner(
 
       "reader",
 
       {
 
-        fps: 15,
+        fps:
+          15,
 
-        qrbox: 250
+        qrbox:
+          250
 
       },
 
@@ -1616,11 +2363,14 @@
     );
 
 
+
   scanner.render(
     onScanSuccess
   );
 
+
 </script>
+
 
 </body>
 </html>
