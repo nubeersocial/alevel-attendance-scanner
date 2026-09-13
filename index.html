@@ -195,6 +195,19 @@ body {
   border-radius: 8px;
 }
 
+.groupA1 {
+  background: #e3f2fd !important;
+  color: #0d47a1 !important;
+  border: 1px solid #bbdefb;
+}
+
+.groupA2 {
+  background: #f3e5f5 !important;
+  color: #6a1b9a !important;
+  border: 1px solid #e1bee7;
+}
+
+
 
 /* =========================
    TIMES
@@ -299,7 +312,7 @@ body {
 
   font-weight: 800;
 
-  color: #6b7280;
+  color: #8a5a00;
 
   text-transform: uppercase;
 }
@@ -312,7 +325,9 @@ body {
 
   font-weight: 600;
 
-  background: #f8fafc;
+  background: #fff8e1;
+
+  border: 1px solid #ffe082;
 
   padding: 8px 9px;
 
@@ -421,9 +436,7 @@ body {
 
 
 <div class="page">
-
-
-  <div class="header">
+<div class="header">
 
     <h1>
       A-Level Attendance
@@ -685,12 +698,28 @@ function showResult(
 
 
 
-  document.getElementById(
-    "studentGroup"
-  ).innerText =
+  const studentGroup =
+    document.getElementById(
+      "studentGroup"
+    );
+
+  studentGroup.innerText =
     data.group
       ? "Class " + data.group
       : "";
+
+  studentGroup.className = "";
+
+  if (data.group === "A1") {
+    studentGroup.classList.add(
+      "groupA1"
+    );
+  }
+  else if (data.group === "A2") {
+    studentGroup.classList.add(
+      "groupA2"
+    );
+  }
 
 
 
@@ -854,9 +883,15 @@ function showConnectionError() {
     "Connection Error";
 
 
-  document.getElementById(
-    "studentGroup"
-  ).innerText =
+  const errorStudentGroup =
+    document.getElementById(
+      "studentGroup"
+    );
+
+  errorStudentGroup.innerText =
+    "";
+
+  errorStudentGroup.className =
     "";
 
 
@@ -1150,236 +1185,7 @@ scanner.render(
   onScanSuccess
 );
 
-
-async function runConnectionTest() {
-
-  const resultsBox =
-    document.getElementById(
-      "testResults"
-    );
-
-  resultsBox.innerHTML =
-    "Starting 20 tests...<br><br>";
-
-  let successCount = 0;
-  let failCount = 0;
-
-
-  for (
-    let i = 1;
-    i <= 20;
-    i++
-  ) {
-
-    await new Promise(
-      resolve => {
-
-        let finished = false;
-
-        const startTime =
-          performance.now();
-
-        const callbackName =
-          "pingCallback_" +
-          Date.now() +
-          "_" +
-          i;
-
-        const script =
-          document.createElement(
-            "script"
-          );
-
-
-        function cleanup() {
-
-          clearTimeout(timer);
-
-          if (script.parentNode) {
-            script.parentNode
-              .removeChild(script);
-          }
-
-          try {
-            delete window[
-              callbackName
-            ];
-          }
-          catch (error) {
-            window[
-              callbackName
-            ] = undefined;
-          }
-
-        }
-
-
-        function finishFailure(
-          reason
-        ) {
-
-          if (finished) return;
-
-          finished = true;
-
-          cleanup();
-
-          failCount++;
-
-          resultsBox.innerHTML +=
-            "Test " +
-            i +
-            ": FAIL - " +
-            reason +
-            "<br>";
-
-          resolve();
-
-        }
-
-
-        window[
-          callbackName
-        ] =
-          function(response) {
-
-            if (finished) return;
-
-            finished = true;
-
-            const duration =
-              Math.round(
-                performance.now() -
-                startTime
-              );
-
-            cleanup();
-
-            if (
-              response &&
-              response.success === true &&
-              response.test === "OK"
-            ) {
-
-              successCount++;
-
-              resultsBox.innerHTML +=
-                "Test " +
-                i +
-                ": OK - " +
-                duration +
-                " ms<br>";
-
-            }
-            else {
-
-              failCount++;
-
-              resultsBox.innerHTML +=
-                "Test " +
-                i +
-                ": BAD RESPONSE<br>";
-
-            }
-
-            resolve();
-
-          };
-
-
-        script.onerror =
-          function() {
-
-            finishFailure(
-              "script error"
-            );
-
-          };
-
-
-        const timer =
-          setTimeout(
-            function() {
-
-              finishFailure(
-                "timeout"
-              );
-
-            },
-            8000
-          );
-
-
-        script.src =
-          WEB_APP_URL +
-          "?test=ping" +
-          "&callback=" +
-          encodeURIComponent(
-            callbackName
-          ) +
-          "&t=" +
-          Date.now();
-
-
-        document.body
-          .appendChild(
-            script
-          );
-
-      }
-    );
-
-
-    await new Promise(
-      resolve =>
-        setTimeout(
-          resolve,
-          300
-        )
-    );
-
-  }
-
-
-  resultsBox.innerHTML +=
-    "<br><b>Finished</b><br>" +
-    "Success: " +
-    successCount +
-    "/20<br>" +
-    "Failed: " +
-    failCount +
-    "/20";
-
-}
-  
 </script>
-
- <button
-  id="testConnectionButton"
-  onclick="runConnectionTest()"
-  style="
-    width:100%;
-    margin-top:10px;
-    padding:12px;
-    font-size:16px;
-    font-weight:bold;
-  "
->
-  RUN 20 CONNECTION TESTS
-</button>
-
-<div
-  id="testResults"
-  style="
-    margin-top:10px;
-    padding:10px;
-    background:white;
-    border-radius:10px;
-    font-family:monospace;
-    font-size:14px;
-  "
-></div>
-
 </body>
 
 </html>
